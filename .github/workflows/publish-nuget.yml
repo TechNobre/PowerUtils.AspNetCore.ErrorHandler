@@ -1,0 +1,33 @@
+name: 'Publish Nuget'
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+
+  deploy-nuget:
+    name: "Deploy NuGet"
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.200'
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --configuration Release
+
+    - name: Create the Package
+      run: dotnet pack --configuration Release
+
+    - name: Publish
+      run: dotnet nuget push "./src/bin/PowerUtils.AspNetCore.ErrorHandler.*.nupkg" -k ${{ secrets.NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json

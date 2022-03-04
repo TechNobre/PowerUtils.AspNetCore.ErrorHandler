@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+
+    <RootNamespace>PowerUtils.AspNetCore.ErrorHandler.Samples</RootNamespace>
+    <AssemblyName>PowerUtils.AspNetCore.ErrorHandler.Samples</AssemblyName>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="PowerUtils.AspNetCore.Authentication.BasicAuth" Version="1.0.0" />
+    <PackageReference Include="PowerUtils.AspNetCore.Authentication.JwtBearer" Version="1.0.0" />
+    <PackageReference Include="PowerUtils.Security" Version="1.1.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+    <!-- LOGS -->
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+    <PackageReference Include="Serilog.Exceptions" Version="8.1.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+  </ItemGroup>
+
+
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PowerUtils.AspNetCore.ErrorHandler\PowerUtils.AspNetCore.ErrorHandler.csproj" />
+  </ItemGroup>
+
+
+</Project>
