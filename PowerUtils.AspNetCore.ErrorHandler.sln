@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.samples", "4.samples", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Samples", "samples\PowerUtils.AspNetCore.ErrorHandler.Samples\Samples.csproj", "{7EA174BC-5B09-4414-8041-60FD7FB4FAD9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\PowerUtils.AspNetCore.ErrorHandler.Tests\Tests.csproj", "{D8088763-559F-4C5D-A913-B5BA45F4200B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "tests\PowerUtils.AspNetCore.ErrorHandler.Tests\PowerUtils.AspNetCore.ErrorHandler.Tests.csproj", "{D8088763-559F-4C5D-A913-B5BA45F4200B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
