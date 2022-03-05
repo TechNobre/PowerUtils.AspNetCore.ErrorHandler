@@ -7,7 +7,7 @@ Handler to standardize error responses
 
 [![NuGet](https://img.shields.io/nuget/v/PowerUtils.AspNetCore.ErrorHandler.svg)](https://www.nuget.org/packages/PowerUtils.AspNetCore.ErrorHandler)
 [![Nuget](https://img.shields.io/nuget/dt/PowerUtils.AspNetCore.ErrorHandler.svg)](https://www.nuget.org/packages/PowerUtils.AspNetCore.ErrorHandler)
-[![License: MIT](https://img.shields.io/github/license/ofpinewood/http-exceptions.svg)](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/github/license/TechNobre/PowerUtils.AspNetCore.ErrorHandler.svg)](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/LICENSE)
 
 
 
