@@ -29,7 +29,6 @@ Handler to standardize error responses
 ### Dependencies
 
 - Microsoft.AspNetCore.Diagnostics [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics/)
-- Microsoft.AspNetCore.Http.Extensions [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Extensions/)
 - Microsoft.AspNetCore.Mvc.Core [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)
 - PowerUtils.Net.Primitives [NuGet](https://www.nuget.org/packages/PowerUtils.Net.Primitives/)
 - PowerUtils.Text [NuGet](https://www.nuget.org/packages/PowerUtils.Text/)
