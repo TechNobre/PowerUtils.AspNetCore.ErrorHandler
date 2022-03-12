@@ -12,7 +12,9 @@ Handler to standardize error responses
 
 
 ## Support to
-- .NET 3.1 or more
+- .NET 3.1
+- .NET 5.0
+- .NET 6.0
 
 
 
