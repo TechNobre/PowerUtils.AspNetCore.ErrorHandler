@@ -118,4 +118,24 @@ public class Errors4xxTests
 
         content.ValidateContent(HttpStatusCode.UnprocessableEntity);
     }
+
+    [Fact(DisplayName = "Using the verb POST to call an endpoint with verb GET - Should return a problem details response with error code 405")]
+    public async Task GetEndpoint_UsePOSTVerbs_405()
+    {
+        // Arrange
+        var requestUri = "/errors-4xx";
+
+
+        // Act
+        (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri);
+
+
+        // Assert
+        response.ValidateResponse(HttpStatusCode.MethodNotAllowed);
+
+        content.ValidateContent(
+            HttpStatusCode.MethodNotAllowed,
+            "POST: " + requestUri
+        );
+    }
 }

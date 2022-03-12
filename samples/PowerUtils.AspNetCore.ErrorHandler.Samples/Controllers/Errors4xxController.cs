@@ -8,6 +8,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers;
 [Route("errors-4xx")]
 public class Errors4xxController : ControllerBase
 {
+    [HttpGet]
+    public IActionResult Get()
+        => Ok("Success...");
+
     [HttpGet("400")]
     public IActionResult Error400()
         => BadRequest();

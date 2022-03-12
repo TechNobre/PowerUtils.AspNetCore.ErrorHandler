@@ -136,7 +136,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         private static string _formatPropertyToSnakeCase(string propertyName)
         {
             var propertyParts = propertyName.Split('.');
-            
+
             for(var count = 0; count < propertyParts.Length; count++)
             {
                 propertyParts[count] = propertyParts[count].ToSnakeCase();
