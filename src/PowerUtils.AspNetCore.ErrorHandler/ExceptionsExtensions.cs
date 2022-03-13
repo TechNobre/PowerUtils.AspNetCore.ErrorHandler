@@ -7,7 +7,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     internal static class ExceptionsExtensions
     {
-        public static (int Status, IDictionary<string, string> Errors) MappingToStatusCode(this Exception exception, ErrorHandlerOptions options)
+        public static (int Status, IEnumerable<KeyValuePair<string, string>> Errors) MappingToStatusCode(this Exception exception, ErrorHandlerOptions options)
         {
             var exceptionType = exception.GetType();
 

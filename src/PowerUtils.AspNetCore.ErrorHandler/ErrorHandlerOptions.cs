@@ -6,17 +6,17 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     public interface IExceptionMapper
     {
-        (int Status, IDictionary<string, string> Errors) Handle(Exception exception);
+        (int Status, IEnumerable<KeyValuePair<string, string>> Errors) Handle(Exception exception);
     }
 
 
     public class ExceptionMapper<TException> : IExceptionMapper
         where TException : Exception
     {
-        public Func<TException, (int Status, IDictionary<string, string>)> Handler { get; set; }
+        public Func<TException, (int Status, IEnumerable<KeyValuePair<string, string>>)> Handler { get; set; }
 
 
-        public (int Status, IDictionary<string, string> Errors) Handle(Exception exception)
+        public (int Status, IEnumerable<KeyValuePair<string, string>> Errors) Handle(Exception exception)
             => Handler(exception as TException);
     }
 
@@ -42,7 +42,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
     public static class ErrorHandlerOptionsExtensions
     {
-        public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, IDictionary<string, string> Errors)> configureMapper)
+        public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, IEnumerable<KeyValuePair<string, string>> Errors)> configureMapper)
             where TException : Exception
         {
             var exceptionType = typeof(TException);

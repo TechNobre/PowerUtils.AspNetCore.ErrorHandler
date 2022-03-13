@@ -36,7 +36,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         }
 
 
-        internal ProblemDetailsResponse Create(HttpContext httpContext, IDictionary<string, string> errors)
+        internal ProblemDetailsResponse Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
         {
             var result = Create(httpContext);
 
