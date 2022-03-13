@@ -4,7 +4,7 @@ using System.Net.Http;
 using Microsoft.AspNetCore.WebUtilities;
 using PowerUtils.Net.Constants;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests;
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
 
 public static class ProblemDetailsValidation
 {
