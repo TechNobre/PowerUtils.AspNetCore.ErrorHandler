@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <ProjectGuid>62adbdce-046d-472c-b1cd-4df5799bae6d</ProjectGuid>
+    <ProjectGuid>848b072c-e1a1-4fcf-b00a-f14750be758b</ProjectGuid>
 
     <!-- Assembly and projecto details -->
     <!-- https://docs.microsoft.com/en-us/dotnet/standard/frameworks -->
