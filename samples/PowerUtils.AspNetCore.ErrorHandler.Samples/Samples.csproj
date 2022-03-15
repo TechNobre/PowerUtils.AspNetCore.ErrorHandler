@@ -32,7 +32,7 @@
 
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PowerUtils.AspNetCore.ErrorHandler\PowerUtils.AspNetCore.ErrorHandler.csproj" />
+    <ProjectReference Include="..\..\src\PowerUtils.AspNetCore.ErrorHandler.csproj" />
   </ItemGroup>
 
 

@@ -25,7 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.src", "3.src", "{CE5DD14D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5.tests", "5.tests", "{374997E9-74C5-4895-8FFA-8EB0E4326D23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerUtils.AspNetCore.ErrorHandler", "src\PowerUtils.AspNetCore.ErrorHandler\PowerUtils.AspNetCore.ErrorHandler.csproj", "{62ADBDCE-046D-472C-B1CD-4DF5799BAE6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PowerUtils.AspNetCore.ErrorHandler", "src\PowerUtils.AspNetCore.ErrorHandler.csproj", "{62ADBDCE-046D-472C-B1CD-4DF5799BAE6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.samples", "4.samples", "{9B7CC64A-4F19-47E3-9B70-13891A768D21}"
 EndProject
