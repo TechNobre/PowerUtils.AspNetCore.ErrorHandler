@@ -29,7 +29,7 @@
       Kickoff
     </PackageReleaseNotes>
     <Summary>Hendler to standardize error responses</Summary>
-    <PackageTags>PowerUtils;Utils;Helpers;WebAPI;WebAPIs;AspNetCore;ProblemDetails;ErrorHandler</PackageTags>
+    <PackageTags>PowerUtils;Utils;Helpers;AspNetCore;ProblemDetails;ErrorHandler</PackageTags>
     <RepositoryUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</RepositoryUrl>
     <PackageProjectUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</PackageProjectUrl>
     <NeutralLanguage>en-GB</NeutralLanguage>

@@ -11,7 +11,7 @@ using PowerUtils.Text;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
-    internal class ProblemDetailsFactory
+    public class ProblemDetailsFactory
     {
         private readonly IOptions<ErrorHandlerOptions> _options;
 
@@ -36,7 +36,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         }
 
 
-        internal ProblemDetailsResponse Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
+        public ProblemDetailsResponse Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
         {
             var result = Create(httpContext);
 
