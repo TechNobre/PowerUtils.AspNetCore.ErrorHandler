@@ -1,0 +1,99 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <ProjectGuid>848b072c-e1a1-4fcf-b00a-f14750be758b</ProjectGuid>
+
+    <!-- Assembly and projecto details -->
+    <!-- https://docs.microsoft.com/en-us/dotnet/standard/frameworks -->
+    <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
+
+    <AssemblyName>PowerUtils.AspNetCore.ErrorHandler</AssemblyName>
+    <RootNamespace>PowerUtils.AspNetCore.ErrorHandler</RootNamespace>
+
+
+    <!-- Package details -->
+    <PackageId>PowerUtils.AspNetCore.ErrorHandler</PackageId>
+    <title>PowerUtils.AspNetCore.ErrorHandler</title>
+    <Product>PowerUtils.AspNetCore.ErrorHandler</Product>
+    <Version>1.0.0</Version>
+
+    <Authors>Nelson Nobre</Authors>
+    <Company>TechNobre</Company>
+
+    <License>MIT</License>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Copyright>Copyright © 2022 by TechNobre</Copyright>
+
+    <Description>Hendler to standardize error responses</Description>
+    <PackageReleaseNotes>
+      Kickoff
+    </PackageReleaseNotes>
+    <Summary>Hendler to standardize error responses</Summary>
+    <PackageTags>PowerUtils;Utils;Helpers;AspNetCore;ProblemDetails;ErrorHandler</PackageTags>
+    <RepositoryUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</PackageProjectUrl>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+
+    <PackageOutputPath>bin\</PackageOutputPath>
+  </PropertyGroup>
+
+
+  <!-- DOCUMENTATION -->
+  <PropertyGroup>
+    <DocumentationFile>bin\PowerUtils.AspNetCore.ErrorHandler.xml</DocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn> <!-- Prevent XML documentation warnings -->
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>RELEASE;TRACE</DefineConstants>
+    <ErrorReport>none</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <DefineConstants>NETCOREAPP;NETCOREAPP3_1</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <DefineConstants>NET;NET5</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <DefineConstants>NET;NET6</DefineConstants>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageReference Include="PowerUtils.Net.Primitives" Version="1.2.0" />
+    <PackageReference Include="PowerUtils.Text" Version="2.1.0" />
+  </ItemGroup>
+
+
+</Project>

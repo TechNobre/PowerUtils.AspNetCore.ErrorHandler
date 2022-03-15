@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+
+    <RootNamespace>PowerUtils.AspNetCore.ErrorHandler.Tests</RootNamespace>
+    <AssemblyName>PowerUtils.AspNetCore.ErrorHandler.Tests</AssemblyName>
+
+    <!-- BIN OUTPUT -->
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);coverage.opencover.xml</DefaultItemExcludes>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Moq" Version="4.17.2" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="FluentAssertions" Version="6.5.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.3" />
+    <PackageReference Include="PowerUtils.Text" Version="2.1.0" />
+    <PackageReference Include="PowerUtils.xUnit.Extensions" Version="2.2.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.console" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+    <Using Include="FluentAssertions" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\samples\PowerUtils.AspNetCore.ErrorHandler.Samples\Samples.csproj" />
+  </ItemGroup>
+
+
+</Project>
