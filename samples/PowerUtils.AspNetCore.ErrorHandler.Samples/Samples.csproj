@@ -14,7 +14,7 @@
     <PackageReference Include="PowerUtils.AspNetCore.Authentication.BasicAuth" Version="1.0.0" />
     <PackageReference Include="PowerUtils.AspNetCore.Authentication.JwtBearer" Version="1.0.0" />
     <PackageReference Include="PowerUtils.Security" Version="1.1.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
     <!-- LOGS -->
     <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />
