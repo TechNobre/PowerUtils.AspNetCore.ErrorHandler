@@ -74,12 +74,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         private (string Property, string Error) _mappingModelStateError(KeyValuePair<string, ModelStateEntry> modelStateError)
         {
-            var error = modelStateError
-                .Value
-                .Errors
-                .Select(s => s.ErrorMessage)
-                .First();
-
             if(modelStateError.Key.StartsWith("$."))
             {
                 return (
@@ -87,6 +81,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                     "INVALID"
                 );
             }
+
+            var error = modelStateError
+                .Value
+                .Errors
+                .Select(s => s.ErrorMessage)
+                .First();
 
             return _checkRequestBody(modelStateError.Key, error);
         }
@@ -117,6 +117,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         private static string _formatPropertyToCamelCase(string propertyName)
         {
+            if(string.IsNullOrWhiteSpace(propertyName))
+            {
+                return "";
+            }
+
             var propertyParts = propertyName.Split('.');
             if(propertyParts.Length == 1)
             {
@@ -126,6 +131,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
             for(var count = 0; count < propertyParts.Length; count++)
             {
+                // Prevent System.IndexOutOfRangeException: 'Index was outside the bounds of the array.' for cases "Hello."
+                if(propertyParts[count].Length == 0)
+                {
+                    continue;
+                }
+
                 propertyParts[count] = char.ToLowerInvariant(propertyParts[count][0]) + propertyParts[count][1..];
             }
 
