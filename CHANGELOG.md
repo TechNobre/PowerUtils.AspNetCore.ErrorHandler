@@ -4,7 +4,7 @@
 
 
 ## [1.0.1] - 2022-05-28
-[Full Changelog](https://github.com/TechNobre/PowerUtils.Text/compare/v1.0.0...v1.0.1)
+[Full Changelog](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.0.0...v1.0.1)
 
 
 ### Fixes
