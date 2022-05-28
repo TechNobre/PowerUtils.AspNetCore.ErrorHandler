@@ -5,7 +5,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     public class ProblemDetailsResponse
     {
-        #region PROPERTIES
         /// <summary>
         /// The HTTP status code([RFC7231], Section 6) generated
         /// </summary>
@@ -38,16 +37,17 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         /// { "Property": "Error" }
         /// </example>
         public IDictionary<string, string> Errors { get; set; }
-        #endregion
 
         /// <summary>
         /// Serialize problem details to JSON
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
             => JsonSerializer.Serialize(this);
 
         public static implicit operator string(ProblemDetailsResponse problemDetailsResponse)
             => problemDetailsResponse.ToString();
+
+        public ProblemDetailsResponse()
+            => Errors = new Dictionary<string, string>();
     }
 }
