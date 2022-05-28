@@ -3,6 +3,9 @@
   <PropertyGroup>
     <ProjectGuid>848b072c-e1a1-4fcf-b00a-f14750be758b</ProjectGuid>
 
+    <CurrentYear>$([System.DateTime]::UtcNow.ToString(yyyy))</CurrentYear>
+
+
     <!-- Assembly and projecto details -->
     <!-- https://docs.microsoft.com/en-us/dotnet/standard/frameworks -->
     <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
@@ -15,19 +18,17 @@
     <PackageId>PowerUtils.AspNetCore.ErrorHandler</PackageId>
     <title>PowerUtils.AspNetCore.ErrorHandler</title>
     <Product>PowerUtils.AspNetCore.ErrorHandler</Product>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
 
     <Authors>Nelson Nobre</Authors>
     <Company>TechNobre</Company>
 
     <License>MIT</License>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <Copyright>Copyright © 2022 by TechNobre</Copyright>
+    <Copyright>Copyright © $(CurrentYear) by TechNobre</Copyright>
 
     <Description>Hendler to standardize error responses</Description>
-    <PackageReleaseNotes>
-      Kickoff
-    </PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <Summary>Hendler to standardize error responses</Summary>
     <PackageTags>PowerUtils;Utils;Helpers;AspNetCore;ProblemDetails;ErrorHandler</PackageTags>
     <RepositoryUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</RepositoryUrl>
@@ -66,20 +67,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <DefineConstants>RELEASE;TRACE</DefineConstants>
+    <DefineConstants>RELEASE</DefineConstants>
     <ErrorReport>none</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
-    <DefineConstants>NETCOREAPP;NETCOREAPP3_1</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <DefineConstants>NET;NET5</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-    <DefineConstants>NET;NET6</DefineConstants>
   </PropertyGroup>
 
 

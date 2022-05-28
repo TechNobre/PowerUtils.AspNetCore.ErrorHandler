@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using PowerUtils.Net.Constants;
-using PowerUtils.Text;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
@@ -22,15 +21,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         {
             var result = new ProblemDetailsResponse();
 
-            result.Status = httpContext.GetStatusCode() ?? 0;
+            result.Status = httpContext.GetStatusCode() ?? 0; // Default value is 0
             result.Type = result.Status.GetStatusCodeLinkOrDefault();
             result.Title = result.Status == 0 ? null : ReasonPhrases.GetReasonPhrase(result.Status);
 
             result.Instance = httpContext.GetRequestEndpoint();
 
             result.TraceID = httpContext.GetCorrelationId();
-
-            result.Errors = new Dictionary<string, string>();
 
             return result;
         }
@@ -74,12 +71,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         private (string Property, string Error) _mappingModelStateError(KeyValuePair<string, ModelStateEntry> modelStateError)
         {
-            var error = modelStateError
-                .Value
-                .Errors
-                .Select(s => s.ErrorMessage)
-                .First();
-
             if(modelStateError.Key.StartsWith("$."))
             {
                 return (
@@ -87,6 +78,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                     "INVALID"
                 );
             }
+
+            var error = modelStateError
+                .Value
+                .Errors
+                .Select(s => s.ErrorMessage)
+                .First();
 
             return _checkRequestBody(modelStateError.Key, error);
         }
@@ -111,39 +108,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             => _options.Value.PropertyNamingPolicy switch
             {
                 PropertyNamingPolicy.Original => propertyName,
-                PropertyNamingPolicy.SnakeCase => _formatPropertyToSnakeCase(propertyName),
-                _ => _formatPropertyToCamelCase(propertyName),
+                PropertyNamingPolicy.SnakeCase => propertyName.FormatToSnakeCase(),
+                _ => propertyName.FormatToCamelCase(),
             };
 
-        private static string _formatPropertyToCamelCase(string propertyName)
-        {
-            var propertyParts = propertyName.Split('.');
-            if(propertyParts.Length == 1)
-            {
-                return char.ToLowerInvariant(propertyName[0]) + propertyName[1..];
-            }
-
-
-            for(var count = 0; count < propertyParts.Length; count++)
-            {
-                propertyParts[count] = char.ToLowerInvariant(propertyParts[count][0]) + propertyParts[count][1..];
-            }
-
-
-            return string.Join(".", propertyParts);
-        }
-
-        private static string _formatPropertyToSnakeCase(string propertyName)
-        {
-            var propertyParts = propertyName.Split('.');
-
-            for(var count = 0; count < propertyParts.Length; count++)
-            {
-                propertyParts[count] = propertyParts[count].ToSnakeCase();
-            }
-
-
-            return string.Join(".", propertyParts);
-        }
     }
 }

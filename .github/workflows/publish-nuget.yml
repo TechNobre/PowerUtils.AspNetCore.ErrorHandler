@@ -1,33 +1,47 @@
-name: 'Publish Nuget'
+name: 'Publish nuget'
+
+
 
 on:
   push:
     branches:
-      - main
+      - deploy-nuget
+
+
+
+env:
+  SDK_VERSION: '6.0.300'
+  PACKAGE_PATH: ./src/**/*.nupkg
+  NUGET_SERVER: https://api.nuget.org/v3/index.json
+
 
 
 jobs:
 
   deploy-nuget:
-    name: "Deploy NuGet"
+    name: "Deploy nuget"
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@main
+    - name: "Checkout"
+      uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: "Setup .NET"
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '6.0.201'
+        dotnet-version: ${{ env.SDK_VERSION }}
 
-    - name: Restore dependencies
+    - name: "Restore dependencies"
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --configuration Release
+    - name: "Build"
+      run: dotnet build --configuration Release --no-restore
 
-    - name: Create the Package
-      run: dotnet pack --configuration Release
+    - name: "Test"
+      run: dotnet test --configuration Release --no-build
 
-    - name: Publish
-      run: dotnet nuget push "./src/bin/PowerUtils.AspNetCore.ErrorHandler.*.nupkg" -k ${{ secrets.NUGET_TOKEN }} -s https://api.nuget.org/v3/index.json
+    - name: "Pack"
+      run: dotnet pack --configuration Release --no-build
+
+    - name: "Publish nuget"
+      run: dotnet nuget push ${{ env.PACKAGE_PATH }} --api-key ${{ secrets.NUGET_TOKEN }} --source ${{ env.NUGET_SERVER }} --skip-duplicate

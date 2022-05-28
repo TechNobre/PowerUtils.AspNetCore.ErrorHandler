@@ -3,6 +3,17 @@
 
 
 
+## [1.0.1] - 2022-05-28
+[Full Changelog](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.0.0...v1.0.1)
+
+
+### Fixes
+
+- Fix `System.IndexOutOfRangeException` when format the properties name to camel case;
+
+
+
+
 ## [1.0.0] - 2022-03-15
 
 - Kickoff;
