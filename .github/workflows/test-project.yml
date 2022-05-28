@@ -1,34 +1,40 @@
 name: 'Tests'
 
+
+
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     types: [opened, reopened, synchronize]
     branches:
       - main
 
 
+
+env:
+  SDK_VERSION: '6.0.300'
+
+
+
 jobs:
 
   test-project:
-    name: "Testing project"
+    name: "Test nuget"
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: "Checkout"
+      uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: "Setup .NET"
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: '6.0.202'
+        dotnet-version: ${{ env.SDK_VERSION }}
 
-    - name: Restore dependencies
+    - name: "Restore dependencies"
       run: dotnet restore
 
-    - name: Build
-      run: dotnet build --no-restore
+    - name: "Build"
+      run: dotnet build --configuration Release --no-restore
 
-    - name: Test
-      run: dotnet test --no-build
+    - name: "Test"
+      run: dotnet test --configuration Release --no-build
