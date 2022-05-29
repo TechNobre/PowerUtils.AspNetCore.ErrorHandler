@@ -28,7 +28,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             var modelStateErrors = modelState.Where(s => s.Value.Errors.Count > 0);
             if(modelStateErrors.Count() != 1)
             {
-                return null;
+                return new Dictionary<string, string>();
             }
 
 
@@ -45,13 +45,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                     .Replace("failed to read the request form. multipart body length limit ", "")
                     .Replace(" exceeded.", "");
 
-                return new Dictionary<string, string>
+                return new Dictionary<string, string>()
                 {
                     { BODY_PROPERTY_NAME, "MAX:" + maxSize }
                 };
             }
 
-            return null;
+            return new Dictionary<string, string>();
         }
 
         private static (string Property, string Error) _mappingModelStateErrors(this KeyValuePair<string, ModelStateEntry> modelStateError)

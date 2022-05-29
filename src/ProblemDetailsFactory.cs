@@ -50,7 +50,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         internal ProblemDetailsResponse Create(ActionContext actionContext)
         {
             var payloadTooLargeError = actionContext.ModelState.CheckPayloadTooLargeAndReturnError();
-            if(payloadTooLargeError != null)
+            if(payloadTooLargeError.Count == 1)
             { // When the payload is too large, we return a 413 status code
                 actionContext.HttpContext.Response.StatusCode = StatusCodes.Status413RequestEntityTooLarge;
 
