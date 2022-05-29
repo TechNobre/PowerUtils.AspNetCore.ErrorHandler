@@ -14,7 +14,7 @@ public class AuthControllerTests
         => _testsFixture = testsFixture;
 
 
-    [Fact(DisplayName = "Call an endpoint without  - Should return a response with status code 401")]
+    [Fact(DisplayName = "Request an endpoint without - Should return a response with status code 401")]
     public async Task Auth_WithoutCredentials_401()
     {
         // Arrange
@@ -34,7 +34,7 @@ public class AuthControllerTests
         );
     }
 
-    [Fact(DisplayName = "Call an endpoint with an error in authentication - Should return a response with status code 504")]
+    [Fact(DisplayName = "Request an endpoint with an error in authentication - Should return a response with status code 504")]
     public async Task Auth_WithError_504()
     {
         // Arrange

@@ -2,7 +2,7 @@
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Models;
 
-public class Product
+public class ProductRequest
 {
     [Required]
     public string Name { get; set; }

@@ -18,7 +18,7 @@
     <PackageId>PowerUtils.AspNetCore.ErrorHandler</PackageId>
     <title>PowerUtils.AspNetCore.ErrorHandler</title>
     <Product>PowerUtils.AspNetCore.ErrorHandler</Product>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
 
     <Authors>Nelson Nobre</Authors>
     <Company>TechNobre</Company>

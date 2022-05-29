@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using PowerUtils.Net.Constants;
@@ -39,78 +36,46 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
             foreach(var error in errors)
             {
-                result.Errors.Add(_formatPropertyName(error.Key), error.Value);
+                result.Errors
+                    .Add(
+                        _formatPropertyName(error.Key),
+                        error.Value
+                    );
             }
 
             return result;
         }
+
 
         internal ProblemDetailsResponse Create(ActionContext actionContext)
         {
-            var result = Create(actionContext.HttpContext);
+            var payloadTooLargeError = actionContext.ModelState.CheckPayloadTooLargeAndReturnError();
+            if(payloadTooLargeError.Count == 1)
+            { // When the payload is too large, we return a 413 status code
+                actionContext.HttpContext.Response.StatusCode = StatusCodes.Status413RequestEntityTooLarge;
 
-            result.Errors = _mappingModelState(actionContext.ModelState);
-
-            return result;
-        }
-
-
-        private IDictionary<string, string> _mappingModelState(ModelStateDictionary modelState)
-        {
-            var modelStateErrors = modelState.Where(s => s.Value.Errors.Count > 0);
-
-            var errors = new Dictionary<string, string>();
-            foreach(var modelStateError in modelStateErrors)
-            {
-                (var property, var error) = _mappingModelStateError(modelStateError);
-                errors.Add(property, error);
-            }
-
-            return errors;
-        }
-
-        private (string Property, string Error) _mappingModelStateError(KeyValuePair<string, ModelStateEntry> modelStateError)
-        {
-            if(modelStateError.Key.StartsWith("$."))
-            {
-                return (
-                    _formatPropertyName(modelStateError.Key[2..]),
-                    "INVALID"
+                return Create(
+                   actionContext.HttpContext,
+                   payloadTooLargeError
                 );
             }
 
-            var error = modelStateError
-                .Value
-                .Errors
-                .Select(s => s.ErrorMessage)
-                .First();
 
-            return _checkRequestBody(modelStateError.Key, error);
+            actionContext.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+
+            return Create(
+                actionContext.HttpContext,
+                actionContext.ModelState.MappingModelState()
+            );
         }
 
-        private (string Property, string Error) _checkRequestBody(string property, string error)
-        {
-            if(property == "$")
-            {
-                return (_formatPropertyName("RequestBody"), "INVALID");
-            }
-
-            if("A non-empty request body is required.".Equals(error, StringComparison.InvariantCultureIgnoreCase))
-            {
-                return (_formatPropertyName("RequestBody"), "REQUIRED");
-            }
-
-            return (_formatPropertyName(property), error);
-        }
-
+        // PropertyNamingPolicy.CamelCase is default value
         private string _formatPropertyName(string propertyName)
-            // PropertyNamingPolicy.CamelCase is default value
             => _options.Value.PropertyNamingPolicy switch
             {
                 PropertyNamingPolicy.Original => propertyName,
                 PropertyNamingPolicy.SnakeCase => propertyName.FormatToSnakeCase(),
                 _ => propertyName.FormatToCamelCase(),
             };
-
     }
 }
