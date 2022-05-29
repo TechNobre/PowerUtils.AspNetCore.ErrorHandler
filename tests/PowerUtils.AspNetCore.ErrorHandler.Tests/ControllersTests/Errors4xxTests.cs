@@ -65,7 +65,7 @@ public class Errors4xxTests
         content.ValidateContent(HttpStatusCode.NotFound);
     }
 
-    [Fact(DisplayName = "Call an un-existent endpoint - Should return problem details response with status code 404")]
+    [Fact(DisplayName = "Request an un-existent endpoint - Should return problem details response with status code 404")]
     public async Task Enpoint_UnExistent_404()
     {
         // Arrange

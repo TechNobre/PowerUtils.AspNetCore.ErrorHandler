@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PowerUtils.Net.Constants;
@@ -16,16 +15,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
                     var loggerFactory = actionContext.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
                     var logger = loggerFactory.CreateLogger("ModelStateHandler");
 
-                    actionContext.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-
                     var problemDetails = problemDetailsFactory.Create(actionContext);
 
                     logger.Debug(problemDetails);
 
-                    actionContext.HttpContext.ResetResponse();
 
-                    return new BadRequestObjectResult(problemDetails)
+                    actionContext.HttpContext.ResetResponse();
+                    actionContext.HttpContext.Response.StatusCode = problemDetails.Status;
+
+
+                    return new ObjectResult(problemDetails)
                     {
+                        StatusCode = problemDetails.Status,
                         ContentTypes = { ExtendedMediaTypeNames.ProblemApplication.JSON }
                     };
                 });

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.DependencyInjection;
 using PowerUtils.AspNetCore.Authentication.BasicAuth.Attributes;
 using PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions;
@@ -47,6 +48,16 @@ public class Startup
 
             options.ExceptionMapper<TestException>(exception => StatusCodes.Status503ServiceUnavailable);
             options.ExceptionMapper<TimeoutException>(exception => StatusCodes.Status504GatewayTimeout);
+        });
+
+
+
+        // Configurations to payload size
+        services.Configure<FormOptions>(options =>
+        {
+            options.ValueLengthLimit = 1048576; // Default value (4194304 Bytes -> 4 MB) - 1048576 = 1MB
+            options.MultipartBodyLengthLimit = 1048576; // Default value (134217728 Bytes -> 128 MB) - 1048576 = 1MB
+            options.MemoryBufferThreshold = 1048576; // Default value (65536 Bytes -> 128 MB) - 1048576 = 1MB
         });
     }
 
