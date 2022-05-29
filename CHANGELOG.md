@@ -3,6 +3,17 @@
 
 
 
+## [1.1.1] - 2022-05-30
+[Full Changelog](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.1.0...v1.1.1)
+
+
+### Fixes
+
+- Fixed validation payload too large;
+
+
+
+
 ## [1.1.0] - 2022-05-29
 [Full Changelog](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.0.1...v1.1.0)
 
