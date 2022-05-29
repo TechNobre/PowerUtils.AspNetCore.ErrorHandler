@@ -40,7 +40,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 .ToLower();
 
             if(
-                errorMessage.StartsWith("failed to read the request form. multipart body length limit 1048576 ")
+                errorMessage.StartsWith("failed to read the request form. multipart body length limit ")
                 &&
                 errorMessage.EndsWith(" exceeded.")
             )
