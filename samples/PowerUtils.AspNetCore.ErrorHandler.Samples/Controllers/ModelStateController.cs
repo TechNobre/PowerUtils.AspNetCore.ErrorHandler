@@ -8,7 +8,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers;
 public class ModelStateController : ControllerBase
 {
     [HttpPost]
-    public IActionResult Post(Product _)
+    public IActionResult Post(ProductRequest _)
     {
         if(!ModelState.IsValid)
         {

@@ -31,6 +31,17 @@ internal static class HttpClientUtils
 
 
     #region POSTS
+    public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostMultipartAsync(this HttpClient client, string endpoint, MultipartFormDataContent body)
+    {
+        var response = await client
+            .PostAsync(endpoint, body);
+
+        return (
+            response,
+            await response.DeserializeResponseAsync()
+        );
+    }
+
     public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostAsync(this HttpClient client, string endpoint, object body = null)
     {
         var request = body.ToPostRequest(endpoint);

@@ -3,6 +3,17 @@
 
 
 
+## [1.1.0] - 2022-05-29
+[Full Changelog](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.0.1...v1.1.0)
+
+
+### Enhancements
+
+- Added support to error code 413 when the payload too large;
+
+
+
+
 ## [1.0.1] - 2022-05-28
 [Full Changelog](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.0.0...v1.0.1)
 
