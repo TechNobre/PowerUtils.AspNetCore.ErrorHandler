@@ -11,7 +11,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="PowerUtils.AspNetCore.Authentication.BasicAuth" Version="1.0.0" />
+    <PackageReference Include="PowerUtils.AspNetCore.Authentication.BasicAuth" Version="1.1.0" />
     <PackageReference Include="PowerUtils.AspNetCore.Authentication.JwtBearer" Version="1.0.0" />
     <PackageReference Include="PowerUtils.Security" Version="1.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
