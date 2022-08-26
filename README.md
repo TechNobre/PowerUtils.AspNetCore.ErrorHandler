@@ -1,5 +1,8 @@
 # PowerUtils.AspNetCore.ErrorHandler
-Handler to standardize error responses
+
+![Logo](https://raw.githubusercontent.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/main/assets/logo/logo_128x128.png)
+
+***Handler to standardize error responses***
 
 ![Tests](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/actions/workflows/test-project.yml/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=TechNobre_PowerUtils.AspNetCore.ErrorHandler&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=TechNobre_PowerUtils.AspNetCore.ErrorHandler)
@@ -10,25 +13,27 @@ Handler to standardize error responses
 [![License: MIT](https://img.shields.io/github/license/TechNobre/PowerUtils.AspNetCore.ErrorHandler.svg)](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/LICENSE)
 
 
-
-## Support to
-- .NET 3.1
-- .NET 5.0
-- .NET 6.0
-
-
-
-## Features
-
-- [ErrorHandler](#ErrorHandler)
+- [Support](#support-to)
+- [Dependencies](#dependencies)
+- [How to use](#how-to-use)
+  - [Install NuGet package](#Installation)
+  - [Configure](#ErrorHandler.Configure)
   - [PropertyNamingPolicy](#ErrorHandler.PropertyNamingPolicy)
   - [ExceptionMappers](#ErrorHandler.ExceptionMappers)
+- [Contribution](#contribution)
+- [License](./LICENSE)
+- [Changelog](./CHANGELOG.md)
 
 
 
-## Documentation
+## Support to <a name="support-to"></a>
+- .NET 6.0
+- .NET 5.0
+- .NET 3.1
 
-### Dependencies
+
+
+## Dependencies <a name="dependencies"></a>
 
 - Microsoft.AspNetCore.Diagnostics [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics/)
 - Microsoft.AspNetCore.Mvc.Core [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)
@@ -36,9 +41,10 @@ Handler to standardize error responses
 - PowerUtils.Text [NuGet](https://www.nuget.org/packages/PowerUtils.Text/)
 
 
-### How to use
 
-#### Install NuGet package
+## How to use <a name="how-to-use"></a>
+
+### Install NuGet package <a name="Installation"></a>
 This package is available through Nuget Packages: https://www.nuget.org/packages/PowerUtils.AspNetCore.ErrorHandler
 
 **Nuget**
@@ -51,9 +57,7 @@ Install-Package PowerUtils.AspNetCore.ErrorHandler
 dotnet add package PowerUtils.AspNetCore.ErrorHandler
 ```
 
-
-
-### HashExtensions <a name="HashExtensions"></a>
+### Configure <a name="ErrorHandler.Configure"></a>
 
 ErrorHandler configuration
 
@@ -112,18 +116,6 @@ public class Startup
 
 
 
-## Contribution
+## Contribution <a name="contribution"></a>
 
-*Help me to help others*
-
-
-
-## LICENSE
-
-[MIT](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/LICENSE)
-
-
-
-## Changelog
-
-[Here](./CHANGELOG.md)
+If you have any questions, comments, or suggestions, please open an [issue](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/issues/new/choose) or create a [pull request](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare)
