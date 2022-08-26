@@ -1,21 +1,21 @@
 name: 'SonarCloud'
 
 
-
 on:
+  workflow_dispatch: # To can dispatch manually
+
   push:
     branches:
       - main
+
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, edited, synchronize]
     branches:
       - main
-
 
 
 env:
   SDK_VERSION: '6.0.400'
-
 
 
 jobs:
