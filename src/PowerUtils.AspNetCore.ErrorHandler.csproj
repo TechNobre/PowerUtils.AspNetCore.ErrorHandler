@@ -81,8 +81,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="PowerUtils.Net.Primitives" Version="1.2.0" />
-    <PackageReference Include="PowerUtils.Text" Version="2.1.0" />
+    <PackageReference Include="PowerUtils.Net.Primitives" Version="1.3.0" />
+    <PackageReference Include="PowerUtils.Text" Version="2.2.0" />
   </ItemGroup>
 
 
