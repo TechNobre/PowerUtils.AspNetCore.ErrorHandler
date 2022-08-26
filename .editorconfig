@@ -47,10 +47,14 @@ charset = utf-8-bom
 ###############################
 # .NET Coding Conventions     #
 ###############################
-[*.{cs,vb}]
+
+[*.{cs,vb,csproj}]
 
 insert_final_newline = true # Insert a newline at the end of the file when you save it
 trim_trailing_whitespace = true # Trim trailing whitespace on lines when you press enter
+
+
+[*.{cs,vb}]
 
 # Indentation and spacing
 tab_width = 4
