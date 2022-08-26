@@ -1,24 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
+  <!-- Assembly details -->
   <PropertyGroup>
     <ProjectGuid>848b072c-e1a1-4fcf-b00a-f14750be758b</ProjectGuid>
-
-    <CurrentYear>$([System.DateTime]::UtcNow.ToString(yyyy))</CurrentYear>
-
 
     <!-- Assembly and projecto details -->
     <!-- https://docs.microsoft.com/en-us/dotnet/standard/frameworks -->
     <TargetFrameworks>net6.0;net5.0;netcoreapp3.1</TargetFrameworks>
 
+
     <AssemblyName>PowerUtils.AspNetCore.ErrorHandler</AssemblyName>
     <RootNamespace>PowerUtils.AspNetCore.ErrorHandler</RootNamespace>
 
+    <Version>1.1.1</Version>
 
-    <!-- Package details -->
+    <PackageOutputPath>bin\</PackageOutputPath>
+  </PropertyGroup>
+
+
+  <!-- Package details -->
+  <PropertyGroup>
+    <CurrentYear>$([System.DateTime]::UtcNow.ToString(yyyy))</CurrentYear>
+
     <PackageId>PowerUtils.AspNetCore.ErrorHandler</PackageId>
     <title>PowerUtils.AspNetCore.ErrorHandler</title>
     <Product>PowerUtils.AspNetCore.ErrorHandler</Product>
-    <Version>1.1.1</Version>
 
     <Authors>Nelson Nobre</Authors>
     <Company>TechNobre</Company>
@@ -28,14 +34,14 @@
     <Copyright>Copyright © $(CurrentYear) by TechNobre</Copyright>
 
     <Description>Hendler to standardize error responses</Description>
-    <PackageReleaseNotes>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/CHANGELOG.md</PackageReleaseNotes>
     <Summary>Hendler to standardize error responses</Summary>
     <PackageTags>PowerUtils;Utils;Helpers;AspNetCore;ProblemDetails;ErrorHandler</PackageTags>
-    <RepositoryUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</RepositoryUrl>
     <PackageProjectUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</PackageProjectUrl>
     <NeutralLanguage>en-GB</NeutralLanguage>
 
-    <PackageOutputPath>bin\</PackageOutputPath>
+
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler</RepositoryUrl>
   </PropertyGroup>
 
 
@@ -54,26 +60,7 @@
   </ItemGroup>
 
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <DefineConstants>RELEASE</DefineConstants>
-    <ErrorReport>none</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)'=='Release'">
     <None Include="..\LICENSE" Pack="true" PackagePath="" />
   </ItemGroup>
 
