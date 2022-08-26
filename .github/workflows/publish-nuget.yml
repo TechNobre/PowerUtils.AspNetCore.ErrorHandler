@@ -10,7 +10,7 @@ on:
 
 
 env:
-  SDK_VERSION: '6.0.300'
+  SDK_VERSION: '6.0.400'
   PACKAGE_PATH: ./src/**/*.nupkg
   NUGET_SERVER: https://api.nuget.org/v3/index.json
 
