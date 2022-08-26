@@ -1,7 +1,6 @@
 version: 2
 updates:
 
-  # Maintain dependencies for GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
@@ -11,11 +10,10 @@ updates:
     reviewers:
       - "NelsonBN"
     commit-message:
-      prefix: "GitHubActions"
+      prefix: "build"
       include: "scope"
-    target-branch: "develop"
+    target-branch: "main"
 
-  # Nuget packages
   - package-ecosystem: "nuget"
     directory: "/" # Location of package manifests
     schedule:
@@ -25,6 +23,6 @@ updates:
     reviewers:
       - "NelsonBN"
     commit-message:
-      prefix: "NuGet"
+      prefix: "build"
       include: "scope"
-    target-branch: "develop"
+    target-branch: "main"
