@@ -1,21 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFrameworks>net6.0;net5.0</TargetFrameworks>
 
     <RootNamespace>PowerUtils.AspNetCore.ErrorHandler.Tests</RootNamespace>
     <AssemblyName>PowerUtils.AspNetCore.ErrorHandler.Tests</AssemblyName>
-
-    <!-- BIN OUTPUT -->
-    <OutputPath>bin</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
 
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);coverage.opencover.xml</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);coverage.*opencover.xml</DefaultItemExcludes>
   </PropertyGroup>
 
 
@@ -23,7 +19,6 @@
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.0" />
     <PackageReference Include="FluentAssertions" Version="6.7.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.8" />
     <PackageReference Include="PowerUtils.Text" Version="2.2.0" />
     <PackageReference Include="PowerUtils.xUnit.Extensions" Version="3.0.0" />
     <PackageReference Include="xunit" Version="2.4.2" />
@@ -46,9 +41,11 @@
   </ItemGroup>
 
 
-  <ItemGroup>
-    <Using Include="Xunit" />
-    <Using Include="FluentAssertions" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.8" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="5.0.17" />
   </ItemGroup>
 
 

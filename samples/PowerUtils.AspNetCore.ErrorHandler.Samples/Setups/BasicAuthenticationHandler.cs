@@ -9,55 +9,57 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PowerUtils.Security;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups;
-public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
+namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
 {
-    public BasicAuthenticationHandler(
-       IOptionsMonitor<AuthenticationSchemeOptions> options,
-       ILoggerFactory logger,
-       UrlEncoder encoder,
-       ISystemClock clock
-    ) : base(options, logger, encoder, clock) { }
-
-    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        try
+        public BasicAuthenticationHandler(
+           IOptionsMonitor<AuthenticationSchemeOptions> options,
+           ILoggerFactory logger,
+           UrlEncoder encoder,
+           ISystemClock clock
+        ) : base(options, logger, encoder, clock) { }
+
+        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var endpoint = Context.GetEndpoint();
+            try
+            {
+                var endpoint = Context.GetEndpoint();
 
-            var anonymousAttribute = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>();
-            var authorizeAttribute = endpoint?.Metadata?.GetMetadata<AuthorizeAttribute>();
+                var anonymousAttribute = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>();
+                var authorizeAttribute = endpoint?.Metadata?.GetMetadata<AuthorizeAttribute>();
 
-            if(anonymousAttribute != null || authorizeAttribute == null)
-            { // Skip authentication if endpoint has [AllowAnonymous] attribute or does not have any authentication attribute
-                return Task.FromResult(AuthenticateResult.NoResult());
+                if(anonymousAttribute != null || authorizeAttribute == null)
+                { // Skip authentication if endpoint has [AllowAnonymous] attribute or does not have any authentication attribute
+                    return Task.FromResult(AuthenticateResult.NoResult());
+                }
+
+                if(!Request.Headers.ContainsKey("Authorization"))
+                {
+                    return Task.FromResult(AuthenticateResult.Fail("Invalid internal authentication"));
+                }
+
+                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+                (var username, var password) = authHeader.Parameter.FromBasicAuth();
+
+                if("username" != username || "password" != password)
+                {
+                    return Task.FromResult(AuthenticateResult.Fail("Invalid internal authentication"));
+                }
             }
-
-            if(!Request.Headers.ContainsKey("Authorization"))
+            catch
             {
                 return Task.FromResult(AuthenticateResult.Fail("Invalid internal authentication"));
             }
 
-            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-            (var username, var password) = authHeader.Parameter.FromBasicAuth();
-
-            if("username" != username || "password" != password)
-            {
-                return Task.FromResult(AuthenticateResult.Fail("Invalid internal authentication"));
-            }
-        }
-        catch
-        {
-            return Task.FromResult(AuthenticateResult.Fail("Invalid internal authentication"));
-        }
-
-        var claims = new[] {
+            var claims = new[] {
             new Claim(ClaimTypes.Name, "username")
         };
-        var identity = new ClaimsIdentity(claims, Scheme.Name);
-        var principal = new ClaimsPrincipal(identity);
-        var ticket = new AuthenticationTicket(principal, Scheme.Name);
+            var identity = new ClaimsIdentity(claims, Scheme.Name);
+            var principal = new ClaimsPrincipal(identity);
+            var ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-        return Task.FromResult(AuthenticateResult.Success(ticket));
+            return Task.FromResult(AuthenticateResult.Success(ticket));
+        }
     }
 }

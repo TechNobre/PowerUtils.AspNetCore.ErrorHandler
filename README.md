@@ -29,7 +29,6 @@
 ## Support to <a name="support-to"></a>
 - .NET 6.0
 - .NET 5.0
-- .NET 3.1
 
 
 

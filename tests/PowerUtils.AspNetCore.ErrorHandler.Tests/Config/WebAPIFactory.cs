@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Hosting;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
-
-public class WebAPIFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config
 {
-    protected override void ConfigureWebHost(IWebHostBuilder builder)
-        => builder.UseEnvironment(Environments.Staging);
+    public class WebAPIFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint> where TEntryPoint : class
+    {
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+            => builder.UseEnvironment(Environments.Staging);
+    }
 }

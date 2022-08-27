@@ -1,46 +1,51 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
+using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests;
-
-[Collection(nameof(IntegrationApiTestsFixtureCollection))]
-public class FilesControllerTests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 {
-    private readonly IntegrationTestsFixture _testsFixture;
-
-    public FilesControllerTests(IntegrationTestsFixture testsFixture)
-        => _testsFixture = testsFixture;
-
-    [Fact(DisplayName = "Request an endpoint with large payload - Should return a response with status code 413")]
-    public async Task File_Large_413()
+    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
+    public class FilesControllerTests
     {
-        // Arrange
-        var requestUri = "/files";
+        private readonly IntegrationTestsFixture _testsFixture;
 
-        var file = FileUtils.LoadFile("../../../media/test_3_23mb.jpg");
-        var body = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture));
-        body.Add(file, "FileFake", "upload.jpg");
+        public FilesControllerTests(IntegrationTestsFixture testsFixture)
+            => _testsFixture = testsFixture;
 
 
-        // Act
-        (var response, var content) = await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
+
+        [Fact]
+        public async Task FileLarge_Send_413()
+        {
+            // Arrange
+            var requestUri = "/files";
+
+            var file = FileUtils.LoadFile("../../../../../media/test_3_23mb.jpg");
+            var body = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            body.Add(file, "FileFake", "upload.jpg");
 
 
-        // Assert
-        response.ValidateResponse(HttpStatusCode.RequestEntityTooLarge);
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
 
-        content.ValidateContent(
-            HttpStatusCode.RequestEntityTooLarge,
-            "POST: " + requestUri,
-            new()
-            {
-                { "request_body", "MAX:1048576" }
-            }
-        );
+
+            // Assert
+            response.ValidateResponse(HttpStatusCode.RequestEntityTooLarge);
+
+            content.ValidateContent(
+                HttpStatusCode.RequestEntityTooLarge,
+                "POST: " + requestUri,
+                new Dictionary<string, string>()
+                {
+                    { "request_body", "MAX:1048576" }
+                }
+            );
+        }
     }
 }

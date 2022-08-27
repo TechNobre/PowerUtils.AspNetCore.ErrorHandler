@@ -1,20 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PowerUtils.AspNetCore.ErrorHandler.Samples.Models;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers;
-
-[ApiController]
-[Route("model-state")]
-public class ModelStateController : ControllerBase
+namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
 {
-    [HttpPost]
-    public IActionResult Post(ProductRequest _)
+    [ApiController]
+    [Route("model-state")]
+    public class ModelStateController : ControllerBase
     {
-        if(!ModelState.IsValid)
+        [HttpPost]
+        public IActionResult Post(ProductRequest _)
         {
-            return BadRequest(ModelState);
-        }
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
 
-        return NoContent();
+            return NoContent();
+        }
     }
 }

@@ -1,13 +1,15 @@
 ﻿using System.IO;
 using System.Net.Http;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
-
-internal class FileUtils
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
-    public static StreamContent LoadFile(string filePath)
+    internal class FileUtils
     {
-        var bytes = File.ReadAllBytes(filePath);
-        return new(new MemoryStream(bytes));
+        public static StreamContent LoadFile(string filePath)
+        {
+            filePath = Path.GetFullPath(filePath);
+            var bytes = File.ReadAllBytes(filePath);
+            return new StreamContent(new MemoryStream(bytes));
+        }
     }
 }

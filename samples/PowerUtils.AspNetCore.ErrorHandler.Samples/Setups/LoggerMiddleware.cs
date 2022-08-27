@@ -2,20 +2,21 @@
 using Microsoft.AspNetCore.Http;
 using Serilog.Context;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups;
-
-internal class LoggerMiddleware
+namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
 {
-    private readonly RequestDelegate _next;
-
-    public LoggerMiddleware(RequestDelegate next)
-        => _next = next;
-
-    public Task Invoke(HttpContext context)
+    internal class LoggerMiddleware
     {
-        using(LogContext.PushProperty("CorrelationId", context.GetCorrelationId()))
+        private readonly RequestDelegate _next;
+
+        public LoggerMiddleware(RequestDelegate next)
+            => _next = next;
+
+        public Task Invoke(HttpContext context)
         {
-            return _next.Invoke(context);
+            using(LogContext.PushProperty("CorrelationId", context.GetCorrelationId()))
+            {
+                return _next.Invoke(context);
+            }
         }
     }
 }
