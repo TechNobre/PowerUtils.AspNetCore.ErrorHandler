@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Models;
-
-public class FileRequest
+namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Models
 {
-    public IFormFile File { get; set; }
+    public class FileRequest
+    {
+        public IFormFile File { get; set; }
+    }
 }

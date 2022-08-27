@@ -1,5 +1,6 @@
 ﻿using System;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions;
-
-public class TestException : Exception { }
+namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions
+{
+    public class TestException : Exception { }
+}

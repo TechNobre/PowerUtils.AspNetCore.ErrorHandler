@@ -7,96 +7,92 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using PowerUtils.Text;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
-
-internal static class HttpClientUtils
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
-    #region GETS
-    public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendGetAsync(this HttpClient client, string endpoint, object parameters = null)
+    internal static class HttpClientUtils
     {
-        if(parameters != null)
+        public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendGetAsync(this HttpClient client, string endpoint, object parameters = null)
         {
-            endpoint += parameters.ToQueryString();
+            if(parameters != null)
+            {
+                endpoint += parameters.ToQueryString();
+            }
+
+
+            var response = await client.GetAsync(endpoint);
+
+            return (
+                response,
+                await response.DeserializeResponseAsync()
+            );
         }
 
-        var response = await client
-            .GetAsync(endpoint);
 
-        return (
-            response,
-            await response.DeserializeResponseAsync()
-        );
-    }
-    #endregion
-
-
-    #region POSTS
-    public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostMultipartAsync(this HttpClient client, string endpoint, MultipartFormDataContent body)
-    {
-        var response = await client
-            .PostAsync(endpoint, body);
-
-        return (
-            response,
-            await response.DeserializeResponseAsync()
-        );
-    }
-
-    public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostAsync(this HttpClient client, string endpoint, object body = null)
-    {
-        var request = body.ToPostRequest(endpoint);
-
-        var response = await client
-            .SendAsync(request);
-
-        return (
-            response,
-            await response.DeserializeResponseAsync()
-        );
-    }
-
-    public static HttpRequestMessage ToPostRequest(this object body, string endpoint)
-    {
-        if(body == null)
+        public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostMultipartAsync(this HttpClient client, string endpoint, MultipartFormDataContent body)
         {
+            var response = await client
+                .PostAsync(endpoint, body);
+
+            return (
+                response,
+                await response.DeserializeResponseAsync()
+            );
+        }
+
+        public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostAsync(this HttpClient client, string endpoint, object body = null)
+        {
+            var request = body.ToPostRequest(endpoint);
+
+            var response = await client
+                .SendAsync(request);
+
+            return (
+                response,
+                await response.DeserializeResponseAsync()
+            );
+        }
+
+        public static HttpRequestMessage ToPostRequest(this object body, string endpoint)
+        {
+            if(body == null)
+            {
+                return new HttpRequestMessage(HttpMethod.Post, endpoint)
+                {
+
+                    Content = JsonContent.Create(null, typeof(object), new MediaTypeHeaderValue(MediaTypeNames.Application.Json), null)
+                };
+            }
+
             return new HttpRequestMessage(HttpMethod.Post, endpoint)
             {
-                Content = JsonContent.Create(null, typeof(object), new MediaTypeHeaderValue(MediaTypeNames.Application.Json), null)
+                Content = JsonContent.Create(body)
             };
         }
 
-        return new HttpRequestMessage(HttpMethod.Post, endpoint)
-        {
-            Content = JsonContent.Create(body)
-        };
-    }
-    #endregion
 
-
-    #region AUX
-    public static async Task<ProblemDetailsResponse> DeserializeResponseAsync(this HttpResponseMessage responseMessage)
-    {
-        var content = await responseMessage.Content.ReadAsStringAsync();
-
-        if(string.IsNullOrWhiteSpace(content))
+        public static async Task<ProblemDetailsResponse> DeserializeResponseAsync(this HttpResponseMessage responseMessage)
         {
-            return null;
-        }
+            var content = await responseMessage.Content.ReadAsStringAsync();
 
-        try
-        {
-            return JsonSerializer.Deserialize<ProblemDetailsResponse>(
-                content,
-                new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                }
-            );
-        }
-        catch(Exception exception)
-        {
-            throw new InvalidCastException($"Cannot deserialize the response to {typeof(ProblemDetailsResponse).FullName} Content -> {content}", exception);
+            if(string.IsNullOrWhiteSpace(content))
+            {
+                return null;
+            }
+
+            try
+            {
+                return JsonSerializer.Deserialize<ProblemDetailsResponse>(
+                    content,
+                    new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    }
+                );
+            }
+            catch(Exception exception)
+            {
+                throw new InvalidCastException($"Cannot deserialize the response to {typeof(ProblemDetailsResponse).FullName} Content -> {content}", exception);
+            }
         }
     }
-    #endregion
 }

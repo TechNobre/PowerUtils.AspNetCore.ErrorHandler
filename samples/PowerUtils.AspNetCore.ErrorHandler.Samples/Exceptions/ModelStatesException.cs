@@ -2,34 +2,35 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions;
-
-public abstract class ModelStatesException : Exception
+namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions
 {
-    public int Status { get; set; }
-    public IDictionary<string, string> Errors { get; set; }
-}
-
-public class NotFoundException : ModelStatesException
-{
-    public NotFoundException()
+    public abstract class ModelStatesException : Exception
     {
-        Status = StatusCodes.Status404NotFound;
-        Errors = new Dictionary<string, string>()
-        {
-            { "Prop1", "NOT_FOUND" }
-        };
+        public int Status { get; set; }
+        public IDictionary<string, string> Errors { get; set; }
     }
-}
 
-public class DuplicatedException : ModelStatesException
-{
-    public DuplicatedException()
+    public class NotFoundException : ModelStatesException
     {
-        Status = StatusCodes.Status409Conflict;
-        Errors = new Dictionary<string, string>()
+        public NotFoundException()
         {
-            { "Prop2", "DUPLICATED" }
-        };
+            Status = StatusCodes.Status404NotFound;
+            Errors = new Dictionary<string, string>()
+            {
+                { "Prop1", "NOT_FOUND" }
+            };
+        }
+    }
+
+    public class DuplicatedException : ModelStatesException
+    {
+        public DuplicatedException()
+        {
+            Status = StatusCodes.Status409Conflict;
+            Errors = new Dictionary<string, string>()
+            {
+                { "Prop2", "DUPLICATED" }
+            };
+        }
     }
 }

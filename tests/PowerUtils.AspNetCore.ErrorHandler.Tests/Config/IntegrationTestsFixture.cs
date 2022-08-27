@@ -2,37 +2,50 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
-using Microsoft.AspNetCore.Mvc.Testing;
 using PowerUtils.AspNetCore.ErrorHandler.Samples;
+using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
-
-[CollectionDefinition(nameof(IntegrationApiTestsFixtureCollection))]
-public class IntegrationApiTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture> { }
-
-public class IntegrationTestsFixture : IDisposable
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config
 {
-    public HttpClient Client;
+    [CollectionDefinition(nameof(IntegrationApiTestsFixtureCollection))]
+    public class IntegrationApiTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture> { }
 
-    private readonly WebAPIFactory<Startup> _factory;
 
-    public IntegrationTestsFixture()
+    public class IntegrationTestsFixture : IDisposable
     {
-        var clientOptions = new WebApplicationFactoryClientOptions();
+        public HttpClient Client;
 
-        _factory = new WebAPIFactory<Startup>();
+        private readonly WebAPIFactory<Startup> _factory;
 
-        Client = _factory.CreateClient(clientOptions);
-        Client.DefaultRequestHeaders.Clear();
-        Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-    }
+        public IntegrationTestsFixture()
+        {
+            _factory = new WebAPIFactory<Startup>();
+            Client = _createClient();
+        }
 
-    public void Dispose()
-    {
-        Client.Dispose();
+        private HttpClient _createClient()
+        {
+            var client = _factory.CreateClient();
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
 
-        _factory.Dispose();
+            return client;
+        }
 
-        GC.SuppressFinalize(this);
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                Client.Dispose();
+                _factory.Dispose();
+            }
+        }
     }
 }

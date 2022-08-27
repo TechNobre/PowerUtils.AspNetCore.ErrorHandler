@@ -1,153 +1,156 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Fakes;
+using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests;
-
-public class HttpContextExtensionsTests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests
 {
-    [Fact(DisplayName = "Get Correlation Id with TraceIdentifier in http context - Should return the value in HttpContext")]
-    public void GetCorrelationId_WithTraceIdentifier_TraceIdentifier()
+    public class HttpContextExtensionsTests
     {
-        // Arrange
-        var httpContext = new FakeHttpContext();
-        httpContext.TraceIdentifier = "fake";
+        [Fact]
+        public void WithTraceIdentifier_GetCorrelationId_TraceIdentifier()
+        {
+            // Arrange
+            var httpContext = new FakeHttpContext();
+            httpContext.TraceIdentifier = "fake";
 
 
-        // Act
-        var act = httpContext.GetCorrelationId();
+            // Act
+            var act = httpContext.GetCorrelationId();
 
 
-        // Assert
-        act.Should().Be("fake");
-    }
+            // Assert
+            act.Should().Be("fake");
+        }
 
-    [Fact(DisplayName = "Get Correlation Id from null httpContext - Should return a Guid")]
-    public void GetCorrelationId_NullHttpContext_Guid()
-    {
-        // Arrange
-        FakeHttpContext httpContext = null;
-
-
-        // Act
-        var act = httpContext.GetCorrelationId();
+        [Fact]
+        public void NullHttpContext_GetCorrelationId_Guid()
+        {
+            // Arrange
+            FakeHttpContext httpContext = null;
 
 
-        // Assert
-        act.Should().StartWith("guid:");
-    }
-
-    [Fact(DisplayName = "Get Status Code from null httpContext - Should return null")]
-    public void GetStatusCode_HttpContextNull_Null()
-    {
-        // Arrange
-        FakeHttpContext httpContext = null;
+            // Act
+            var act = httpContext.GetCorrelationId();
 
 
-        // Act
-        var act = httpContext.GetStatusCode();
+            // Assert
+            act.Should().StartWith("guid:");
+        }
+
+        [Fact]
+        public void HttpContextNull_GetStatusCode_Null()
+        {
+            // Arrange
+            FakeHttpContext httpContext = null;
 
 
-        // Assert
-        act.Should().BeNull();
-    }
-
-    [Fact(DisplayName = "Get Status Code from null Response - Should return null")]
-    public void GetStatusCode_ResponseNull_Null()
-    {
-        // Arrange
-        var httpContext = new FakeHttpContext(null);
+            // Act
+            var act = httpContext.GetStatusCode();
 
 
-        // Act
-        var act = httpContext.GetStatusCode();
+            // Assert
+            act.Should().BeNull();
+        }
+
+        [Fact]
+        public void ResponseNull_GetStatusCode_Null()
+        {
+            // Arrange
+            var httpContext = new FakeHttpContext(null);
 
 
-        // Assert
-        act.Should().BeNull();
-    }
-
-    [Fact(DisplayName = "Check if the status code is success from http context with status code 200 - Should return False")]
-    public void IsNotSuccess_StatusCode200_False()
-    {
-        // Arrange
-        var httpContext = new FakeHttpContext();
-        httpContext.Response.StatusCode = 200;
+            // Act
+            var act = httpContext.GetStatusCode();
 
 
-        // Act
-        var act = httpContext.IsNotSuccess();
+            // Assert
+            act.Should().BeNull();
+        }
+
+        [Fact]
+        public void StatusCode200_IsNotSuccess_False()
+        {
+            // Arrange
+            var httpContext = new FakeHttpContext();
+            httpContext.Response.StatusCode = 200;
 
 
-        // Assert
-        act.Should().BeFalse();
-    }
-
-    [Fact(DisplayName = "Check if the status code is success from null http context - Should return True")]
-    public void IsNotSuccess_NullHttpContext_True()
-    {
-        // Arrange
-        FakeHttpContext httpContext = null;
+            // Act
+            var act = httpContext.IsNotSuccess();
 
 
-        // Act
-        var act = httpContext.IsNotSuccess();
+            // Assert
+            act.Should().BeFalse();
+        }
+
+        [Fact]
+        public void NullHttpContext_IsNotSuccess_True()
+        {
+            // Arrange
+            FakeHttpContext httpContext = null;
 
 
-        // Assert
-        act.Should().BeTrue();
-    }
-
-    [Fact(DisplayName = "Get request endpoint from null http context - Should return null")]
-    public void GetRequestEndpoint_NullHttpContext_Null()
-    {
-        // Arrange
-        FakeHttpContext httpContext = null;
+            // Act
+            var act = httpContext.IsNotSuccess();
 
 
-        // Act
-        var act = httpContext.GetRequestEndpoint();
+            // Assert
+            act.Should().BeTrue();
+        }
+
+        [Fact]
+        public void NullHttpContext_GetRequestEndpoint_Null()
+        {
+            // Arrange
+            FakeHttpContext httpContext = null;
 
 
-        // Assert
-        act.Should().BeNull();
-    }
-
-    [Fact(DisplayName = "Reset response with null response - Should kept null response")]
-    public void ResetResponse_WithNullResponse_ReturnHeader()
-    {
-        // Arrange
-        var httpContext = new FakeHttpContext(null);
+            // Act
+            var act = httpContext.GetRequestEndpoint();
 
 
-        // Act
-        httpContext.ResetResponse();
+            // Assert
+            act.Should().BeNull();
+        }
+
+        [Fact]
+        public void WithNullResponse_ResetResponse_ReturnHeader()
+        {
+            // Arrange
+            var httpContext = new FakeHttpContext(null);
 
 
-        // Assert
-        httpContext.Response.Should()
-            .BeNull();
-    }
-
-    [Fact(DisplayName = "Reset response with header AccessControlAllowOrigin - Should return the header AccessControlAllowOrigin and should remove the 'header'")]
-    public void ResetResponse_WithHeaders_ReturnHeader()
-    {
-        // Arrange
-        var httpContext = new DefaultHttpContext();
-        httpContext.Response.Headers.Add(HeaderNames.AccessControlAllowOrigin, "*");
-        httpContext.Response.Headers.Add("Test", "*");
+            // Act
+            httpContext.ResetResponse();
 
 
-        // Act
-        httpContext.ResetResponse();
+            // Assert
+            httpContext.Response.Should()
+                .BeNull();
+        }
+
+        [Fact]
+        public void WithHeaders_ResetResponse_ReturnHeader()
+        {
+            // Arrange
+            var httpContext = new DefaultHttpContext();
+            httpContext.Response.Headers.Add(HeaderNames.AccessControlAllowOrigin, "*");
+            httpContext.Response.Headers.Add("Test", "*");
 
 
-        // Assert
-        httpContext.Response.Headers.Should()
-            .HaveCount(5);
-        httpContext.Response.Headers.Should()
-            .ContainKey(HeaderNames.AccessControlAllowOrigin);
-        httpContext.Response.Headers.Should()
-            .NotContainKey("Test");
+            // Act
+            httpContext.ResetResponse();
+
+
+            // Assert
+            httpContext.Response.Headers.Should()
+                .HaveCount(5);
+            httpContext.Response.Headers.Should()
+                .ContainKey(HeaderNames.AccessControlAllowOrigin);
+            httpContext.Response.Headers.Should()
+                .NotContainKey("Test");
+        }
     }
 }
