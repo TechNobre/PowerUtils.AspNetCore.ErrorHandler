@@ -9,15 +9,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ErrorHandlerMiddleware> _logger;
+        private readonly ProblemDetailsFactory _problemDetailsFactory;
 
 
         public ErrorHandlerMiddleware(
             RequestDelegate next,
-            ILogger<ErrorHandlerMiddleware> logger
+            ILogger<ErrorHandlerMiddleware> logger,
+            ProblemDetailsFactory problemDetailsFactory
         )
         {
             _next = next;
             _logger = logger;
+            _problemDetailsFactory = problemDetailsFactory;
         }
 
 
@@ -43,7 +46,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
                 return Task.CompletedTask;
             }
 
-            var problemDetails = ProblemDetailsFactory.Create(httpContext);
+            var problemDetails = _problemDetailsFactory.Create(httpContext);
 
             _logger.LogDebug(problemDetails);
 

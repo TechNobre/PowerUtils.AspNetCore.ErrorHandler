@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
 using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
     [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class ModelStateTests
+    public class ModelStateControllerTests
     {
         private readonly IntegrationTestsFixture _testsFixture;
 
-        public ModelStateTests(IntegrationTestsFixture testsFixture)
+        public ModelStateControllerTests(IntegrationTestsFixture testsFixture)
             => _testsFixture = testsFixture;
 
 
@@ -21,10 +23,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/model-state";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, "dsfsdf");
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -32,6 +36,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.BadRequest,
+                clientErrorData,
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {
@@ -45,10 +50,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/model-state";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, null);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -56,6 +63,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.BadRequest,
+                clientErrorData,
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {
@@ -69,6 +77,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/model-state";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
             var body = new
             {
                 Description = "fake"
@@ -77,6 +86,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, body);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -84,6 +94,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.BadRequest,
+                clientErrorData,
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {
@@ -98,6 +109,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/model-state";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
             var body = new
             {
                 Name = "fake",
@@ -110,6 +122,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, body);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -117,6 +130,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.BadRequest,
+                clientErrorData,
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {

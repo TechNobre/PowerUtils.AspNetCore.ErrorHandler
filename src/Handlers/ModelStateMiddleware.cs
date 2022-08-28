@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PowerUtils.Net.Constants;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 {
@@ -27,7 +26,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
                     return new ObjectResult(problemDetails)
                     {
                         StatusCode = problemDetails.Status,
-                        ContentTypes = { ExtendedMediaTypeNames.ProblemApplication.JSON }
+                        ContentTypes = { ProblemDetailsDefaults.PROBLEM_MEDIA_TYPE_JSON }
                     };
                 });
     }

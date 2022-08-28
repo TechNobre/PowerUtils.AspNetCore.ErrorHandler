@@ -20,6 +20,9 @@
   - [Configure](#ErrorHandler.Configure)
   - [PropertyNamingPolicy](#ErrorHandler.PropertyNamingPolicy)
   - [ExceptionMappers](#ErrorHandler.ExceptionMappers)
+  - [Customize problem link and problem title](#ErrorHandler.CustomizeLinkAndTitle)
+    - [Add new custom status code](#ErrorHandler.CustomizeLinkAndTitle.AddNew)
+    - [Change link and title for a specific status code](#ErrorHandler.CustomizeLinkAndTitle.Change)
 - [Contribution](#contribution)
 - [License](./LICENSE)
 - [Changelog](./CHANGELOG.md)
@@ -36,7 +39,6 @@
 
 - Microsoft.AspNetCore.Diagnostics [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics/)
 - Microsoft.AspNetCore.Mvc.Core [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)
-- PowerUtils.Net.Primitives [NuGet](https://www.nuget.org/packages/PowerUtils.Net.Primitives/)
 - PowerUtils.Text [NuGet](https://www.nuget.org/packages/PowerUtils.Text/)
 
 
@@ -108,6 +110,46 @@ public class Startup
         {
             options.ExceptionMapper<ModelStatesException>(exception => (exception.Status, exception.Errors));
             options.ExceptionMapper<TimeoutException>(exception => StatusCodes.Status504GatewayTimeout);
+        });
+    }
+}
+```
+
+
+#### Customize problem link and problem title <a name="ErrorHandler.CustomizeLinkAndTitle"></a>
+Exception mapping to status code and error codes
+
+##### Add new custom status code <a name="ErrorHandler.CustomizeLinkAndTitle.AddNew"></a>
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.ClientErrorMapping.Add(582, new()
+            {
+                Link = "CustomLink",
+                Title = "CustomTitle"
+            });
+        });
+    }
+}
+```
+
+##### Change link and title for a specific status code <a name="ErrorHandler.CustomizeLinkAndTitle.Change"></a>
+
+Add your customization after `services.AddErrorHandler();` because it will override the defaults status codes
+```csharp
+public class Startup
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddErrorHandler();
+        services.Configure<ApiBehaviorOptions>(options =>
+        {
+            options.ClientErrorMapping[403].Link = "OverrideLink";
+            options.ClientErrorMapping[403].Title = "OverrideTitle";
         });
     }
 }

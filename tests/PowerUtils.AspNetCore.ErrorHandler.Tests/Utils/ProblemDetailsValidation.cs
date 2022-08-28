@@ -2,28 +2,32 @@
 using System.Net;
 using System.Net.Http;
 using FluentAssertions;
-using Microsoft.AspNetCore.WebUtilities;
-using PowerUtils.Net.Constants;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
     public static class ProblemDetailsValidation
     {
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode)
-            => problemDetails.ValidateContent(statusCode, null);
+        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData)
+            => problemDetails.ValidateContent(statusCode, clientErrorData, null);
 
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, string instance)
+        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance)
+            => problemDetails.ValidateContent(
+                (int)statusCode,
+                clientErrorData,
+                instance
+            );
+
+        public static void ValidateContent(this ProblemDetailsResponse problemDetails, int statusCode, ClientErrorData clientErrorData, string instance)
         {
-            var code = (int)statusCode;
-
             problemDetails.Status.Should()
-                .Be(code);
+                .Be(statusCode);
 
             problemDetails.Type.Should()
-                .Be(code.GetStatusCodeLink());
+                .Be(clientErrorData.Link);
 
             problemDetails.Title.Should()
-                .Be(ReasonPhrases.GetReasonPhrase(code));
+                .Be(clientErrorData.Title);
 
             problemDetails.Instance.Should()
                 .Be(instance);
@@ -32,9 +36,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
                 .NotBeNullOrWhiteSpace();
         }
 
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, string instance, Dictionary<string, string> expectedErrors)
+        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance, Dictionary<string, string> expectedErrors)
         {
-            problemDetails.ValidateContent(statusCode, instance);
+            problemDetails.ValidateContent(statusCode, clientErrorData, instance);
 
             foreach(var error in expectedErrors)
             {
@@ -44,6 +48,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 
             problemDetails.Errors.Should()
                 .HaveCount(expectedErrors.Count);
+        }
+
+        public static void ValidateResponse(this HttpResponseMessage response, int statusCode)
+        {
+            response.ValidateStatusCode(statusCode);
+            response.ValidateContentType();
         }
 
         public static void ValidateResponse(this HttpResponseMessage response, HttpStatusCode statusCode)
@@ -56,8 +66,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             => response.StatusCode.Should()
                 .Be(statusCode);
 
+        public static void ValidateStatusCode(this HttpResponseMessage response, int statusCode)
+            => ((int)response.StatusCode).Should()
+                .Be(statusCode);
+
         public static void ValidateContentType(this HttpResponseMessage response)
             => response.Content.Headers.ContentType.MediaType.Should()
-                .Be(ExtendedMediaTypeNames.ProblemApplication.JSON);
+                .Be(ProblemDetailsDefaults.PROBLEM_MEDIA_TYPE_JSON);
     }
 }

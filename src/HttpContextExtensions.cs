@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
-using PowerUtils.Net.Constants;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
@@ -106,7 +105,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 httpContext.Response.Clear();
 
                 // ProblemDetails has it's own content type
-                httpContext.Response.ContentType = ExtendedMediaTypeNames.ProblemApplication.JSON;
+                httpContext.Response.ContentType = ProblemDetailsDefaults.PROBLEM_MEDIA_TYPE_JSON;
 
                 foreach(var header in headers)
                 {

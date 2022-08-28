@@ -1,17 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
 using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
     [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class Exceptions5xxTests
+    public class ExceptionsControllerTests
     {
         private readonly IntegrationTestsFixture _testsFixture;
 
-        public Exceptions5xxTests(IntegrationTestsFixture testsFixture)
+        public ExceptionsControllerTests(IntegrationTestsFixture testsFixture)
             => _testsFixture = testsFixture;
 
 
@@ -21,16 +24,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/generic";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.InternalServerError);
 
-            content.ValidateContent(HttpStatusCode.InternalServerError, "GET: " + requestUri);
+            content.ValidateContent(HttpStatusCode.InternalServerError, clientErrorData, "GET: " + requestUri);
         }
 
         [Fact]
@@ -38,16 +43,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/not-implemented-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.NotImplemented);
 
-            content.ValidateContent(HttpStatusCode.NotImplemented, "GET: " + requestUri);
+            content.ValidateContent(HttpStatusCode.NotImplemented, clientErrorData, "GET: " + requestUri);
         }
 
         [Fact]
@@ -55,16 +62,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/aggregate-inner-not-implemented-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.NotImplemented);
 
-            content.ValidateContent(HttpStatusCode.NotImplemented, "GET: " + requestUri);
+            content.ValidateContent(HttpStatusCode.NotImplemented, clientErrorData, "GET: " + requestUri);
         }
 
         [Fact]
@@ -72,16 +81,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/aggregate-two-inner-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.InternalServerError);
 
-            content.ValidateContent(HttpStatusCode.InternalServerError, "GET: " + requestUri);
+            content.ValidateContent(HttpStatusCode.InternalServerError, clientErrorData, "GET: " + requestUri);
         }
 
 #if NET6_0_OR_GREATER
@@ -92,10 +103,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/not-found";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -103,6 +116,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.NotFound,
+                clientErrorData,
                 "GET: " + requestUri,
                 new Dictionary<string, string>()
                 {
@@ -117,10 +131,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/duplicated";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -128,6 +144,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.Conflict,
+                clientErrorData,
                 "GET: " + requestUri,
                 new Dictionary<string, string>()
                 {
@@ -141,10 +158,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/exceptions/test";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -152,8 +171,38 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.ServiceUnavailable,
+                clientErrorData,
                 "GET: " + requestUri
             );
+        }
+
+        [Fact]
+        public async void CustomExcetionWithSpecificTitleAndLink_Request_582()
+        {
+            // Arrange
+            var requestUri = "/exceptions/custom-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+
+
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
+
+
+            // Assert
+            response.ValidateResponse(582);
+
+            content.ValidateContent(
+                582,
+                clientErrorData,
+                "GET: " + requestUri
+            );
+
+            content.Type.Should()
+                .Be("CustomLink");
+
+            content.Title.Should()
+                .Be("CustomTitle");
         }
     }
 }

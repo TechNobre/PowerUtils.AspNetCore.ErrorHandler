@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PowerUtils.AspNetCore.Authentication.BasicAuth.Attributes;
 using PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions;
@@ -37,7 +38,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
                 })
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(BasicAuthentication.AUTHENTICATION_SCHEME, null);
 
-
             services.AddErrorHandler(); // To test
             services.AddErrorHandler(options =>
             {
@@ -46,11 +46,20 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
                 options.ExceptionMapper<ModelStatesException>(exception => 599); // Only to test the override a mapping
                 options.ExceptionMapper<ModelStatesException>(exception => (exception.Status, exception.Errors));
 
+                options.ExceptionMapper<CustomException>(exception => 582);
+
                 options.ExceptionMapper<TestException>(exception => StatusCodes.Status503ServiceUnavailable);
                 options.ExceptionMapper<TimeoutException>(exception => StatusCodes.Status504GatewayTimeout);
             });
 
 
+            services.Configure<ApiBehaviorOptions>(options
+                => options.ClientErrorMapping.Add(582, new()
+                {
+                    Link = "CustomLink",
+                    Title = "CustomTitle"
+                })
+            );
 
             // Configurations to payload size
             services.Configure<FormOptions>(options =>

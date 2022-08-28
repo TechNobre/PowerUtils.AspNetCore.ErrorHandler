@@ -1,26 +1,39 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using PowerUtils.Net.Constants;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
     public class ProblemDetailsFactory
     {
-        private readonly IOptions<ErrorHandlerOptions> _options;
+        private readonly IOptions<ApiBehaviorOptions> _apiBehaviorOptions;
+        private readonly IOptions<ErrorHandlerOptions> _errorHandlerOptions;
 
-        public ProblemDetailsFactory(IOptions<ErrorHandlerOptions> options)
-            => _options = options;
+        public ProblemDetailsFactory(
+            IOptions<ApiBehaviorOptions> apiBehaviorOptions,
+            IOptions<ErrorHandlerOptions> errorHandlerOptions
+        )
+        {
+            _apiBehaviorOptions = apiBehaviorOptions;
+            _errorHandlerOptions = errorHandlerOptions;
+        }
 
-        internal static ProblemDetailsResponse Create(HttpContext httpContext)
+        internal ProblemDetailsResponse Create(HttpContext httpContext)
         {
             var result = new ProblemDetailsResponse();
 
             result.Status = httpContext.GetStatusCode() ?? 0; // Default value is 0
-            result.Type = result.Status.GetStatusCodeLinkOrDefault();
-            result.Title = result.Status == 0 ? null : ReasonPhrases.GetReasonPhrase(result.Status);
+            if(_apiBehaviorOptions.Value.ClientErrorMapping.TryGetValue(result.Status, out var clientErrorData))
+            {
+                result.Type = clientErrorData.Link;
+                result.Title = clientErrorData.Title;
+            }
+            else
+            {
+                result.Type = ProblemDetailsDefaults.Defaults[0].Link;
+                result.Title = ProblemDetailsDefaults.Defaults[0].Title;
+            }
 
             result.Instance = httpContext.GetRequestEndpoint();
 
@@ -71,7 +84,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         // PropertyNamingPolicy.CamelCase is default value
         private string _formatPropertyName(string propertyName)
-            => _options.Value.PropertyNamingPolicy switch
+            => _errorHandlerOptions.Value.PropertyNamingPolicy switch
             {
                 PropertyNamingPolicy.Original => propertyName,
                 PropertyNamingPolicy.SnakeCase => propertyName.FormatToSnakeCase(),

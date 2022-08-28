@@ -18,6 +18,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
             => app.UseExceptionHandler(appError =>
                     appError.Run(async httpContext =>
                     {
+                        var problemDetailsFactory = httpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
                         var loggerFactory = httpContext.RequestServices.GetRequiredService<ILoggerFactory>();
                         var logger = loggerFactory.CreateLogger("ExceptionHandler");
 
@@ -30,7 +31,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
                         if(exception == null)
                         {
                             httpContext.ResetResponse(StatusCodes.Status500InternalServerError);
-                            problemDetails = ProblemDetailsFactory.Create(httpContext);
+                            problemDetails = problemDetailsFactory.Create(httpContext);
 
                             logger.Error(exception, problemDetails.Instance, problemDetails.Status, "Unknown error");
                         }
@@ -43,7 +44,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
                             }
 
                             var options = httpContext.RequestServices.GetRequiredService<IOptions<ErrorHandlerOptions>>();
-                            var problemDetailsFactory = httpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
 
                             IEnumerable<KeyValuePair<string, string>> errors;
                             (httpContext.Response.StatusCode, errors) = exception.MappingToStatusCode(options.Value);
