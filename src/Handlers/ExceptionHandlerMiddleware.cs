@@ -27,7 +27,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
                             .Features
                             .Get<IExceptionHandlerFeature>()?.Error;
 
-                        ProblemDetailsResponse problemDetails;
+                        ErrorProblemDetails problemDetails;
                         if(exception == null)
                         {
                             httpContext.ResetResponse(StatusCodes.Status500InternalServerError);

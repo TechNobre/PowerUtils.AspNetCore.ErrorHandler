@@ -8,14 +8,14 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
     public static class ProblemDetailsValidation
     {
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance)
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance)
             => problemDetails.ValidateContent(
                 (int)statusCode,
                 clientErrorData,
                 instance
             );
 
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, int statusCode, ClientErrorData clientErrorData, string instance)
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, int statusCode, ClientErrorData clientErrorData, string instance)
         {
             problemDetails.Status.Should()
                 .Be(statusCode);
@@ -33,7 +33,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
                 .NotBeNullOrWhiteSpace();
         }
 
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance, Dictionary<string, string> expectedErrors)
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance, Dictionary<string, string> expectedErrors)
         {
             problemDetails.ValidateContent(statusCode, clientErrorData, instance);
 

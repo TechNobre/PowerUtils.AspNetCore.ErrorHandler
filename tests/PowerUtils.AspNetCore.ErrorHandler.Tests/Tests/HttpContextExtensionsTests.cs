@@ -51,7 +51,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
 
             // Assert
-            act.Should().BeNull();
+            act.Should().Be(0);
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
 
             // Assert
-            act.Should().BeNull();
+            act.Should().Be(0);
         }
 
         [Fact]

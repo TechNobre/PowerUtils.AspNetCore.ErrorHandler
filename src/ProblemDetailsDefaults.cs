@@ -5,6 +5,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
     internal static class ProblemDetailsDefaults
     {
         public const string PROBLEM_MEDIA_TYPE_JSON = "application/problem+json";
+        public const int FALLBACK_STATUS_CODE = 500;
 
         public static readonly Dictionary<int, (string Title, string Link)> Defaults = new()
         {

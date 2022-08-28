@@ -61,8 +61,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
          * Client error responses  ( 400 – 499 )
          * Server error responses  ( 500 – 599 )
         */
-        internal static int? GetStatusCode(this HttpContext httpContext)
-            => httpContext?.Response?.StatusCode;
+        internal static int GetStatusCode(this HttpContext httpContext)
+            => httpContext?.Response?.StatusCode ?? 0;
 
         internal static bool IsNotSuccess(this HttpContext httpContext)
         {
@@ -72,7 +72,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 return true;
             }
 
-            if(statusCode is null)
+            if(statusCode == 0)
             {
                 return true;
             }
@@ -121,11 +121,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             httpContext.Response.StatusCode = statusCode;
         }
 
-        internal static async Task WriteProblemDetailsResponseAsync(this HttpContext httpContext, ProblemDetailsResponse response)
+        internal static async Task WriteProblemDetailsResponseAsync(this HttpContext httpContext, ErrorProblemDetails response)
         {
             httpContext.ResetResponse();
 
-            httpContext.Response.StatusCode = response.Status; // It is required because was a `ResetResponse()`
+            httpContext.Response.StatusCode = response.Status ?? ProblemDetailsDefaults.FALLBACK_STATUS_CODE; // It is required because was a `ResetResponse()`
 
             // Serialize the problem details object to the Response as JSON (using System.Text.Json)
             await JsonSerializer.SerializeAsync(httpContext.Response.Body, response);
