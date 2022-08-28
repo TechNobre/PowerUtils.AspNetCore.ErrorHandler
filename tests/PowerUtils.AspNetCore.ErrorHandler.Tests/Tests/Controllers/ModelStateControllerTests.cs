@@ -40,7 +40,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {
-                    { "request_body", "INVALID" }
+                    { "payload", "INVALID" }
                 }
             );
         }
@@ -67,7 +67,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {
-                    { "request_body", "REQUIRED" }
+                    { "payload", "REQUIRED" }
                 }
             );
         }
