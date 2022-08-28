@@ -44,7 +44,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             act.Type.Should().NotBeNull();
             act.Title.Should().NotBeNull();
             act.Instance.Should().BeNull();
-            act.TraceID.Should().StartWith("guid:");
+            act.TraceId.Should().StartWith("guid:");
         }
 
         [Fact]

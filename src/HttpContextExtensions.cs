@@ -11,7 +11,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     public static class HttpContextExtensions
     {
-        private static readonly HashSet<string> _allowedHeaderNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        private static readonly HashSet<string> _allowedHeaderNames = new(StringComparer.OrdinalIgnoreCase)
         {
             HeaderNames.AccessControlAllowCredentials,
             HeaderNames.AccessControlAllowHeaders,
@@ -29,15 +29,15 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public static string GetCorrelationId(this HttpContext httpContext)
         {
             var result = Activity.Current?.Id;
+            if(!string.IsNullOrWhiteSpace(result))
+            {
+                return result;
+            }
 
+            result = httpContext?.TraceIdentifier;
             if(string.IsNullOrWhiteSpace(result))
             {
-                result = httpContext?.TraceIdentifier;
-
-                if(string.IsNullOrWhiteSpace(result))
-                {
-                    result = $"guid:{Guid.NewGuid()}";
-                }
+                result = $"guid:{Guid.NewGuid()}";
             }
 
             return result;
@@ -93,8 +93,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 // Because the CORS middleware adds all the headers early in the pipeline,
                 // we want to copy over the existing Access-Control-* headers after resetting the response.
                 var headersContained = httpContext
-                .Response.Headers
-                .Where(w => _allowedHeaderNames.Contains(w.Key));
+                    .Response
+                    .Headers
+                    .Where(w => _allowedHeaderNames.Contains(w.Key));
 
 
                 foreach(var header in headersContained)
