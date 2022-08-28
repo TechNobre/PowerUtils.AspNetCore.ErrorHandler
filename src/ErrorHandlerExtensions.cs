@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using PowerUtils.AspNetCore.ErrorHandler.Handlers;
 
@@ -15,6 +16,31 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         /// <param name="options">Options for handling exceptions and errors</param>
         public static IServiceCollection AddErrorHandler(this IServiceCollection services, Action<ErrorHandlerOptions> options = null)
         {
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                foreach(var details in ProblemDetailsDefaults.Defaults)
+                {
+                    // Override existents
+                    if(options.ClientErrorMapping.ContainsKey(details.Key))
+                    {
+                        options.ClientErrorMapping[details.Key].Link = details.Value.Link;
+                        options.ClientErrorMapping[details.Key].Title = details.Value.Title;
+                    }
+                    else
+                    {
+                        // Add news
+                        options.ClientErrorMapping.Add(
+                            details.Key,
+                            new ClientErrorData
+                            {
+                                Link = details.Value.Link,
+                                Title = details.Value.Title
+                            }
+                        );
+                    }
+                }
+            });
+
             if(options == null)
             {
                 services.AddOptions<ErrorHandlerOptions>();

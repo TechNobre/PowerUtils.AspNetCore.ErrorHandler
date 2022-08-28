@@ -40,5 +40,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
         [HttpGet("test")]
         public IActionResult TestException()
             => throw new TestException();
+
+        [HttpGet("custom-exception")]
+        public IActionResult CustomException()
+            => throw new CustomException();
     }
 }

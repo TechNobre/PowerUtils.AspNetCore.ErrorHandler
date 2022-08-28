@@ -1,17 +1,20 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Utils;
 using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
     [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class Errors4xxTests
+    public class Errors4xxControllerTests
     {
         private readonly IntegrationTestsFixture _testsFixture;
 
-        public Errors4xxTests(IntegrationTestsFixture testsFixture)
+        public Errors4xxControllerTests(IntegrationTestsFixture testsFixture)
             => _testsFixture = testsFixture;
 
 
@@ -21,16 +24,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx/400";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.BadRequest);
 
-            content.ValidateContent(HttpStatusCode.BadRequest);
+            content.ValidateContent(HttpStatusCode.BadRequest, clientErrorData);
         }
 
         [Fact]
@@ -38,16 +43,45 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx/403";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.Forbidden);
 
-            content.ValidateContent(HttpStatusCode.Forbidden, "GET: " + requestUri);
+            content.ValidateContent(HttpStatusCode.Forbidden, clientErrorData, "GET: " + requestUri);
+        }
+
+        [Fact]
+        public async Task OverrideError_Request_403WithNewTitleAndLink()
+        {
+            // Arrange
+            var requestUri = "/errors-4xx/403";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            options.Value.ClientErrorMapping[403].Link = "OverrideLink";
+            options.Value.ClientErrorMapping[403].Title = "OverrideTitle";
+
+
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
+
+
+            // Assert
+            response.ValidateResponse(HttpStatusCode.Forbidden);
+
+            content.ValidateContent(HttpStatusCode.Forbidden, clientErrorData, "GET: " + requestUri);
+
+            content.Type.Should()
+                .Be("OverrideLink");
+
+            content.Title.Should()
+                .Be("OverrideTitle");
         }
 
         [Fact]
@@ -55,16 +89,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx/404";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.NotFound);
 
-            content.ValidateContent(HttpStatusCode.NotFound);
+            content.ValidateContent(HttpStatusCode.NotFound, clientErrorData);
         }
 
         [Fact]
@@ -72,10 +108,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx/un-existent";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -83,6 +121,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.NotFound,
+                clientErrorData,
                 "GET: " + requestUri
             );
         }
@@ -92,16 +131,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx/409";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.Conflict);
 
-            content.ValidateContent(HttpStatusCode.Conflict);
+            content.ValidateContent(HttpStatusCode.Conflict, clientErrorData);
         }
 
         [Fact]
@@ -109,16 +150,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx/422";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
             response.ValidateResponse(HttpStatusCode.UnprocessableEntity);
 
-            content.ValidateContent(HttpStatusCode.UnprocessableEntity);
+            content.ValidateContent(HttpStatusCode.UnprocessableEntity, clientErrorData);
         }
 
         [Fact]
@@ -126,10 +169,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
         {
             // Arrange
             var requestUri = "/errors-4xx";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
             (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
@@ -137,6 +182,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.ControllersTests
 
             content.ValidateContent(
                 HttpStatusCode.MethodNotAllowed,
+                clientErrorData,
                 "POST: " + requestUri
             );
         }

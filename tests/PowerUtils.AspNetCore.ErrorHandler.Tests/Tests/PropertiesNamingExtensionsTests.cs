@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
     public class PropertiesNamingExtensionsTests
     {

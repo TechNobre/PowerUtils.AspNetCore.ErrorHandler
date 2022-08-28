@@ -4,7 +4,7 @@ using Microsoft.Net.Http.Headers;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Fakes;
 using Xunit;
 
-namespace PowerUtils.AspNetCore.ErrorHandler.Tests
+namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
     public class HttpContextExtensionsTests
     {

@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using Microsoft.Extensions.DependencyInjection;
 using PowerUtils.AspNetCore.ErrorHandler.Samples;
 using Xunit;
 
@@ -15,17 +16,20 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config
     {
         public HttpClient Client;
 
-        private readonly WebAPIFactory<Startup> _factory;
+        public readonly WebAPIFactory<Startup> Factory;
 
         public IntegrationTestsFixture()
         {
-            _factory = new WebAPIFactory<Startup>();
+            Factory = new WebAPIFactory<Startup>();
             Client = _createClient();
         }
 
+        public TService GetService<TService>()
+            => Factory.Services.GetService<TService>();
+
         private HttpClient _createClient()
         {
-            var client = _factory.CreateClient();
+            var client = Factory.CreateClient();
             client.DefaultRequestHeaders.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
 
@@ -44,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config
             if(disposing)
             {
                 Client.Dispose();
-                _factory.Dispose();
+                Factory.Dispose();
             }
         }
     }
