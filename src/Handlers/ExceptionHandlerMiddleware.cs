@@ -18,7 +18,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
             => app.UseExceptionHandler(appError =>
                     appError.Run(async httpContext =>
                     {
-                        var problemDetailsFactory = httpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+                        var problemDetailsFactory = httpContext.RequestServices.GetRequiredService<ApiProblemDetailsFactory>();
                         var loggerFactory = httpContext.RequestServices.GetRequiredService<ILoggerFactory>();
                         var logger = loggerFactory.CreateLogger("ExceptionHandler");
 

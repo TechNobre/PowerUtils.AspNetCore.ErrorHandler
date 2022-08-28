@@ -10,7 +10,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
             services.Configure<ApiBehaviorOptions>(options =>
                 options.InvalidModelStateResponseFactory = actionContext =>
                 {
-                    var problemDetailsFactory = actionContext.HttpContext.RequestServices.GetRequiredService<ProblemDetailsFactory>();
+                    var problemDetailsFactory = actionContext.HttpContext.RequestServices.GetRequiredService<ApiProblemDetailsFactory>();
                     var loggerFactory = actionContext.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>();
                     var logger = loggerFactory.CreateLogger("ModelStateHandler");
 

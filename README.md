@@ -37,8 +37,7 @@
 
 ## Dependencies <a name="dependencies"></a>
 
-- Microsoft.AspNetCore.Diagnostics [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Diagnostics/)
-- Microsoft.AspNetCore.Mvc.Core [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/)
+- Microsoft.AspNetCore.App [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.App/)
 - PowerUtils.Text [NuGet](https://www.nuget.org/packages/PowerUtils.Text/)
 
 

@@ -35,7 +35,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.BadRequest);
 
-            content.ValidateContent(HttpStatusCode.BadRequest, clientErrorData);
+            content.ValidateContent(
+                HttpStatusCode.BadRequest,
+                clientErrorData,
+                "GET: " + requestUri
+            );
         }
 
         [Fact]
@@ -54,7 +58,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.Forbidden);
 
-            content.ValidateContent(HttpStatusCode.Forbidden, clientErrorData, "GET: " + requestUri);
+            content.ValidateContent(
+                HttpStatusCode.Forbidden,
+                clientErrorData,
+                "GET: " + requestUri
+            );
         }
 
         [Fact]
@@ -75,7 +83,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.Forbidden);
 
-            content.ValidateContent(HttpStatusCode.Forbidden, clientErrorData, "GET: " + requestUri);
+            content.ValidateContent(
+                HttpStatusCode.Forbidden,
+                clientErrorData,
+                "GET: " + requestUri
+            );
 
             content.Type.Should()
                 .Be("OverrideLink");
@@ -100,7 +112,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.NotFound);
 
-            content.ValidateContent(HttpStatusCode.NotFound, clientErrorData);
+            content.ValidateContent(
+                HttpStatusCode.NotFound,
+                clientErrorData,
+                "GET: " + requestUri
+            );
         }
 
         [Fact]
@@ -142,7 +158,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.Conflict);
 
-            content.ValidateContent(HttpStatusCode.Conflict, clientErrorData);
+            content.ValidateContent(
+                HttpStatusCode.Conflict,
+                clientErrorData,
+                "GET: " + requestUri
+            );
         }
 
         [Fact]
@@ -161,14 +181,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.UnprocessableEntity);
 
-            content.ValidateContent(HttpStatusCode.UnprocessableEntity, clientErrorData);
+            content.ValidateContent(
+                HttpStatusCode.UnprocessableEntity,
+                clientErrorData,
+                "GET: " + requestUri
+            );
         }
 
         [Fact]
         public async Task UsePOSTVerbs_Request_405()
         {
             // Arrange
-            var requestUri = "/errors-4xx";
+            var requestUri = "/errors-4xx/422";
             var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
 
 

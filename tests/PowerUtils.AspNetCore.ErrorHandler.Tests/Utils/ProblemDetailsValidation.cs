@@ -8,9 +8,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
     public static class ProblemDetailsValidation
     {
-        public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData)
-            => problemDetails.ValidateContent(statusCode, clientErrorData, null);
-
         public static void ValidateContent(this ProblemDetailsResponse problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance)
             => problemDetails.ValidateContent(
                 (int)statusCode,
