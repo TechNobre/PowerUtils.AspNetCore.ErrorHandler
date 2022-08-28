@@ -37,7 +37,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
             result.Instance = httpContext.GetRequestEndpoint();
 
-            result.TraceID = httpContext.GetCorrelationId();
+            result.TraceId = httpContext.GetCorrelationId();
 
             return result;
         }

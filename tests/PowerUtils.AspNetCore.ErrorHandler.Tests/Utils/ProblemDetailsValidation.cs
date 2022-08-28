@@ -32,7 +32,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             problemDetails.Instance.Should()
                 .Be(instance);
 
-            problemDetails.TraceID.Should()
+            problemDetails.TraceId.Should()
                 .NotBeNullOrWhiteSpace();
         }
 
