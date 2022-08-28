@@ -31,13 +31,23 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public IDictionary<Type, IExceptionMapper> ExceptionMappers { get; set; } = new Dictionary<Type, IExceptionMapper>();
 
         public ErrorHandlerOptions()
-            => ExceptionMappers.Add(
+        {
+            ExceptionMappers.Add(
                 typeof(NotImplementedException),
                 new ExceptionMapper<NotImplementedException>()
                 {
                     Handler = (_) => (StatusCodes.Status501NotImplemented, new Dictionary<string, string>())
                 }
             );
+
+            ExceptionMappers.Add(
+                typeof(TimeoutException),
+                new ExceptionMapper<TimeoutException>()
+                {
+                    Handler = (_) => (StatusCodes.Status504GatewayTimeout, new Dictionary<string, string>())
+                }
+            );
+        }
     }
 
     public static class ErrorHandlerOptionsExtensions

@@ -204,5 +204,28 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.Title.Should()
                 .Be("CustomTitle");
         }
+
+        [Fact]
+        public async void EndpointWithTimeoutException_Request_504StatusCode()
+        {
+            // Arrange
+            var requestUri = "/exceptions/timeout-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+
+
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
+
+
+            // Assert
+            response.ValidateResponse(HttpStatusCode.GatewayTimeout);
+
+            content.ValidateContent(
+                HttpStatusCode.GatewayTimeout,
+                clientErrorData,
+                "GET: " + requestUri
+            );
+        }
     }
 }

@@ -44,5 +44,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
         [HttpGet("custom-exception")]
         public IActionResult CustomException()
             => throw new CustomException();
+
+        [HttpGet("timeout-exception")]
+        public IActionResult TimeoutException()
+            => throw new TimeoutException();
     }
 }
