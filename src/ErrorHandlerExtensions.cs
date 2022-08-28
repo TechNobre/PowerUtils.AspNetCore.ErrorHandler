@@ -1,7 +1,9 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using PowerUtils.AspNetCore.ErrorHandler.Handlers;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
@@ -50,7 +52,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 services.Configure(options);
             }
 
-            services.AddScoped<ProblemDetailsFactory>();
+            // Override existent ProblemDetailsFactory
+            services.RemoveAll(typeof(ProblemDetailsFactory));
+            services.AddSingleton<ProblemDetailsFactory, ApiProblemDetailsFactory>();
+
+            services.AddSingleton<ApiProblemDetailsFactory>(); // To can resolve diracly by `ApiProblemDetailsFactory`. Try to use only `ProblemDetailsFactory`
+
             services.AddModelStateMiddleware();
 
             return services;

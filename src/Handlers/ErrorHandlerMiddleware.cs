@@ -9,13 +9,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<ErrorHandlerMiddleware> _logger;
-        private readonly ProblemDetailsFactory _problemDetailsFactory;
+        private readonly ApiProblemDetailsFactory _problemDetailsFactory;
 
 
         public ErrorHandlerMiddleware(
             RequestDelegate next,
             ILogger<ErrorHandlerMiddleware> logger,
-            ProblemDetailsFactory problemDetailsFactory
+            ApiProblemDetailsFactory problemDetailsFactory
         )
         {
             _next = next;
@@ -41,8 +41,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
             // E.g: `Controller.BadRequest`, `Controller.NotFound` or after `ModelStateHandler`
             if(httpContext.Response.HasStarted)
             {
-                _logger.Debug(httpContext, "Response already started");
-
                 return Task.CompletedTask;
             }
 
