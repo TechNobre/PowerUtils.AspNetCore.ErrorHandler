@@ -48,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 "POST: " + requestUri,
                 new Dictionary<string, string>()
                 {
-                    { "request_body", "MAX:1048576" }
+                    { "payload", "MAX:1048576" }
                 }
             );
         }

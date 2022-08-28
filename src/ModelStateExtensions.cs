@@ -7,7 +7,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     internal static class ModelStateExtensions
     {
-        private const string BODY_PROPERTY_NAME = "RequestBody";
+        private const string PAYLOAD_PROPERTY_NAME = "Payload";
 
         public static IDictionary<string, string> MappingModelState(this ModelStateDictionary modelState)
         {
@@ -51,7 +51,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
                 return new Dictionary<string, string>()
                 {
-                    { BODY_PROPERTY_NAME, "MAX:" + maxSize }
+                    { PAYLOAD_PROPERTY_NAME, "MAX:" + maxSize }
                 };
             }
 
@@ -81,12 +81,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         {
             if(property == "$")
             {
-                return (BODY_PROPERTY_NAME, "INVALID");
+                return (PAYLOAD_PROPERTY_NAME, "INVALID");
             }
 
             if("A non-empty request body is required.".Equals(error, StringComparison.InvariantCultureIgnoreCase))
             {
-                return (BODY_PROPERTY_NAME, "REQUIRED");
+                return (PAYLOAD_PROPERTY_NAME, "REQUIRED");
             }
 
             return (property, error);
