@@ -46,7 +46,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 
             var problemDetails = _problemDetailsFactory.Create(httpContext);
 
-            _logger.LogDebug(problemDetails);
+            _logger.Debug(problemDetails);
 
             return httpContext.WriteProblemDetailsResponseAsync(problemDetails);
         }

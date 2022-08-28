@@ -20,7 +20,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 
 
                     actionContext.HttpContext.ResetResponse();
-                    actionContext.HttpContext.Response.StatusCode = problemDetails.Status;
+                    actionContext.HttpContext.Response.StatusCode = problemDetails.Status ?? ProblemDetailsDefaults.FALLBACK_STATUS_CODE;
 
 
                     return new ObjectResult(problemDetails)

@@ -22,31 +22,17 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             _errorHandlerOptions = errorHandlerOptions?.Value ?? throw new ArgumentNullException(nameof(errorHandlerOptions));
         }
 
-        internal ProblemDetailsResponse Create(HttpContext httpContext)
+        internal ErrorProblemDetails Create(HttpContext httpContext)
         {
-            var result = new ProblemDetailsResponse();
+            var problemDetails = new ErrorProblemDetails();
 
-            result.Status = httpContext.GetStatusCode() ?? 0; // Default value is 0
-            if(_apiBehaviorOptions.ClientErrorMapping.TryGetValue(result.Status, out var clientErrorData))
-            {
-                result.Type = clientErrorData.Link;
-                result.Title = clientErrorData.Title;
-            }
-            else
-            {
-                result.Type = ProblemDetailsDefaults.Defaults[0].Link;
-                result.Title = ProblemDetailsDefaults.Defaults[0].Title;
-            }
+            _applyDefaults(httpContext, problemDetails);
 
-            result.Instance = httpContext.GetRequestEndpoint();
-
-            result.TraceId = httpContext.GetCorrelationId();
-
-            return result;
+            return problemDetails;
         }
 
 
-        public ProblemDetailsResponse Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
+        public ErrorProblemDetails Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
         {
             var result = Create(httpContext);
 
@@ -62,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             return result;
         }
 
-        internal ProblemDetailsResponse Create(ActionContext actionContext)
+        internal ErrorProblemDetails Create(ActionContext actionContext)
         {
             var payloadTooLargeError = actionContext.ModelState.CheckPayloadTooLargeAndReturnError();
             if(payloadTooLargeError.Count == 1)
@@ -93,7 +79,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             string instance = null
         )
         {
-            statusCode ??= httpContext.GetStatusCode() ?? 0;
+            statusCode ??= httpContext.GetStatusCode();
 
             var problemDetails = new ProblemDetails
             {
@@ -124,7 +110,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 throw new ArgumentNullException(nameof(modelStateDictionary));
             }
 
-            statusCode ??= httpContext.GetStatusCode() ?? 400;
+            statusCode ??= httpContext.GetStatusCode();
 
             var problemDetails = new ValidationProblemDetails(modelStateDictionary)
             {
@@ -147,6 +133,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         private void _applyDefaults(HttpContext httpContext, ProblemDetails problemDetails)
         {
+            problemDetails.Status ??= httpContext.GetStatusCode();
+
             if(_apiBehaviorOptions.ClientErrorMapping.TryGetValue(problemDetails.Status.Value, out var clientErrorData))
             {
                 problemDetails.Type ??= clientErrorData.Link;
@@ -179,7 +167,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 404 => "The entity was not found.",
                 409 => "The entity already exists.",
 
-                _ when problemDetails.Status >= 400 && problemDetails.Status < 500 => "A validation error has occurred.",
+                _ when problemDetails.Status >= 400 && problemDetails.Status < 500 => "One or more validation errors occurred.",
 
                 _ => "An unexpected error has occurred."
             };

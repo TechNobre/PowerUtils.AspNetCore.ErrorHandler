@@ -11,7 +11,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
     internal static class HttpClientUtils
     {
-        public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendGetAsync(this HttpClient client, string endpoint, object parameters = null)
+        public static async Task<(HttpResponseMessage Response, ErrorProblemDetails Content)> SendGetAsync(this HttpClient client, string endpoint, object parameters = null)
         {
             if(parameters != null)
             {
@@ -28,7 +28,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
         }
 
 
-        public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostMultipartAsync(this HttpClient client, string endpoint, MultipartFormDataContent body)
+        public static async Task<(HttpResponseMessage Response, ErrorProblemDetails Content)> SendPostMultipartAsync(this HttpClient client, string endpoint, MultipartFormDataContent body)
         {
             var response = await client
                 .PostAsync(endpoint, body);
@@ -39,7 +39,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             );
         }
 
-        public static async Task<(HttpResponseMessage Response, ProblemDetailsResponse Content)> SendPostAsync(this HttpClient client, string endpoint, object body = null)
+        public static async Task<(HttpResponseMessage Response, ErrorProblemDetails Content)> SendPostAsync(this HttpClient client, string endpoint, object body = null)
         {
             var request = body.ToPostRequest(endpoint);
 
@@ -70,7 +70,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
         }
 
 
-        public static async Task<ProblemDetailsResponse> DeserializeResponseAsync(this HttpResponseMessage responseMessage)
+        public static async Task<ErrorProblemDetails> DeserializeResponseAsync(this HttpResponseMessage responseMessage)
         {
             var content = await responseMessage.Content.ReadAsStringAsync();
 
@@ -81,7 +81,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 
             try
             {
-                return JsonSerializer.Deserialize<ProblemDetailsResponse>(
+                return JsonSerializer.Deserialize<ErrorProblemDetails>(
                     content,
                     new JsonSerializerOptions
                     {
@@ -91,7 +91,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             }
             catch(Exception exception)
             {
-                throw new InvalidCastException($"Cannot deserialize the response to {typeof(ProblemDetailsResponse).FullName} Content -> {content}", exception);
+                throw new InvalidCastException($"Cannot deserialize the response to {typeof(ErrorProblemDetails).FullName} Content -> {content}", exception);
             }
         }
     }

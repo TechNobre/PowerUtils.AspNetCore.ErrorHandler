@@ -90,7 +90,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             act.Type.Should().NotBeNull();
             act.Title.Should().NotBeNull();
             act.Instance.Should().BeNull();
-            act.TraceId.Should().StartWith("guid:");
+            act.TraceId.Should().BeNull();
         }
 
         [Fact]
@@ -195,12 +195,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
         [Theory]
         [InlineData(0, "An unexpected error has occurred.")]
-        [InlineData(400, "A validation error has occurred.")]
+        [InlineData(400, "One or more validation errors occurred.")]
         [InlineData(401, "A authentication error has occurred.")]
         [InlineData(403, "A permissions error has occurred.")]
         [InlineData(404, "The entity was not found.")]
         [InlineData(409, "The entity already exists.")]
-        [InlineData(422, "A validation error has occurred.")]
+        [InlineData(422, "One or more validation errors occurred.")]
         [InlineData(500, "An unexpected error has occurred.")]
         [InlineData(700, "An unexpected error has occurred.")]
         public void StatusCode_ApplyDetails_StringDetails(int statusCode, string details)
