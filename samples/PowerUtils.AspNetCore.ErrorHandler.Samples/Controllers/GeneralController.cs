@@ -12,6 +12,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
         public GeneralController(IOptions<ApiBehaviorOptions> options)
             => _options = options;
 
+
         [HttpGet("version")]
         public string GetVersion()
             => Environment.Version.ToString();

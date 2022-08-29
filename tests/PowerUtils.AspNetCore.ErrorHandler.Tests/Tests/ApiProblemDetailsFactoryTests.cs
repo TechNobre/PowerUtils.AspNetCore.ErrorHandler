@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -13,6 +14,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
     {
         private readonly Mock<IOptions<ApiBehaviorOptions>> _apiBehaviorOptions = new();
         private readonly Mock<IOptions<ErrorHandlerOptions>> _errorHandlerOptions = new();
+        private readonly Mock<IHttpContextAccessor> _httpContextAccessor = new();
 
         public ApiProblemDetailsFactoryTests()
             => _apiBehaviorOptions
@@ -32,6 +34,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             // Act
             var act = Record.Exception(() =>
                 new ApiProblemDetailsFactory(
+                    _httpContextAccessor.Object,
                     apiBehaviorOptions.Object,
                     errorHandlerOptions.Object
                 )
@@ -52,6 +55,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             // Act
             var act = Record.Exception(() =>
                 new ApiProblemDetailsFactory(
+                    _httpContextAccessor.Object,
                     _apiBehaviorOptions.Object,
                     errorHandlerOptions.Object
                 )
@@ -74,12 +78,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
                 });
 
             var factory = new ApiProblemDetailsFactory(
-               _apiBehaviorOptions.Object,
-               _errorHandlerOptions.Object
+                _httpContextAccessor.Object,
+                _apiBehaviorOptions.Object,
+                _errorHandlerOptions.Object
             );
 
             var httpContext = new FakeHttpContext();
-
 
             // Act
             var act = factory.Create(httpContext);
@@ -105,8 +109,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
                 });
 
             var factory = new ApiProblemDetailsFactory(
-               _apiBehaviorOptions.Object,
-               _errorHandlerOptions.Object
+                _httpContextAccessor.Object,
+                _apiBehaviorOptions.Object,
+                _errorHandlerOptions.Object
             );
 
 
@@ -130,6 +135,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
                 });
 
             var factory = new ApiProblemDetailsFactory(
+                _httpContextAccessor.Object,
                 _apiBehaviorOptions.Object,
                 _errorHandlerOptions.Object
             );
@@ -155,6 +161,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
                 });
 
             var factory = new ApiProblemDetailsFactory(
+                _httpContextAccessor.Object,
                 _apiBehaviorOptions.Object,
                 _errorHandlerOptions.Object
             );
@@ -180,6 +187,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
                 });
 
             var factory = new ApiProblemDetailsFactory(
+                _httpContextAccessor.Object,
                 _apiBehaviorOptions.Object,
                 _errorHandlerOptions.Object
             );
@@ -203,14 +211,14 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
         [InlineData(422, "One or more validation errors occurred.")]
         [InlineData(500, "An unexpected error has occurred.")]
         [InlineData(700, "An unexpected error has occurred.")]
-        public void StatusCode_ApplyDetails_StringDetails(int statusCode, string details)
+        public void StatusCode_ApplyDetail_StringDetails(int statusCode, string details)
         {
             // Arrange
             var problemDetails = new ProblemDetails { Status = statusCode };
 
 
             // Act
-            ObjectInvoker.Invoke(typeof(ApiProblemDetailsFactory), "_applyDetails", problemDetails);
+            ObjectInvoker.Invoke(typeof(ApiProblemDetailsFactory), "_applyDetail", problemDetails);
 
 
             // Assert
@@ -218,7 +226,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
         }
 
         [Fact]
-        public void ProblemDetailsWithDetailsFilled_ApplyDetails_SameDetails()
+        public void ProblemDetailsWithDetailsFilled_ApplyDetail_SameDetails()
         {
             // Arrange
             var details = "#Fake#Details";
@@ -226,7 +234,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
 
             // Act
-            ObjectInvoker.Invoke(typeof(ApiProblemDetailsFactory), "_applyDetails", problemDetails);
+            ObjectInvoker.Invoke(typeof(ApiProblemDetailsFactory), "_applyDetail", problemDetails);
 
 
             // Assert

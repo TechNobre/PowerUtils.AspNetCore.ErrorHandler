@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,11 +53,14 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 services.Configure(options);
             }
 
-            // Override existent ProblemDetailsFactory
+            // Override existent (default) ProblemDetailsFactory
             services.RemoveAll(typeof(ProblemDetailsFactory));
             services.AddSingleton<ProblemDetailsFactory, ApiProblemDetailsFactory>();
 
-            services.AddSingleton<ApiProblemDetailsFactory>(); // To can resolve diracly by `ApiProblemDetailsFactory`. Try to use only `ProblemDetailsFactory`
+            services.AddSingleton<ApiProblemDetailsFactory>(); // To can resolve diracly by `ApiProblemDetailsFactory`
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); // Mandatory to Problem Factory IProblem Factory works
+            services.AddSingleton<IProblemFactory, ApiProblemDetailsFactory>(); // To be able to use in controllers
 
             services.AddModelStateMiddleware();
 
