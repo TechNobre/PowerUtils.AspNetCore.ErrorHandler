@@ -20,6 +20,7 @@
   - [Configure](#ErrorHandler.Configure)
   - [PropertyNamingPolicy](#ErrorHandler.PropertyNamingPolicy)
   - [ExceptionMappers](#ErrorHandler.ExceptionMappers)
+  - [IProblemFactory](#ErrorHandler.IProblemFactory)
   - [Customize problem link and problem title](#ErrorHandler.CustomizeLinkAndTitle)
     - [Add new custom status code](#ErrorHandler.CustomizeLinkAndTitle.AddNew)
     - [Change link and title for a specific status code](#ErrorHandler.CustomizeLinkAndTitle.Change)
@@ -111,6 +112,56 @@ public class Startup
             options.ExceptionMapper<TimeoutException>(exception => StatusCodes.Status504GatewayTimeout);
         });
     }
+}
+```
+
+
+#### IProblemFactory <a name="ErrorHandler.IProblemFactory"></a>
+How to create a custom error problem details for example in a controller
+
+```csharp
+[ApiController]
+[Route("home")]
+public class HomeController : ControllerBase
+{
+    private readonly IProblemFactory _problemFactory;
+
+    public ProblemFactoryController(IProblemFactory problemFactory)
+        => _problemFactory = problemFactory;
+
+
+
+    [HttpGet("call-1")]
+    public IActionResult Call1()
+        => _problemFactory.CreateProblemResult(
+            detail: "detail",
+            instance: "instance",
+            statusCode: (int)HttpStatusCode.BadRequest,
+            title: "title",
+            type: "type",
+            errors: new Dictionary<string, string>
+            {
+                ["Property1"] = "Error1",
+                ["Property2"] = "Error2",
+                ["Property3"] = "Error3",
+            }
+        );
+
+    [HttpGet("call-2")]
+    public IActionResult Call2()
+        => new ObjectResult(_problemFactory.CreateProblem(
+            detail: "detail",
+            instance: "instance",
+            statusCode: (int)HttpStatusCode.BadRequest,
+            title: "title",
+            type: "type",
+            errors: new Dictionary<string, string>
+            {
+                ["Property1"] = "Error1",
+                ["Property2"] = "Error2",
+                ["Property3"] = "Error3",
+            }
+        ));
 }
 ```
 

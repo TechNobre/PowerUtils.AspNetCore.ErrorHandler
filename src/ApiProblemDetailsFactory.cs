@@ -8,18 +8,64 @@ using Microsoft.Extensions.Options;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
-    public sealed class ApiProblemDetailsFactory : ProblemDetailsFactory
+    internal sealed class ApiProblemDetailsFactory : ProblemDetailsFactory, IProblemFactory
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         private readonly ApiBehaviorOptions _apiBehaviorOptions;
         private readonly ErrorHandlerOptions _errorHandlerOptions;
 
         public ApiProblemDetailsFactory(
+            IHttpContextAccessor httpContextAccessor,
             IOptions<ApiBehaviorOptions> apiBehaviorOptions,
             IOptions<ErrorHandlerOptions> errorHandlerOptions
         )
         {
+            _httpContextAccessor = httpContextAccessor;
+
             _apiBehaviorOptions = apiBehaviorOptions?.Value ?? throw new ArgumentNullException(nameof(apiBehaviorOptions));
             _errorHandlerOptions = errorHandlerOptions?.Value ?? throw new ArgumentNullException(nameof(errorHandlerOptions));
+        }
+
+
+        public ObjectResult CreateProblemResult(
+            string detail = null,
+            string instance = null,
+            int? statusCode = null,
+            string title = null,
+            string type = null,
+            IDictionary<string, string> errors = null
+        ) => new ObjectResult(CreateProblem(
+            detail,
+            instance,
+            statusCode,
+            title,
+            type,
+            errors
+        ));
+
+        public ErrorProblemDetails CreateProblem(
+            string detail = null,
+            string instance = null,
+            int? statusCode = null,
+            string title = null,
+            string type = null,
+            IDictionary<string, string> errors = null
+        )
+        {
+            var problemDetails = new ErrorProblemDetails
+            {
+                Status = statusCode,
+                Title = title,
+                Type = type,
+                Detail = detail,
+                Instance = instance,
+                Errors = errors
+            };
+
+            _applyDefaults(_httpContextAccessor.HttpContext, problemDetails);
+
+            return problemDetails;
         }
 
         internal ErrorProblemDetails Create(HttpContext httpContext)
@@ -30,7 +76,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
             return problemDetails;
         }
-
 
         public ErrorProblemDetails Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
         {
@@ -146,14 +191,14 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 problemDetails.Title ??= ProblemDetailsDefaults.Defaults[0].Title;
             }
 
-            problemDetails.Instance = httpContext.GetRequestEndpoint();
+            problemDetails.Instance ??= httpContext.GetRequestEndpoint();
 
             problemDetails.Extensions["traceId"] = httpContext.GetCorrelationId();
 
-            _applyDetails(problemDetails);
+            _applyDetail(problemDetails);
         }
 
-        private static void _applyDetails(ProblemDetails problemDetails)
+        private static void _applyDetail(ProblemDetails problemDetails)
         {
             if(!string.IsNullOrWhiteSpace(problemDetails.Detail))
             {
