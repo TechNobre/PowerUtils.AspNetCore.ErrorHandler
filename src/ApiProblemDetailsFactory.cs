@@ -124,8 +124,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             string instance = null
         )
         {
-            statusCode ??= httpContext.GetStatusCode();
-
             var problemDetails = new ProblemDetails
             {
                 Status = statusCode,
@@ -154,8 +152,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             {
                 throw new ArgumentNullException(nameof(modelStateDictionary));
             }
-
-            statusCode ??= httpContext.GetStatusCode();
 
             var problemDetails = new ValidationProblemDetails(modelStateDictionary)
             {
