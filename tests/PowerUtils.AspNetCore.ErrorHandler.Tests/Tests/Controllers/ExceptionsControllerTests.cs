@@ -252,5 +252,33 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 "An unexpected error has occurred."
             );
         }
+
+        [Fact]
+        public async void PropertyException_Request_400WithErrors()
+        {
+            // Arrange
+            var requestUri = "/exceptions/property-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+
+
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
+
+
+            // Assert
+            response.ValidateResponse(HttpStatusCode.BadRequest);
+
+            content.ValidateContent(
+                HttpStatusCode.BadRequest,
+                clientErrorData,
+                "GET: " + requestUri,
+                "Error validations",
+                new Dictionary<string, ErrorDetails>()
+                {
+                    { "prop", new("Err", "Error validations") }
+                }
+            );
+        }
     }
 }

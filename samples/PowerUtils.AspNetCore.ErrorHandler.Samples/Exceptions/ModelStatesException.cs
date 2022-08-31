@@ -41,11 +41,4 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions
             };
         }
     }
-
-
-    public abstract class PropertyException : Exception
-    { // TODO: to finish
-        public string Property { get; set; }
-        public string Code { get; set; }
-    }
 }

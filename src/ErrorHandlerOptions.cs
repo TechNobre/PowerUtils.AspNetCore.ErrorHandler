@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.AspNetCore.Http;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
@@ -75,6 +76,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, int> configureMapper)
             where TException : Exception
-            => options.ExceptionMapper<TException>(e => (configureMapper(e), new Dictionary<string, ErrorDetails>()));
+            => options.ExceptionMapper<TException>(e => (configureMapper(e), ImmutableDictionary<string, ErrorDetails>.Empty));
+
+        public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, string Property, string Code, string Description)> configureMapper)
+            where TException : Exception => options.ExceptionMapper<TException>(e => (configureMapper(e).Status, new Dictionary<string, ErrorDetails>()
+            {
+                [configureMapper(e).Property ?? ""] = new(configureMapper(e).Code, configureMapper(e).Description)
+            }));
     }
 }

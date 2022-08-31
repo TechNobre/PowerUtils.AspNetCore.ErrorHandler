@@ -110,6 +110,8 @@ public class Startup
         {
             options.ExceptionMapper<DuplicatedException>(exception => StatusCodes.Status409Conflict);
 
+            options.ExceptionMapper<PropertyException>(exception => (400, exception.Property, exception.Code, exception.Message));
+
             options.ExceptionMapper<ModelStatesException>(exception => (
                 exception.Status,
                 exception.Errors.ToDictionary(
