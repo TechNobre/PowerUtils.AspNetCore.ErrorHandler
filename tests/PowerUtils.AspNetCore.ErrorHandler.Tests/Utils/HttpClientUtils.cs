@@ -18,7 +18,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
                 endpoint += parameters.ToQueryString();
             }
 
-
             var response = await client.GetAsync(endpoint);
 
             return (

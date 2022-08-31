@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -45,14 +46,20 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 
                             var options = httpContext.RequestServices.GetRequiredService<IOptions<ErrorHandlerOptions>>();
 
-                            IEnumerable<KeyValuePair<string, ErrorDetails>> errors;
-                            (httpContext.Response.StatusCode, errors) = exception.MappingToStatusCode(options.Value);
+                            try
+                            {
+                                IEnumerable<KeyValuePair<string, ErrorDetails>> errors;
+                                (httpContext.Response.StatusCode, errors) = exception.MappingToStatusCode(options.Value);
+                                httpContext.ResetResponse(httpContext.Response.StatusCode);
+                                problemDetails = problemDetailsFactory.Create(httpContext, errors);
 
-                            httpContext.ResetResponse(httpContext.Response.StatusCode);
-                            problemDetails = problemDetailsFactory.Create(httpContext, errors);
-
-
-                            logger.Error(exception, problemDetails.Instance, problemDetails.Status);
+                                logger.Error(exception, problemDetails.Instance, problemDetails.Status);
+                            }
+                            catch(Exception mappingException)
+                            {
+                                problemDetails = problemDetailsFactory.Create(httpContext, ImmutableDictionary<string, ErrorDetails>.Empty);
+                                logger.Error(mappingException, "Error mapping exception");
+                            }
                         }
 
                         // Write error details in body response

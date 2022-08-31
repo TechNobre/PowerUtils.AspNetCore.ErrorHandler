@@ -6,6 +6,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     internal static class LoggerExtensions
     {
+        public static void Error(this ILogger logger, Exception exception, string message)
+           => logger.LogError(
+               exception,
+               $"[ERROR HANDLER] > {message}"
+           );
+
+
         public static void Error(this ILogger logger, Exception exception, string request, int? statusCode)
             => logger.LogError(
                 exception,

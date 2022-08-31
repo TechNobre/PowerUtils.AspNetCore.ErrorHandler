@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -45,7 +44,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
                 options.PropertyNamingPolicy = PropertyNamingPolicy.SnakeCase;
 
                 options.ExceptionMapper<PropertyException>(exception => 599); // Only to test the override a mapping
-                //options.ExceptionMapper<PropertyException>(exception => (exception.Status, new(exception.Property, new()))); // TODO: to finish
+                options.ExceptionMapper<PropertyException>(exception => (400, exception.Property, exception.Code, exception.Message));
 
                 options.ExceptionMapper<ModelStatesException>(exception => (
                     exception.Status,
@@ -58,7 +57,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
                 options.ExceptionMapper<CustomException>(exception => 582);
 
                 options.ExceptionMapper<TestException>(exception => StatusCodes.Status503ServiceUnavailable);
-                options.ExceptionMapper<TimeoutException>(exception => StatusCodes.Status504GatewayTimeout);
             });
 
 

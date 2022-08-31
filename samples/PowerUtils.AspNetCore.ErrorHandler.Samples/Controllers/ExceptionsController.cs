@@ -48,5 +48,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
         [HttpGet("timeout-exception")]
         public IActionResult TimeoutException()
             => throw new TimeoutException();
+
+        [HttpGet("property-exception")]
+        public IActionResult PropertyException()
+            => throw new PropertyException("Error validations")
+            {
+                Property = "Prop",
+                Code = "Err",
+            };
     }
 }
