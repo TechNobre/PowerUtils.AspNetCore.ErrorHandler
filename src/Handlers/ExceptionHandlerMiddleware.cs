@@ -45,7 +45,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 
                             var options = httpContext.RequestServices.GetRequiredService<IOptions<ErrorHandlerOptions>>();
 
-                            IEnumerable<KeyValuePair<string, string>> errors;
+                            IEnumerable<KeyValuePair<string, ErrorDetails>> errors;
                             (httpContext.Response.StatusCode, errors) = exception.MappingToStatusCode(options.Value);
 
                             httpContext.ResetResponse(httpContext.Response.StatusCode);

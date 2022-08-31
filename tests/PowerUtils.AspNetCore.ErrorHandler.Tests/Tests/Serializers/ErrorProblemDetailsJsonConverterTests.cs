@@ -25,11 +25,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             var instance = "http://example.com/products/14";
             var traceId = Guid.NewGuid().ToString();
 
-            var error1 = new KeyValuePair<string, string>("key2", "error230");
-            var error2 = new KeyValuePair<string, string>("key0", "error00");
+            var error1 = new KeyValuePair<string, ErrorDetails>("key2", new("error230", "disc22"));
+            var error2 = new KeyValuePair<string, ErrorDetails>("key0", new("error00", "disc 46546"));
 
             var json = $"{{\"type\":\"{type}\",\"title\":\"{title}\",\"status\":{status},\"detail\":\"{detail}\", \"instance\":\"{instance}\",\"traceId\":\"{traceId}\"," +
-                $"\"errors\": {{\"{error1.Key}\":\"{error1.Value}\",\"{error2.Key}\":\"{error2.Value}\"}}}}";
+                $"\"errors\": {{\"{error1.Key}\":{{\"code\":\"{error1.Value.Code}\",\"description\":\"{error1.Value.Description}\"}}, \"{error2.Key}\":{{\"code\":\"{error2.Value.Code}\",\"description\":\"{error2.Value.Description}\"}}}}}}";
 
             var converter = new ErrorProblemDetailsJsonConverter();
             var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json));
@@ -54,8 +54,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             act.Errors.Should().ContainKey(error1.Key);
             act.Errors.Should().ContainKey(error2.Key);
 
-            act.Errors.Should().ContainValue(error1.Value);
-            act.Errors.Should().ContainValue(error2.Value);
+            act.Errors[error1.Key].Code.Should().Be(error1.Value.Code);
+            act.Errors[error2.Key].Code.Should().Be(error2.Value.Code);
+
+            act.Errors[error1.Key].Description.Should().Be(error1.Value.Description);
+            act.Errors[error2.Key].Description.Should().Be(error2.Value.Description);
         }
 
         [Fact]
@@ -66,12 +69,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             var title = "FakeError";
             var traceId = Guid.NewGuid().ToString();
 
-            var error1 = new KeyValuePair<string, string>("key2", "error230");
-            var error2 = new KeyValuePair<string, string>("key0", "error00");
-            var error3 = new KeyValuePair<string, string>("key4", "error45");
+            var error1 = new KeyValuePair<string, ErrorDetails>("key2", new("error230", "disc 1"));
+            var error2 = new KeyValuePair<string, ErrorDetails>("key0", new("error00", "disc fake"));
+            var error3 = new KeyValuePair<string, ErrorDetails>("key4", new("error45", "disc this"));
 
             var json = $"{{\"type\":\"{type}\",\"title\":\"{title}\",\"status\":null,\"traceId\":\"{traceId}\"," +
-                $"\"errors\": {{\"{error1.Key}\":\"{error1.Value}\",\"{error2.Key}\":\"{error2.Value}\",\"{error3.Key}\":\"{error3.Value}\"}}}}";
+                $"\"errors\": {{\"{error1.Key}\":{{\"code\":\"{error1.Value.Code}\",\"description\":\"{error1.Value.Description}\"}}, \"{error2.Key}\":{{\"code\":\"{error2.Value.Code}\",\"description\":\"{error2.Value.Description}\"}}, \"{error3.Key}\":{{\"code\":\"{error3.Value.Code}\",\"description\":\"{error3.Value.Description}\"}}}}}}";
 
             var converter = new ErrorProblemDetailsJsonConverter();
             var reader = new Utf8JsonReader(Encoding.UTF8.GetBytes(json));
@@ -96,9 +99,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             act.Errors.Should().ContainKey(error2.Key);
             act.Errors.Should().ContainKey(error3.Key);
 
-            act.Errors.Should().ContainValue(error1.Value);
-            act.Errors.Should().ContainValue(error2.Value);
-            act.Errors.Should().ContainValue(error3.Value);
+            act.Errors[error1.Key].Code.Should().Be(error1.Value.Code);
+            act.Errors[error2.Key].Code.Should().Be(error2.Value.Code);
+            act.Errors[error3.Key].Code.Should().Be(error3.Value.Code);
+
+            act.Errors[error1.Key].Description.Should().Be(error1.Value.Description);
+            act.Errors[error2.Key].Description.Should().Be(error2.Value.Description);
+            act.Errors[error3.Key].Description.Should().Be(error3.Value.Description);
         }
 
         [Fact]
@@ -112,11 +119,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             var instance = "http://example.com/products/14";
             var traceId = Guid.NewGuid().ToString();
 
-            var error1 = new KeyValuePair<string, string>("key2", "error230");
-            var error2 = new KeyValuePair<string, string>("key0", "error00");
+            var error1 = new KeyValuePair<string, ErrorDetails>("key2", new("error230", "disc v"));
+            var error2 = new KeyValuePair<string, ErrorDetails>("key0", new("error00", "disc t"));
 
             var json = $"{{\"type\":\"{type}\",\"title\":\"{title}\",\"status\":{status},\"detail\":\"{detail}\", \"instance\":\"{instance}\",\"traceId\":\"{traceId}\"," +
-                $"\"errors\": {{\"{error1.Key}\":\"{error1.Value}\",\"{error2.Key}\":\"{error2.Value}\"}}}}";
+                $"\"errors\": {{\"{error1.Key}\":{{\"code\":\"{error1.Value.Code}\",\"description\":\"{error1.Value.Description}\"}}, \"{error2.Key}\":{{\"code\":\"{error2.Value.Code}\",\"description\":\"{error2.Value.Description}\"}}}}}}";
 
 
             // Act
@@ -137,8 +144,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             act.Errors.Should().ContainKey(error1.Key);
             act.Errors.Should().ContainKey(error2.Key);
 
-            act.Errors.Should().ContainValue(error1.Value);
-            act.Errors.Should().ContainValue(error2.Value);
+            act.Errors[error1.Key].Code.Should().Be(error1.Value.Code);
+            act.Errors[error2.Key].Code.Should().Be(error2.Value.Code);
+
+            act.Errors[error1.Key].Description.Should().Be(error1.Value.Description);
+            act.Errors[error2.Key].Description.Should().Be(error2.Value.Description);
         }
 
         [Fact]
@@ -180,10 +190,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
                 Detail = "Product not found",
                 Instance = "http://example.com/products/14",
                 TraceId = traceId,
-                Errors = new Dictionary<string, string>()
+                Errors = new Dictionary<string, ErrorDetails>()
                 {
-                    ["Erro2"] = "ErrrorValue",
-                    ["PropError"] = "ErrrorProrp",
+                    ["Erro2"] = new("ErrrorValue", "d22"),
+                    ["PropError"] = new("ErrrorProrp", "d"),
                 }
             };
 
@@ -207,8 +217,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             act.Errors.Should().ContainKey(problemDetails.Errors.First().Key);
             act.Errors.Should().ContainKey(problemDetails.Errors.Last().Key);
 
-            act.Errors.Should().ContainValue(problemDetails.Errors.First().Value);
-            act.Errors.Should().ContainValue(problemDetails.Errors.Last().Value);
+            act.Errors.First().Value.Code.Should().Be(problemDetails.Errors.First().Value.Code);
+            act.Errors.Last().Value.Code.Should().Be(problemDetails.Errors.Last().Value.Code);
+
+            act.Errors.First().Value.Description.Should().Be(problemDetails.Errors.First().Value.Description);
+            act.Errors.Last().Value.Description.Should().Be(problemDetails.Errors.Last().Value.Description);
 
             act.Extensions.Should().HaveCount(0);
         }
@@ -225,10 +238,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
                 Status = 404,
                 Detail = "Product not found",
                 Instance = "http://example.com/products/14",
-                Errors = new Dictionary<string, string>()
+                Errors = new Dictionary<string, ErrorDetails>()
                 {
-                    ["Erro2"] = "ErrrorValue",
-                    ["PropError"] = "ErrrorProrp",
+                    ["Erro2"] = new("ErrrorValue", "faker"),
+                    ["PropError"] = new("ErrrorProrp", "maker"),
                 }
             };
             problemDetails.Extensions["traceId"] = traceId;
@@ -253,8 +266,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
             act.Errors.Should().ContainKey(problemDetails.Errors.First().Key);
             act.Errors.Should().ContainKey(problemDetails.Errors.Last().Key);
 
-            act.Errors.Should().ContainValue(problemDetails.Errors.First().Value);
-            act.Errors.Should().ContainValue(problemDetails.Errors.Last().Value);
+            act.Errors.First().Value.Code.Should().Be(problemDetails.Errors.First().Value.Code);
+            act.Errors.Last().Value.Code.Should().Be(problemDetails.Errors.Last().Value.Code);
+
+            act.Errors.First().Value.Description.Should().Be(problemDetails.Errors.First().Value.Description);
+            act.Errors.Last().Value.Description.Should().Be(problemDetails.Errors.Last().Value.Description);
 
             act.Extensions.Should().HaveCount(0);
         }

@@ -48,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
                     statusCode: 409,
                     extensions: new Dictionary<string, object>
                     {
-                        ["Errors"] = "fake struct"
+                        ["Prop"] = new ErrorDetails("struct", "disc fake")
                     }
                 )
             );
@@ -60,9 +60,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
                 new ErrorProblemDetails
                 {
                     Status = 409,
-                    Errors = new Dictionary<string, string>()
+                    Errors = new Dictionary<string, ErrorDetails>()
                     {
-                        ["Errors"] = "fake struct"
+                        ["Prop"] = new("fake struct", "disc")
                     }
                 }
             );

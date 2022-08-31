@@ -46,9 +46,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.RequestEntityTooLarge,
                 clientErrorData,
                 "POST: " + requestUri,
-                new Dictionary<string, string>()
+                "The payload is too big.",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "payload", "MAX:1048576" }
+                    { "payload", new("MAX:1048576", "The payload is too big.") }
                 }
             );
         }

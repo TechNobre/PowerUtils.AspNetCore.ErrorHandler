@@ -108,8 +108,15 @@ public class Startup
     {
         services.AddErrorHandler(options =>
         {
-            options.ExceptionMapper<ModelStatesException>(exception => (exception.Status, exception.Errors));
-            options.ExceptionMapper<TimeoutException>(exception => StatusCodes.Status504GatewayTimeout);
+            options.ExceptionMapper<DuplicatedException>(exception => StatusCodes.Status409Conflict);
+
+            options.ExceptionMapper<ModelStatesException>(exception => (
+                exception.Status,
+                exception.Errors.ToDictionary(
+                    k => k.Key,
+                    v => new ErrorDetails(v.Value, exception.Message)
+                )
+            ));
         });
     }
 }
@@ -141,9 +148,9 @@ public class HomeController : ControllerBase
             type: "type",
             errors: new Dictionary<string, string>
             {
-                ["Property1"] = "Error1",
-                ["Property2"] = "Error2",
-                ["Property3"] = "Error3",
+                ["Property1"] = new("Error1", "Message1"),
+                ["Property2"] = new("Error2", "Message2"),
+                ["Property3"] = new("Error3", "Message3"),
             }
         );
 
@@ -157,9 +164,9 @@ public class HomeController : ControllerBase
             type: "type",
             errors: new Dictionary<string, string>
             {
-                ["Property1"] = "Error1",
-                ["Property2"] = "Error2",
-                ["Property3"] = "Error3",
+                ["Property1"] = new("Error1", "Message1"),
+                ["Property2"] = new("Error2", "Message2"),
+                ["Property3"] = new("Error3", "Message3"),
             }
         ));
 }
