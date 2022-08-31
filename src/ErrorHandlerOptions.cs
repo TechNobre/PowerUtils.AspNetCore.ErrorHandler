@@ -6,17 +6,17 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     public interface IExceptionMapper
     {
-        (int Status, IEnumerable<KeyValuePair<string, string>> Errors) Handle(Exception exception);
+        (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors) Handle(Exception exception);
     }
 
 
     public class ExceptionMapper<TException> : IExceptionMapper
         where TException : Exception
     {
-        public Func<TException, (int Status, IEnumerable<KeyValuePair<string, string>>)> Handler { get; set; }
+        public Func<TException, (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>>)> Handler { get; set; }
 
 
-        public (int Status, IEnumerable<KeyValuePair<string, string>> Errors) Handle(Exception exception)
+        public (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors) Handle(Exception exception)
             => Handler(exception as TException);
     }
 
@@ -36,7 +36,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 typeof(NotImplementedException),
                 new ExceptionMapper<NotImplementedException>()
                 {
-                    Handler = (_) => (StatusCodes.Status501NotImplemented, new Dictionary<string, string>())
+                    Handler = (_) => (StatusCodes.Status501NotImplemented, new Dictionary<string, ErrorDetails>())
                 }
             );
 
@@ -44,7 +44,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 typeof(TimeoutException),
                 new ExceptionMapper<TimeoutException>()
                 {
-                    Handler = (_) => (StatusCodes.Status504GatewayTimeout, new Dictionary<string, string>())
+                    Handler = (_) => (StatusCodes.Status504GatewayTimeout, new Dictionary<string, ErrorDetails>())
                 }
             );
         }
@@ -52,7 +52,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
     public static class ErrorHandlerOptionsExtensions
     {
-        public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, IEnumerable<KeyValuePair<string, string>> Errors)> configureMapper)
+        public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors)> configureMapper)
             where TException : Exception
         {
             var exceptionType = typeof(TException);
@@ -75,6 +75,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, int> configureMapper)
             where TException : Exception
-            => options.ExceptionMapper<TException>(e => (configureMapper(e), new Dictionary<string, string>()));
+            => options.ExceptionMapper<TException>(e => (configureMapper(e), new Dictionary<string, ErrorDetails>()));
     }
 }

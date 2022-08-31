@@ -37,7 +37,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.Unauthorized,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "A authentication error has occurred."
             );
         }
 
@@ -60,7 +61,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.GatewayTimeout,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "An unexpected error has occurred."
             );
         }
     }

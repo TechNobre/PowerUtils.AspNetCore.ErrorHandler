@@ -38,7 +38,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.BadRequest,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "One or more validation errors occurred."
             );
         }
 
@@ -61,7 +62,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.Forbidden,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "A permissions error has occurred."
             );
         }
 
@@ -86,7 +88,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.Forbidden,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "A permissions error has occurred."
             );
 
             content.Type.Should()
@@ -115,7 +118,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.NotFound,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "The entity was not found."
             );
         }
 
@@ -138,7 +142,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.NotFound,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "The entity was not found."
             );
         }
 
@@ -161,7 +166,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.Conflict,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "The entity already exists."
             );
         }
 
@@ -184,7 +190,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.UnprocessableEntity,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "One or more validation errors occurred."
             );
         }
 
@@ -207,7 +214,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.MethodNotAllowed,
                 clientErrorData,
-                "POST: " + requestUri
+                "POST: " + requestUri,
+                "One or more validation errors occurred."
             );
         }
     }

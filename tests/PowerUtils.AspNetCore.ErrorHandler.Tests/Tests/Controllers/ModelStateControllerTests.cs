@@ -19,7 +19,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
         [Fact]
-        public async void PostInvalid_Request_400()
+        public async void InvalidPayload_Request_400()
         {
             // Arrange
             var requestUri = "/model-state";
@@ -38,9 +38,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.BadRequest,
                 clientErrorData,
                 "POST: " + requestUri,
-                new Dictionary<string, string>()
+                "The payload is invalid.",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "payload", "INVALID" }
+                    { "payload", new("INVALID", "The payload is invalid.") }
                 }
             );
         }
@@ -65,10 +66,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.BadRequest,
                 clientErrorData,
                 "POST: " + requestUri,
-                new Dictionary<string, string>()
+                "The payload is required.",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "payload", "REQUIRED" }
-                }
+                    { "payload", new("REQUIRED", "The payload is required.") }
+    }
             );
         }
 
@@ -96,10 +98,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.BadRequest,
                 clientErrorData,
                 "POST: " + requestUri,
-                new Dictionary<string, string>()
+                "The Name field is required.",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "name", "The Name field is required." },
-                    { "description", "The field Description must be a string or array type with a maximum length of '2'." }
+                    { "name", new("INVALID", "The Name field is required.") },
+                    { "description", new("INVALID", "The field Description must be a string or array type with a maximum length of '2'.") }
                 }
             );
         }
@@ -132,9 +135,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.BadRequest,
                 clientErrorData,
                 "POST: " + requestUri,
-                new Dictionary<string, string>()
+                "The payload is invalid.",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "details.height", "INVALID" }
+                    { "details.height", new("INVALID", "The payload is invalid.") }
                 }
             );
         }

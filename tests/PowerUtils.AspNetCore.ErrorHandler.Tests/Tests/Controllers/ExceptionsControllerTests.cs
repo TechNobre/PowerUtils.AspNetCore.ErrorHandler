@@ -35,7 +35,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.InternalServerError);
 
-            content.ValidateContent(HttpStatusCode.InternalServerError, clientErrorData, "GET: " + requestUri);
+            content.ValidateContent(
+                HttpStatusCode.InternalServerError,
+                clientErrorData,
+                "GET: " + requestUri,
+                "An unexpected error has occurred."
+            );
         }
 
         [Fact]
@@ -54,7 +59,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.NotImplemented);
 
-            content.ValidateContent(HttpStatusCode.NotImplemented, clientErrorData, "GET: " + requestUri);
+            content.ValidateContent(
+                HttpStatusCode.NotImplemented,
+                clientErrorData,
+                "GET: " + requestUri,
+                "The feature has not been implemented."
+            );
         }
 
         [Fact]
@@ -73,7 +83,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.NotImplemented);
 
-            content.ValidateContent(HttpStatusCode.NotImplemented, clientErrorData, "GET: " + requestUri);
+            content.ValidateContent(
+                HttpStatusCode.NotImplemented,
+                clientErrorData,
+                "GET: " + requestUri,
+                "The feature has not been implemented."
+            );
         }
 
         [Fact]
@@ -92,7 +107,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             // Assert
             response.ValidateResponse(HttpStatusCode.InternalServerError);
 
-            content.ValidateContent(HttpStatusCode.InternalServerError, clientErrorData, "GET: " + requestUri);
+            content.ValidateContent(
+                HttpStatusCode.InternalServerError,
+                clientErrorData,
+                "GET: " + requestUri,
+                "An unexpected error has occurred."
+            );
         }
 
 #if NET6_0_OR_GREATER
@@ -118,9 +138,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.NotFound,
                 clientErrorData,
                 "GET: " + requestUri,
-                new Dictionary<string, string>()
+                "The entity does not exist",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "prop1", "NOT_FOUND" }
+                    { "prop1", new("NOT_FOUND", "The entity does not exist") }
                 }
             );
         }
@@ -146,9 +167,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
                 HttpStatusCode.Conflict,
                 clientErrorData,
                 "GET: " + requestUri,
-                new Dictionary<string, string>()
+                "double",
+                new Dictionary<string, ErrorDetails>()
                 {
-                    { "prop2", "DUPLICATED" }
+                    { "prop2", new("DUPLICATED", "double") }
                 }
             );
         }
@@ -172,7 +194,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.ServiceUnavailable,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "An unexpected error has occurred."
             );
         }
 
@@ -195,7 +218,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 582,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "An unexpected error has occurred."
             );
 
             content.Type.Should()
@@ -224,7 +248,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.ValidateContent(
                 HttpStatusCode.GatewayTimeout,
                 clientErrorData,
-                "GET: " + requestUri
+                "GET: " + requestUri,
+                "An unexpected error has occurred."
             );
         }
     }

@@ -8,11 +8,19 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions
     {
         public int Status { get; set; }
         public IDictionary<string, string> Errors { get; set; }
+
+        public ModelStatesException() { }
+
+        public ModelStatesException(string message)
+            : base(message) { }
     }
 
     public class NotFoundException : ModelStatesException
     {
-        public NotFoundException()
+        public NotFoundException() { }
+
+        public NotFoundException(string message)
+            : base(message)
         {
             Status = StatusCodes.Status404NotFound;
             Errors = new Dictionary<string, string>()
@@ -24,7 +32,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions
 
     public class DuplicatedException : ModelStatesException
     {
-        public DuplicatedException()
+        public DuplicatedException() : base("double")
         {
             Status = StatusCodes.Status409Conflict;
             Errors = new Dictionary<string, string>()
@@ -32,5 +40,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions
                 { "Prop2", "DUPLICATED" }
             };
         }
+    }
+
+
+    public abstract class PropertyException : Exception
+    { // TODO: to finish
+        public string Property { get; set; }
+        public string Code { get; set; }
     }
 }

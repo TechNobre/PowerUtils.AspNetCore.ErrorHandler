@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -34,7 +35,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             int? statusCode = null,
             string title = null,
             string type = null,
-            IDictionary<string, string> errors = null
+            IDictionary<string, ErrorDetails> errors = null
         ) => new ObjectResult(CreateProblem(
             detail,
             instance,
@@ -50,7 +51,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             int? statusCode = null,
             string title = null,
             string type = null,
-            IDictionary<string, string> errors = null
+            IDictionary<string, ErrorDetails> errors = null
         )
         {
             var problemDetails = new ErrorProblemDetails
@@ -62,6 +63,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 Instance = instance,
                 Errors = errors
             };
+
+            if(string.IsNullOrWhiteSpace(problemDetails.Detail))
+            {
+                problemDetails.Detail = errors?.FirstOrDefault().Value?.Description;
+            }
 
             _applyDefaults(_httpContextAccessor.HttpContext, problemDetails);
 
@@ -77,20 +83,24 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             return problemDetails;
         }
 
-        public ErrorProblemDetails Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, string>> errors)
+        public ErrorProblemDetails Create(HttpContext httpContext, IEnumerable<KeyValuePair<string, ErrorDetails>> errors)
         {
-            var result = Create(httpContext);
+            var problemDetails = new ErrorProblemDetails();
 
             foreach(var error in errors)
             {
-                result.Errors
+                problemDetails.Errors
                     .Add(
                         _formatPropertyName(error.Key),
                         error.Value
                     );
             }
 
-            return result;
+            problemDetails.Detail = errors?.FirstOrDefault().Value?.Description;
+
+            _applyDefaults(httpContext, problemDetails);
+
+            return problemDetails;
         }
 
         internal ErrorProblemDetails Create(ActionContext actionContext)
@@ -207,6 +217,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 403 => "A permissions error has occurred.",
                 404 => "The entity was not found.",
                 409 => "The entity already exists.",
+
+                501 => "The feature has not been implemented.",
 
                 _ when problemDetails.Status >= 400 && problemDetails.Status < 500 => "One or more validation errors occurred.",
 

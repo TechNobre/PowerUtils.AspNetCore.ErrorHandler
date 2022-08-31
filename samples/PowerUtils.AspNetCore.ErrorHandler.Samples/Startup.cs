@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -43,8 +44,16 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
             {
                 options.PropertyNamingPolicy = PropertyNamingPolicy.SnakeCase;
 
-                options.ExceptionMapper<ModelStatesException>(exception => 599); // Only to test the override a mapping
-                options.ExceptionMapper<ModelStatesException>(exception => (exception.Status, exception.Errors));
+                options.ExceptionMapper<PropertyException>(exception => 599); // Only to test the override a mapping
+                //options.ExceptionMapper<PropertyException>(exception => (exception.Status, new(exception.Property, new()))); // TODO: to finish
+
+                options.ExceptionMapper<ModelStatesException>(exception => (
+                    exception.Status,
+                    exception.Errors.ToDictionary(
+                        k => k.Key,
+                        v => new ErrorDetails(v.Value, exception.Message)
+                    )
+                ));
 
                 options.ExceptionMapper<CustomException>(exception => 582);
 

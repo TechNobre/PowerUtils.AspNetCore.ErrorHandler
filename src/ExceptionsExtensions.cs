@@ -7,7 +7,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 {
     internal static class ExceptionsExtensions
     {
-        public static (int Status, IEnumerable<KeyValuePair<string, string>> Errors) MappingToStatusCode(this Exception exception, ErrorHandlerOptions options)
+        public static (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors) MappingToStatusCode(this Exception exception, ErrorHandlerOptions options)
         {
             var exceptionType = exception.GetType();
 
@@ -16,7 +16,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
             if(mapper.Key == null)
             {
-                return (StatusCodes.Status500InternalServerError, new Dictionary<string, string>());
+                return (StatusCodes.Status500InternalServerError, new Dictionary<string, ErrorDetails>());
             }
 
             return mapper.Value.Handle(exception);

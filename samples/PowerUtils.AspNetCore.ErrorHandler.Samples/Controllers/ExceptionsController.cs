@@ -31,7 +31,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
 
         [HttpGet("not-found")]
         public IActionResult NotFoundException()
-            => throw new NotFoundException();
+            => throw new NotFoundException("The entity does not exist");
 
         [HttpGet("duplicated")]
         public IActionResult DuplicatedException()

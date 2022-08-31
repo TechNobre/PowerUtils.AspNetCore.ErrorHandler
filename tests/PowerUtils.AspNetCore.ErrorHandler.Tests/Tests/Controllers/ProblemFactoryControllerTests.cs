@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
@@ -43,16 +44,17 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.Instance.Should()
                 .Be("some instance");
 
+            content.Detail.Should()
+               .Be("some detail");
+
             content.TraceId.Should()
                 .NotBeNullOrWhiteSpace();
 
-            content.Errors.Should()
-                .HaveCount(2);
-
-            content.Errors.Should()
-                    .Contain("Key4", "Error4");
-            content.Errors.Should()
-                    .Contain("Key14", "Error124");
+            content.ValidateContent(new Dictionary<string, ErrorDetails>()
+            {
+                ["Key4"] = new("Error4", "description 111"),
+                ["Key14"] = new("Error124", "description 423423")
+            });
         }
 
         [Fact]
@@ -81,18 +83,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
             content.Instance.Should()
                 .Be("fake instance");
 
+            content.Detail.Should()
+               .Be("fake detail");
+
             content.TraceId.Should()
                 .NotBeNullOrWhiteSpace();
 
-            content.Errors.Should()
-                .HaveCount(3);
-
-            content.Errors.Should()
-                    .Contain("Key100", "Error114");
-            content.Errors.Should()
-                    .Contain("Key114", "Error11124");
-            content.Errors.Should()
-                    .Contain("me", "ti");
+            content.ValidateContent(new Dictionary<string, ErrorDetails>()
+            {
+                ["Key100"] = new("Error114", "description fake"),
+                ["Key114"] = new("Error11124", "description 1444"),
+                ["me"] = new("ti", "111"),
+            });
         }
     }
 }

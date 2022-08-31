@@ -22,10 +22,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
                 statusCode: (int)HttpStatusCode.Forbidden,
                 title: "some title",
                 type: "some type",
-                errors: new Dictionary<string, string>
+                errors: new Dictionary<string, ErrorDetails>()
                 {
-                    ["Key4"] = "Error4",
-                    ["Key14"] = "Error124",
+                    ["Key4"] = new("Error4", "description 111"),
+                    ["Key14"] = new("Error124", "description 423423")
                 }
             );
 
@@ -37,11 +37,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
                 statusCode: (int)HttpStatusCode.TooManyRequests,
                 title: "fake title",
                 type: "fake type",
-                errors: new Dictionary<string, string>
+                errors: new Dictionary<string, ErrorDetails>()
                 {
-                    ["Key100"] = "Error114",
-                    ["Key114"] = "Error11124",
-                    ["me"] = "ti"
+                    ["Key100"] = new("Error114", "description fake"),
+                    ["Key114"] = new("Error11124", "description 1444"),
+                    ["me"] = new("ti", "111"),
                 }
             ));
     }

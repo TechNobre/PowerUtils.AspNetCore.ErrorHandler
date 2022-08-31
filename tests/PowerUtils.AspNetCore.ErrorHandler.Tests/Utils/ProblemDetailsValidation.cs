@@ -8,14 +8,15 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
     public static class ProblemDetailsValidation
     {
-        public static void ValidateContent(this ErrorProblemDetails problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance)
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance, string detail)
             => problemDetails.ValidateContent(
                 (int)statusCode,
                 clientErrorData,
-                instance
+                instance,
+                detail
             );
 
-        public static void ValidateContent(this ErrorProblemDetails problemDetails, int statusCode, ClientErrorData clientErrorData, string instance)
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, int statusCode, ClientErrorData clientErrorData, string instance, string detail)
         {
             problemDetails.Status.Should()
                 .Be(statusCode);
@@ -29,18 +30,29 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             problemDetails.Instance.Should()
                 .Be(instance);
 
+            problemDetails.Detail.Should()
+                .Be(detail);
+
             problemDetails.TraceId.Should()
                 .NotBeNullOrWhiteSpace();
         }
 
-        public static void ValidateContent(this ErrorProblemDetails problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance, Dictionary<string, string> expectedErrors)
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, HttpStatusCode statusCode, ClientErrorData clientErrorData, string instance, string detail, Dictionary<string, ErrorDetails> expectedErrors)
         {
-            problemDetails.ValidateContent(statusCode, clientErrorData, instance);
+            problemDetails.ValidateContent(statusCode, clientErrorData, instance, detail);
 
-            foreach(var error in expectedErrors)
+            problemDetails.ValidateContent(expectedErrors);
+        }
+
+        public static void ValidateContent(this ErrorProblemDetails problemDetails, Dictionary<string, ErrorDetails> expectedErrors)
+        {
+            foreach(var error in problemDetails.Errors)
             {
-                problemDetails.Errors.Should()
-                    .Contain(error.Key, error.Value);
+                expectedErrors[error.Key].Code.Should()
+                    .Be(error.Value.Code);
+
+                expectedErrors[error.Key].Description.Should()
+                    .Be(error.Value.Description);
             }
 
             problemDetails.Errors.Should()

@@ -21,7 +21,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             int? statusCode = null,
             string title = null,
             string type = null,
-            IDictionary<string, string> errors = null
+            IDictionary<string, ErrorDetails> errors = null
         );
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             int? statusCode = null,
             string title = null,
             string type = null,
-            IDictionary<string, string> errors = null
+            IDictionary<string, ErrorDetails> errors = null
         );
     }
 }

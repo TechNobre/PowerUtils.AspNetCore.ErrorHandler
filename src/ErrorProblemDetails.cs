@@ -17,12 +17,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public string TraceId { get; set; }
 
         /// <summary>
-        /// Error property list
+        /// List of errors
         /// </summary>
         /// <example>
-        /// { "Property": "Error" }
+        /// { "source": { "code: "", "description": "" } }
         /// </example>
-        public IDictionary<string, string> Errors { get; set; } = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+        public IDictionary<string, ErrorDetails> Errors { get; set; } = new Dictionary<string, ErrorDetails>(StringComparer.InvariantCultureIgnoreCase);
 
         /// <summary>
         /// Initializes a new instance of <see cref="ErrorProblemDetails"/>.
@@ -37,5 +37,38 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
         public static implicit operator string(ErrorProblemDetails problemDetailsResponse)
             => problemDetailsResponse.ToString();
+    }
+
+
+    public class ErrorDetails
+    {
+        /// <summary>
+        /// Error code
+        /// </summary>
+        [JsonPropertyName("code")]
+        public string Code { get; set; }
+
+
+        /// <summary>
+        /// A human-readable explanation specific to this occurrence of the error.
+        /// </summary>
+        [JsonPropertyName("description")]
+        public string Description { get; set; }
+
+        public ErrorDetails() { }
+        public ErrorDetails(
+            string code,
+            string description
+        )
+        {
+            Code = code;
+            Description = description;
+        }
+
+        public override string ToString()
+            => JsonSerializer.Serialize(this);
+
+        public static implicit operator string(ErrorDetails errorDetails)
+            => errorDetails.ToString();
     }
 }

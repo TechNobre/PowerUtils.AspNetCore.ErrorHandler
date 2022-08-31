@@ -76,7 +76,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Serializers
             }
             else if(reader.ValueTextEquals(_errors.EncodedUtf8Bytes))
             {
-                value.Errors = JsonSerializer.Deserialize(ref reader, typeof(IDictionary<string, string>), options) as IDictionary<string, string>;
+                value.Errors = JsonSerializer.Deserialize(ref reader, typeof(IDictionary<string, ErrorDetails>), options) as IDictionary<string, ErrorDetails>;
             }
         }
 
@@ -165,9 +165,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Serializers
             writer.WriteEndObject();
 
 
-            [UnconditionalSuppressMessage("Trimmer", "IL2026", Justification = "We ensure IDictionary<string, string> is preserved.")]
-            [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties, typeof(IDictionary<string, string>))]
-            static void SerializeErrors(Utf8JsonWriter writer, IDictionary<string, string> errors, JsonSerializerOptions options)
+            [UnconditionalSuppressMessage("Trimmer", "IL2026", Justification = "We ensure IDictionary<string, ErrorDetails> is preserved.")]
+            [DynamicDependency(DynamicallyAccessedMemberTypes.PublicProperties, typeof(IDictionary<string, ErrorDetails>))]
+            static void SerializeErrors(Utf8JsonWriter writer, IDictionary<string, ErrorDetails> errors, JsonSerializerOptions options)
                 => JsonSerializer.Serialize(writer, errors, options);
         }
     }
