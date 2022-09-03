@@ -54,6 +54,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             IDictionary<string, ErrorDetails> errors = null
         )
         {
+            errors ??= new Dictionary<string, ErrorDetails>();
+
             var problemDetails = new ErrorProblemDetails
             {
                 Status = statusCode,
@@ -61,7 +63,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 Type = type,
                 Detail = detail,
                 Instance = instance,
-                Errors = errors
+                Errors = errors.ToDictionary(
+                    k => _errorHandlerOptions.Value.PropertyHandler(k.Key),
+                    v => v.Value
+                )
             };
 
             if(string.IsNullOrWhiteSpace(problemDetails.Detail))
