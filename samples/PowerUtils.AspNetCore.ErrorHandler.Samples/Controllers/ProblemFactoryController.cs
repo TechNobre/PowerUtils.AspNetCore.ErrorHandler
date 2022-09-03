@@ -42,7 +42,19 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
                     ["Key100"] = new("Error114", "description fake"),
                     ["Key114"] = new("Error11124", "description 1444"),
                     ["me"] = new("ti", "111"),
+                    ["MyKey"] = new("MyCode", "MyDisc")
                 }
+            ));
+
+        [HttpGet("null-errors")]
+        public IActionResult NullErrors()
+            => new ObjectResult(_problemFactory.CreateProblem(
+                detail: "fake detail",
+                instance: "fake instance",
+                statusCode: (int)HttpStatusCode.BadRequest,
+                title: "fake title",
+                type: "fake type",
+                errors: null
             ));
     }
 }

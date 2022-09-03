@@ -52,8 +52,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
             content.ValidateContent(new Dictionary<string, ErrorDetails>()
             {
-                ["Key4"] = new("Error4", "description 111"),
-                ["Key14"] = new("Error124", "description 423423")
+                ["key4"] = new("Error4", "description 111"),
+                ["key14"] = new("Error124", "description 423423")
             });
         }
 
@@ -91,10 +91,46 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
             content.ValidateContent(new Dictionary<string, ErrorDetails>()
             {
-                ["Key100"] = new("Error114", "description fake"),
-                ["Key114"] = new("Error11124", "description 1444"),
+                ["key100"] = new("Error114", "description fake"),
+                ["key114"] = new("Error11124", "description 1444"),
                 ["me"] = new("ti", "111"),
+                ["my_key"] = new("MyCode", "MyDisc")
             });
+        }
+
+        [Fact]
+        public async Task WithoutErrors_CreateProblem_400()
+        {
+            // Arrange
+            var requestUri = "/problem-factory/null-errors";
+
+
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+
+
+            // Assert
+            response.ValidateResponse(HttpStatusCode.BadRequest);
+
+            content.Status.Should()
+                .Be((int)HttpStatusCode.BadRequest);
+
+            content.Type.Should()
+                .Be("fake type");
+
+            content.Title.Should()
+                .Be("fake title");
+
+            content.Instance.Should()
+                .Be("fake instance");
+
+            content.Detail.Should()
+               .Be("fake detail");
+
+            content.TraceId.Should()
+                .NotBeNullOrWhiteSpace();
+
+            content.ValidateContent(new Dictionary<string, ErrorDetails>());
         }
     }
 }
