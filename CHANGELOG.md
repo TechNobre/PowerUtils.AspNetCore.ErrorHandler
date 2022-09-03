@@ -1,3 +1,11 @@
+## [2.0.1](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.0.0...v2.0.1) (2022-09-03)
+
+
+### Bug Fixes
+
+* Chnages protected level of the `PROBLEM_MEDIA_TYPE_JSON`; ([de6ad18](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/de6ad188283044f892499d58a1ee867251142cbe))
+* Property handler in IProblemFactory ([fddd15f](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/fddd15f43d0e36e89a742a2cf3c4441b40a755e3))
+
 # [2.0.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v1.0.1...v2.0.0) (2022-09-03)
 
 
