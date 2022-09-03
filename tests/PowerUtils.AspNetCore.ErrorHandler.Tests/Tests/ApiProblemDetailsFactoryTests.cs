@@ -1,5 +1,4 @@
-﻿using System;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -22,49 +21,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
                 .Returns(new ApiBehaviorOptions());
 
 
-
-        [Fact]
-        public void ApiBehaviorOptions_Create_ArgumentNullException()
-        {
-            // Arrange
-            Mock<IOptions<ApiBehaviorOptions>> apiBehaviorOptions = new();
-            Mock<IOptions<ErrorHandlerOptions>> errorHandlerOptions = new();
-
-
-            // Act
-            var act = Record.Exception(() =>
-                new ApiProblemDetailsFactory(
-                    _httpContextAccessor.Object,
-                    apiBehaviorOptions.Object,
-                    errorHandlerOptions.Object
-                )
-            );
-
-
-            // Assert
-            act.Should().BeOfType<ArgumentNullException>();
-        }
-
-        [Fact]
-        public void ErrorHandlerOptions_Create_ArgumentNullException()
-        {
-            // Arrange
-            Mock<IOptions<ErrorHandlerOptions>> errorHandlerOptions = new();
-
-
-            // Act
-            var act = Record.Exception(() =>
-                new ApiProblemDetailsFactory(
-                    _httpContextAccessor.Object,
-                    _apiBehaviorOptions.Object,
-                    errorHandlerOptions.Object
-                )
-            );
-
-
-            // Assert
-            act.Should().BeOfType<ArgumentNullException>();
-        }
 
         [Fact]
         public void HttpContextWithoutValues_Create_ProblemDetailsResponse()
@@ -95,110 +51,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             act.Title.Should().NotBeNull();
             act.Instance.Should().BeNull();
             act.TraceId.Should().BeNull();
-        }
-
-        [Fact]
-        public void Original_PropertyNamingPolicy_SameFormat()
-        {
-            // Arrange
-            _errorHandlerOptions
-                .SetupGet(s => s.Value)
-                .Returns(new ErrorHandlerOptions
-                {
-                    PropertyNamingPolicy = PropertyNamingPolicy.Original
-                });
-
-            var factory = new ApiProblemDetailsFactory(
-                _httpContextAccessor.Object,
-                _apiBehaviorOptions.Object,
-                _errorHandlerOptions.Object
-            );
-
-
-            // Act
-            var act = factory.InvokeNonPublicMethod<string>("_formatPropertyName", "Prop1.Prop2");
-
-
-            // Assert
-            act.Should().Be("Prop1.Prop2");
-        }
-
-        [Fact]
-        public void CamelCase_PropertyNamingPolicy_FormattedCamelCase()
-        {
-            // Arrange
-            _errorHandlerOptions
-                .SetupGet(s => s.Value)
-                .Returns(new ErrorHandlerOptions
-                {
-                    PropertyNamingPolicy = PropertyNamingPolicy.CamelCase
-                });
-
-            var factory = new ApiProblemDetailsFactory(
-                _httpContextAccessor.Object,
-                _apiBehaviorOptions.Object,
-                _errorHandlerOptions.Object
-            );
-
-
-            // Act
-            var act = factory.InvokeNonPublicMethod<string>("_formatPropertyName", "Prop1.Prop2");
-
-
-            // Assert
-            act.Should().Be("prop1.prop2");
-        }
-
-        [Fact]
-        public void CamelCaseOnlyOneLevel_PropertyNamingPolicy_FormattedCamelCase()
-        {
-            // Arrange
-            _errorHandlerOptions
-                .SetupGet(s => s.Value)
-                .Returns(new ErrorHandlerOptions
-                {
-                    PropertyNamingPolicy = PropertyNamingPolicy.CamelCase
-                });
-
-            var factory = new ApiProblemDetailsFactory(
-                _httpContextAccessor.Object,
-                _apiBehaviorOptions.Object,
-                _errorHandlerOptions.Object
-            );
-
-
-            // Act
-            var act = factory.InvokeNonPublicMethod<string>("_formatPropertyName", "ClientName");
-
-
-            // Assert
-            act.Should().Be("clientName");
-        }
-
-        [Fact]
-        public void SnakeCase_PropertyNamingPolicy_FormattedCamelCase()
-        {
-            // Arrange
-            _errorHandlerOptions
-                .SetupGet(s => s.Value)
-                .Returns(new ErrorHandlerOptions
-                {
-                    PropertyNamingPolicy = PropertyNamingPolicy.SnakeCase
-                });
-
-            var factory = new ApiProblemDetailsFactory(
-                _httpContextAccessor.Object,
-                _apiBehaviorOptions.Object,
-                _errorHandlerOptions.Object
-            );
-
-
-            // Act
-            var act = factory.InvokeNonPublicMethod<string>("_formatPropertyName", "PropName.PropValue");
-
-
-            // Assert
-            act.Should().Be("prop_name.prop_value");
         }
 
         [Theory]

@@ -24,12 +24,23 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
     public class ErrorHandlerOptions
     {
+        private PropertyNamingPolicy _propertyNamingPolicy = PropertyNamingPolicy.CamelCase;
         /// <summary>
         /// Default value: CamelCase
         /// </summary>
-        public PropertyNamingPolicy PropertyNamingPolicy { get; set; } = PropertyNamingPolicy.CamelCase;
+        public PropertyNamingPolicy PropertyNamingPolicy
+        {
+            get => _propertyNamingPolicy;
+            set
+            {
+                _propertyNamingPolicy = value;
+                PropertyHandler = Handlers.PropertyHandler.Create(_propertyNamingPolicy);
+            }
+        }
 
         public IDictionary<Type, IExceptionMapper> ExceptionMappers { get; set; } = new Dictionary<Type, IExceptionMapper>();
+
+        internal Func<string, string> PropertyHandler { get; set; }
 
         public ErrorHandlerOptions()
         {
@@ -48,6 +59,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                     Handler = (_) => (StatusCodes.Status504GatewayTimeout, new Dictionary<string, ErrorDetails>())
                 }
             );
+
+            PropertyHandler = Handlers.PropertyHandler.Create(_propertyNamingPolicy);
         }
     }
 

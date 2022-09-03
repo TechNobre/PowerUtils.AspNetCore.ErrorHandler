@@ -13,8 +13,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly ApiBehaviorOptions _apiBehaviorOptions;
-        private readonly ErrorHandlerOptions _errorHandlerOptions;
+        private readonly IOptions<ApiBehaviorOptions> _apiBehaviorOptions;
+        private readonly IOptions<ErrorHandlerOptions> _errorHandlerOptions;
 
         public ApiProblemDetailsFactory(
             IHttpContextAccessor httpContextAccessor,
@@ -24,8 +24,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         {
             _httpContextAccessor = httpContextAccessor;
 
-            _apiBehaviorOptions = apiBehaviorOptions?.Value ?? throw new ArgumentNullException(nameof(apiBehaviorOptions));
-            _errorHandlerOptions = errorHandlerOptions?.Value ?? throw new ArgumentNullException(nameof(errorHandlerOptions));
+            _apiBehaviorOptions = apiBehaviorOptions;
+            _errorHandlerOptions = errorHandlerOptions;
         }
 
 
@@ -91,7 +91,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             {
                 problemDetails.Errors
                     .Add(
-                        _formatPropertyName(error.Key),
+                        _errorHandlerOptions.Value.PropertyHandler(error.Key),
                         error.Value
                     );
             }
@@ -186,7 +186,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         {
             problemDetails.Status ??= httpContext.GetStatusCode();
 
-            if(_apiBehaviorOptions.ClientErrorMapping.TryGetValue(problemDetails.Status.Value, out var clientErrorData))
+            if(_apiBehaviorOptions.Value.ClientErrorMapping.TryGetValue(problemDetails.Status.Value, out var clientErrorData))
             {
                 problemDetails.Type ??= clientErrorData.Link;
                 problemDetails.Title ??= clientErrorData.Title;
@@ -225,14 +225,5 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 _ => "An unexpected error has occurred."
             };
         }
-
-        // PropertyNamingPolicy.CamelCase is default value
-        private string _formatPropertyName(string propertyName)
-            => _errorHandlerOptions.PropertyNamingPolicy switch
-            {
-                PropertyNamingPolicy.Original => propertyName,
-                PropertyNamingPolicy.SnakeCase => propertyName.FormatToSnakeCase(),
-                _ => propertyName.FormatToCamelCase(),
-            };
     }
 }
