@@ -91,7 +91,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
-    <PackageReference Include="PowerUtils.Text" Version="2.2.0" />
   </ItemGroup>
 
 
