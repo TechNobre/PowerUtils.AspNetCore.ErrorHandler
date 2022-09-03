@@ -1,3 +1,10 @@
+## [2.0.2](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.0.1...v2.0.2) (2022-09-03)
+
+
+### Bug Fixes
+
+* Chnages protected level of the `PROBLEM_MEDIA_TYPE_JSON` ([953bf23](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/953bf2362ef675930c2f666f2d5572b49795028f))
+
 ## [2.0.1](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.0.0...v2.0.1) (2022-09-03)
 
 
