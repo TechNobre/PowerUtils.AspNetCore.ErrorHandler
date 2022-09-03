@@ -13,7 +13,6 @@ on:
 env:
   SDK_VERSION_6: '6.0.400'
   SDK_VERSION_5: '5.0.408'
-  SDK_VERSION_3: '3.1.422'
 
 
 jobs:
@@ -32,7 +31,6 @@ jobs:
         dotnet-version: |
           ${{ env.SDK_VERSION_6 }}
           ${{ env.SDK_VERSION_5 }}
-          ${{ env.SDK_VERSION_3 }}
 
     - name: "Restore dependencies"
       run: dotnet restore
