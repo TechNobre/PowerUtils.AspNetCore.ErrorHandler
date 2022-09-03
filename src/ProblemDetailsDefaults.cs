@@ -2,7 +2,7 @@
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
-    internal static class ProblemDetailsDefaults
+    public static class ProblemDetailsDefaults
     {
         public const string PROBLEM_MEDIA_TYPE_JSON = "application/problem+json";
 
