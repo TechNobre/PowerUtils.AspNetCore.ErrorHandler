@@ -6,11 +6,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler
     {
         public const string PROBLEM_MEDIA_TYPE_JSON = "application/problem+json";
 
-        public const int FALLBACK_STATUS_CODE = 500;
+        internal const int FALLBACK_STATUS_CODE = 500;
 
-        public const string DEFAULT_ERROR_CODE = "INVALID";
+        internal const string DEFAULT_ERROR_CODE = "INVALID";
 
-        public static readonly Dictionary<int, (string Title, string Link)> Defaults = new()
+        internal static readonly Dictionary<int, (string Title, string Link)> Defaults = new()
         {
             [0] = ("Unknown error", "https://tools.ietf.org/html/rfc7231#section-6"),
 
