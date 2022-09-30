@@ -34,7 +34,7 @@ jobs:
         persist-credentials: false
 
     - name: "Setup .NET"
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
@@ -86,7 +86,7 @@ jobs:
         persist-credentials: false
 
     - name: "Setup .NET"
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
