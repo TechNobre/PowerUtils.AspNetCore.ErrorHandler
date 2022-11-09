@@ -457,3 +457,6 @@ $RECYCLE.BIN/
 ## Sonar
 .sonarqube
 sonarscan.bat
+
+## Stryker
+StrykerOutput
