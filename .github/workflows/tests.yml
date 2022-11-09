@@ -14,6 +14,7 @@ env:
   SDK_VERSION_7: '7.0.100'
   SDK_VERSION_6: '6.0.403'
   SDK_VERSION_5: '5.0.408'
+  TEST_RESULTS_DIRECTORY: './TestResults'
 
 
 jobs:
@@ -40,5 +41,11 @@ jobs:
     - name: "Build"
       run: dotnet build --configuration Release --no-restore
 
-    - name: "Test"
-      run: dotnet test --configuration Release --no-build --verbosity normal --logger "console;verbosity=detailed"
+    - name: "Run tests"
+      run: dotnet test --configuration Release --no-build --verbosity normal --results-directory ${{ env.TEST_RESULTS_DIRECTORY }} --logger "junit;LogFileName=test-result-$(uuidgen).xml" --logger "console;verbosity=detailed"
+
+    - name: "Publish test results"
+      uses: test-summary/action@v2
+      if: always()
+      with:
+        paths: "${{ env.TEST_RESULTS_DIRECTORY }}/**/*.xml"
