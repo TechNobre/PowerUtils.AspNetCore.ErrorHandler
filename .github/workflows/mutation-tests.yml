@@ -22,7 +22,7 @@ env:
 
   GIT_ORGANIZATION: 'TechNobre'
   PROJECT_NAME: 'PowerUtils.AspNetCore.ErrorHandler'
-  PROJECT_PATH: 'src/PowerUtils.AspNetCore.ErrorHandler.csproj'
+  PROJECT_FILE: 'PowerUtils.AspNetCore.ErrorHandler.csproj'
   TEST_PROJECT_PATH: 'tests/PowerUtils.AspNetCore.ErrorHandler.Tests/PowerUtils.AspNetCore.ErrorHandler.Tests.csproj'
 
 
@@ -56,7 +56,7 @@ jobs:
 
     - name: "Test for main version"
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main
+      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} -p ${{ env.PROJECT_FILE }} --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main
 
     - name: "Get branch name"
       if: github.event_name == 'pull_request'
@@ -70,7 +70,7 @@ jobs:
 
     - name: "Test for PR"
       if: github.event_name == 'pull_request'
-      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} -p ${{ env.PROJECT_PATH }} --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version ${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }}
+      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} -p ${{ env.PROJECT_FILE }} --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version ${{ steps.branch-name.outputs.current_branch }}-${{ github.run_number }}
 
     - name: "Comment PR"
       uses: actions/github-script@v6.3.3
