@@ -18,6 +18,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
         public IActionResult NotFiniteNumberException()
             => throw new NotImplementedException("NotImplementedException...");
 
+        [HttpGet("unauthorized-access-exception")]
+        public IActionResult UnauthorizedAccessException()
+            => throw new UnauthorizedAccessException();
+
         [HttpGet("aggregate-inner-not-implemented-exception")]
         public IActionResult AggregateExceptionInnerNotImplementedException()
             => throw new AggregateException(new NotImplementedException("AggregateException..."));
