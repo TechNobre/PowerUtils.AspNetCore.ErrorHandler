@@ -45,20 +45,25 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public ErrorHandlerOptions()
         {
             ExceptionMappers.Add(
+                typeof(UnauthorizedAccessException),
+                new ExceptionMapper<UnauthorizedAccessException>()
+                {
+                    Handler = (_) => (StatusCodes.Status401Unauthorized, new Dictionary<string, ErrorDetails>())
+                });
+
+            ExceptionMappers.Add(
                 typeof(NotImplementedException),
                 new ExceptionMapper<NotImplementedException>()
                 {
                     Handler = (_) => (StatusCodes.Status501NotImplemented, new Dictionary<string, ErrorDetails>())
-                }
-            );
+                });
 
             ExceptionMappers.Add(
                 typeof(TimeoutException),
                 new ExceptionMapper<TimeoutException>()
                 {
                     Handler = (_) => (StatusCodes.Status504GatewayTimeout, new Dictionary<string, ErrorDetails>())
-                }
-            );
+                });
 
             PropertyHandler = Handlers.PropertyHandler.Create(_propertyNamingPolicy);
         }

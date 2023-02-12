@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
@@ -33,14 +34,16 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.InternalServerError);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.InternalServerError);
 
-            content.ValidateContent(
-                HttpStatusCode.InternalServerError,
-                clientErrorData,
-                "GET: " + requestUri,
-                "An unexpected error has occurred."
-            );
+                content.ValidateContent(
+                    HttpStatusCode.InternalServerError,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "An unexpected error has occurred.");
+            }
         }
 
         [Fact]
@@ -57,14 +60,44 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.NotImplemented);
 
-            content.ValidateContent(
-                HttpStatusCode.NotImplemented,
-                clientErrorData,
-                "GET: " + requestUri,
-                "The feature has not been implemented."
-            );
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.NotImplemented);
+
+                content.ValidateContent(
+                    HttpStatusCode.NotImplemented,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "The feature has not been implemented.");
+            }
+        }
+
+        [Fact]
+        public async void EndpointWithUnauthorizedAccessException_Request_401()
+        {
+            // Arrange
+            var requestUri = "/exceptions/unauthorized-access-exception";
+            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+
+
+            // Act
+            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
+
+
+            // Assert
+
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.Unauthorized);
+
+                content.ValidateContent(
+                    HttpStatusCode.Unauthorized,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "A authentication error has occurred.");
+            }
         }
 
         [Fact]
@@ -81,14 +114,16 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.NotImplemented);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.NotImplemented);
 
-            content.ValidateContent(
-                HttpStatusCode.NotImplemented,
-                clientErrorData,
-                "GET: " + requestUri,
-                "The feature has not been implemented."
-            );
+                content.ValidateContent(
+                    HttpStatusCode.NotImplemented,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "The feature has not been implemented.");
+            }
         }
 
         [Fact]
@@ -105,14 +140,16 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.InternalServerError);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.InternalServerError);
 
-            content.ValidateContent(
-                HttpStatusCode.InternalServerError,
-                clientErrorData,
-                "GET: " + requestUri,
-                "An unexpected error has occurred."
-            );
+                content.ValidateContent(
+                    HttpStatusCode.InternalServerError,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "An unexpected error has occurred.");
+            }
         }
 
 #if NET6_0_OR_GREATER
@@ -132,18 +169,20 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.NotFound);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.NotFound);
 
-            content.ValidateContent(
-                HttpStatusCode.NotFound,
-                clientErrorData,
-                "GET: " + requestUri,
-                "The entity does not exist",
-                new Dictionary<string, ErrorDetails>()
-                {
-                    { "prop1", new("NOT_FOUND", "The entity does not exist") }
-                }
-            );
+                content.ValidateContent(
+                    HttpStatusCode.NotFound,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "The entity does not exist",
+                    new Dictionary<string, ErrorDetails>()
+                    {
+                        ["prop1"] = new("NOT_FOUND", "The entity does not exist")
+                    });
+            }
         }
 #endif
 
@@ -161,18 +200,20 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.Conflict);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.Conflict);
 
-            content.ValidateContent(
-                HttpStatusCode.Conflict,
-                clientErrorData,
-                "GET: " + requestUri,
-                "double",
-                new Dictionary<string, ErrorDetails>()
-                {
-                    { "prop2", new("DUPLICATED", "double") }
-                }
-            );
+                content.ValidateContent(
+                    HttpStatusCode.Conflict,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "double",
+                    new Dictionary<string, ErrorDetails>()
+                    {
+                        ["prop2"] = new("DUPLICATED", "double")
+                    });
+            }
         }
 
         [Fact]
@@ -189,14 +230,16 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.ServiceUnavailable);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.ServiceUnavailable);
 
-            content.ValidateContent(
-                HttpStatusCode.ServiceUnavailable,
-                clientErrorData,
-                "GET: " + requestUri,
-                "An unexpected error has occurred."
-            );
+                content.ValidateContent(
+                    HttpStatusCode.ServiceUnavailable,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "An unexpected error has occurred.");
+            }
         }
 
         [Fact]
@@ -213,20 +256,19 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(582);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(582);
 
-            content.ValidateContent(
-                582,
-                clientErrorData,
-                "GET: " + requestUri,
-                "An unexpected error has occurred."
-            );
+                content.ValidateContent(
+                    582,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "An unexpected error has occurred.");
 
-            content.Type.Should()
-                .Be("CustomLink");
-
-            content.Title.Should()
-                .Be("CustomTitle");
+                content.Type.Should().Be("CustomLink");
+                content.Title.Should().Be("CustomTitle");
+            }
         }
 
         [Fact]
@@ -243,14 +285,16 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.GatewayTimeout);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.GatewayTimeout);
 
-            content.ValidateContent(
-                HttpStatusCode.GatewayTimeout,
-                clientErrorData,
-                "GET: " + requestUri,
-                "An unexpected error has occurred."
-            );
+                content.ValidateContent(
+                    HttpStatusCode.GatewayTimeout,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "An unexpected error has occurred.");
+            }
         }
 
         [Fact]
@@ -267,18 +311,20 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.BadRequest);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.BadRequest);
 
-            content.ValidateContent(
-                HttpStatusCode.BadRequest,
-                clientErrorData,
-                "GET: " + requestUri,
-                "Error validations",
-                new Dictionary<string, ErrorDetails>()
-                {
-                    { "prop", new("Err", "Error validations") }
-                }
-            );
+                content.ValidateContent(
+                    HttpStatusCode.BadRequest,
+                    clientErrorData,
+                    "GET: " + requestUri,
+                    "Error validations",
+                    new Dictionary<string, ErrorDetails>()
+                    {
+                        ["prop"] = new("Err", "Error validations")
+                    });
+            }
         }
     }
 }
