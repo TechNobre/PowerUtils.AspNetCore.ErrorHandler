@@ -436,6 +436,19 @@ dotnet_diagnostic.CA2254.severity = none
 
 
 ###############################
+# Message adjustment          #
+###############################
+
+# CA2211: Non-constant fields should not be visible
+dotnet_diagnostic.CA2211.severity = warning
+
+# CA1852: Seal internal types (disabled for Program.cs to not show the warning to top-level programs)
+dotnet_diagnostic.CA1852.severity = warning
+[Program.cs]
+dotnet_diagnostic.CA1852.severity = none
+
+
+###############################
 # VB Coding Conventions       #
 ###############################
 [*.vb]
