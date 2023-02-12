@@ -147,9 +147,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Serializers
             if(value.TraceId is null)
             {
                 var propertyName = _traceId.ToString();
-                if(value.Extensions.ContainsKey(propertyName))
+                if(value.Extensions.TryGetValue(propertyName, out var property))
                 {
-                    var traceId = Convert.ToString(value.Extensions[propertyName]);
+                    var traceId = Convert.ToString(property);
                     writer.WriteString(_traceId, traceId);
                 }
             }
