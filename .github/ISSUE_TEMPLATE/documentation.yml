@@ -23,4 +23,4 @@ body:
       label: Links
       description: Include links to affected documentation page(s).
     validations:
-      required: true
+      required: false
