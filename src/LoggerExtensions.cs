@@ -9,32 +9,27 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public static void Error(this ILogger logger, Exception exception, string message)
            => logger.LogError(
                exception,
-               $"[ERROR HANDLER] > {message}"
-           );
+               $"[ERROR HANDLER] > {message}");
 
 
         public static void Error(this ILogger logger, Exception exception, string request, int? statusCode)
             => logger.LogError(
                 exception,
-                $"[ERROR HANDLER] > Request: '{request}', StatusCode: '{statusCode}'"
-            );
+                $"[ERROR HANDLER] > Request: '{request}', StatusCode: '{statusCode}'");
 
         public static void Error(this ILogger logger, Exception exception, string request, int? statusCode, string message)
             => logger.LogError(
                 exception,
-                $"[ERROR HANDLER] > Request: '{request}', StatusCode: '{statusCode}' > {message}"
-            );
+                $"[ERROR HANDLER] > Request: '{request}', StatusCode: '{statusCode}' > {message}");
 
 
 
         public static void Debug(this ILogger logger, string message)
             => logger.LogDebug(
-                $"[ERROR HANDLER] > {message}"
-            );
+                $"[ERROR HANDLER] > {message}");
 
         public static void Debug(this ILogger logger, HttpContext httpContext, string message)
             => logger.LogDebug(
-                $"[ERROR HANDLER] > Request: '{httpContext.GetRequestEndpoint()}', StatusCode: '{httpContext.GetStatusCode()}' > {message}"
-            );
+                $"[ERROR HANDLER] > Request: '{httpContext.GetRequestEndpoint()}', StatusCode: '{httpContext.GetStatusCode()}' > {message}");
     }
 }

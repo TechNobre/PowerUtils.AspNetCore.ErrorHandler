@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
@@ -35,23 +36,26 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
+            await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
             (var response, var content) = await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
             // Assert
-            response.ValidateResponse(HttpStatusCode.RequestEntityTooLarge);
+            using(new AssertionScope())
+            {
+                response.ValidateResponse(HttpStatusCode.RequestEntityTooLarge);
 
-            content.ValidateContent(
-                HttpStatusCode.RequestEntityTooLarge,
-                clientErrorData,
-                "POST: " + requestUri,
-                "The payload is too big.",
-                new Dictionary<string, ErrorDetails>()
-                {
-                    { "payload", new("MAX:1048576", "The payload is too big.") }
-                }
-            );
+                content.ValidateContent(
+                    HttpStatusCode.RequestEntityTooLarge,
+                    clientErrorData,
+                    "POST: " + requestUri,
+                    "The payload is too big.",
+                    new Dictionary<string, ErrorDetails>()
+                    {
+                        { "payload", new("MAX:1048576", "The payload is too big.") }
+                    });
+            }
         }
     }
 }

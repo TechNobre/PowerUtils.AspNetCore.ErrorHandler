@@ -58,8 +58,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public ErrorDetails() { }
         public ErrorDetails(
             string code,
-            string description
-        )
+            string description)
         {
             Code = code;
             Description = description;

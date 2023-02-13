@@ -24,10 +24,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 foreach(var details in ProblemDetailsDefaults.Defaults)
                 {
                     // Override existents
-                    if(options.ClientErrorMapping.ContainsKey(details.Key))
+                    if(options.ClientErrorMapping.TryGetValue(details.Key, out var value))
                     {
-                        options.ClientErrorMapping[details.Key].Link = details.Value.Link;
-                        options.ClientErrorMapping[details.Key].Title = details.Value.Title;
+                        value.Link = details.Value.Link;
+                        value.Title = details.Value.Title;
                     }
                     else
                     {
@@ -38,8 +38,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                             {
                                 Link = details.Value.Link,
                                 Title = details.Value.Title
-                            }
-                        );
+                            });
                     }
                 }
             });

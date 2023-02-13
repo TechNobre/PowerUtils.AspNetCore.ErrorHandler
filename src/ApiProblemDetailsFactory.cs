@@ -19,8 +19,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public ApiProblemDetailsFactory(
             IHttpContextAccessor httpContextAccessor,
             IOptions<ApiBehaviorOptions> apiBehaviorOptions,
-            IOptions<ErrorHandlerOptions> errorHandlerOptions
-        )
+            IOptions<ErrorHandlerOptions> errorHandlerOptions)
         {
             _httpContextAccessor = httpContextAccessor;
 
@@ -51,8 +50,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             int? statusCode = null,
             string title = null,
             string type = null,
-            IDictionary<string, ErrorDetails> errors = null
-        )
+            IDictionary<string, ErrorDetails> errors = null)
         {
             errors ??= new Dictionary<string, ErrorDetails>();
 
@@ -117,8 +115,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
                 return Create(
                    actionContext.HttpContext,
-                   payloadTooLargeError
-                );
+                   payloadTooLargeError);
             }
 
 
@@ -126,8 +123,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
             return Create(
                 actionContext.HttpContext,
-                actionContext.ModelState.MappingModelState()
-            );
+                actionContext.ModelState.MappingModelState());
         }
 
         public override ProblemDetails CreateProblemDetails(
@@ -136,8 +132,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             string title = null,
             string type = null,
             string detail = null,
-            string instance = null
-        )
+            string instance = null)
         {
             var problemDetails = new ProblemDetails
             {
@@ -160,8 +155,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             string title = null,
             string type = null,
             string detail = null,
-            string instance = null
-        )
+            string instance = null)
         {
             if(modelStateDictionary == null)
             {
