@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.1.0...v2.2.0) (2023-02-13)
+
+
+### Features
+
+* Added UnauthorizedAccessException as default mapped to 401 ([07ac0ed](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/07ac0ed55da8e95096c931748031b817ff89ccb2))
+
 # [2.1.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.0.2...v2.1.0) (2022-11-09)
 
 
