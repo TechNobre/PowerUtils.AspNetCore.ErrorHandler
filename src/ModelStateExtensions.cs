@@ -39,11 +39,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 .First()
                 .ToLower();
 
-            if(
-                errorMessage.StartsWith("failed to read the request form. multipart body length limit ")
-                &&
-                errorMessage.EndsWith(" exceeded.")
-            )
+            if(errorMessage.StartsWith("failed to read the request form. multipart body length limit ")
+               &&
+               errorMessage.EndsWith(" exceeded."))
             {
                 var maxSize = errorMessage
                     .Replace("failed to read the request form. multipart body length limit ", "")

@@ -87,7 +87,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Assert
-
             using(new AssertionScope())
             {
                 response.ValidateResponse(HttpStatusCode.Unauthorized);

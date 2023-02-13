@@ -15,8 +15,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
         public ErrorHandlerMiddleware(
             RequestDelegate next,
             ILogger<ErrorHandlerMiddleware> logger,
-            ApiProblemDetailsFactory problemDetailsFactory
-        )
+            ApiProblemDetailsFactory problemDetailsFactory)
         {
             _next = next;
             _logger = logger;
@@ -26,6 +25,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 
         public async Task Invoke(HttpContext httpContext)
         {
+            httpContext.Request.ContentLength = 0;
+
+
             await _next(httpContext);
 
             if(httpContext.IsNotSuccess())
