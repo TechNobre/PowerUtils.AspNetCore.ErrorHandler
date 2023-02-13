@@ -121,8 +121,7 @@ public class Startup
                 exception.Errors.ToDictionary(
                     k => k.Key,
                     v => new ErrorDetails(v.Value, exception.Message)
-                )
-            ));
+                )));
         });
     }
 }
@@ -157,8 +156,7 @@ public class HomeController : ControllerBase
                 ["Property1"] = new("Error1", "Message1"),
                 ["Property2"] = new("Error2", "Message2"),
                 ["Property3"] = new("Error3", "Message3"),
-            }
-        );
+            });
 
     [HttpGet("call-2")]
     public IActionResult Call2()

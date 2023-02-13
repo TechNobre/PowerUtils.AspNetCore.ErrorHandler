@@ -4,12 +4,16 @@ using PowerUtils.AspNetCore.ErrorHandler.Samples.Models;
 namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
 {
     [ApiController]
-    [Route("files")]
-    public class FilesController : ControllerBase
+    [Route("large-requests")]
+    public class LargeRequestsController : ControllerBase
     {
-        [HttpPost]
+        [HttpPost("file")]
         [Consumes("multipart/form-data")]
         public IActionResult Upload([FromForm] FileRequest _)
+            => Ok();
+
+        [HttpPost("text")]
+        public IActionResult Text(string _)
             => Ok();
     }
 }
