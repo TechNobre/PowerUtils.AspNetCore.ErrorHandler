@@ -25,9 +25,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Handlers
 
         public async Task Invoke(HttpContext httpContext)
         {
-            httpContext.Request.ContentLength = 0;
-
-
             await _next(httpContext);
 
             if(httpContext.IsNotSuccess())
