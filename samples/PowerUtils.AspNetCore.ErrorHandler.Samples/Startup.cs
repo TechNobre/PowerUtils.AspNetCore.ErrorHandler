@@ -26,8 +26,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
                     option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
                 }).AddJwtBearer(options
-                    => options.TokenValidationParameters = new TokenValidation()
-                );
+                    => options.TokenValidationParameters = new TokenValidation());
 
             // Validation with basic authentication
             services
@@ -71,9 +70,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
             // Configurations to payload size
             services.Configure<FormOptions>(options =>
             {
-                options.ValueLengthLimit = 1048576; // Default value (4194304 Bytes -> 4 MB) - 1048576 = 1MB
-                options.MultipartBodyLengthLimit = 1048576; // Default value (134217728 Bytes -> 128 MB) - 1048576 = 1MB
-                options.MemoryBufferThreshold = 1048576; // Default value (65536 Bytes -> 128 MB) - 1048576 = 1MB
+                options.ValueLengthLimit = 1_048_576; // Default value (4194304 Bytes -> 4 MB) - 1048576 = 1MB
+                options.MultipartBodyLengthLimit = 1_048_576; // Default value (134217728 Bytes -> 128 MB) - 1048576 = 1MB
+                options.MemoryBufferThreshold = 1_048_576; // Default value (65536 Bytes -> 128 MB) - 1048576 = 1MB
             });
         }
 
@@ -92,8 +91,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints
-                => endpoints.MapControllers() // Mapping all controller
-            );
+                => endpoints.MapControllers()); // Mapping all controller
         }
     }
 }

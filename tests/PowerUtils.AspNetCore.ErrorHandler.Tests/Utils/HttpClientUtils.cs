@@ -11,6 +11,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
     internal static class HttpClientUtils
     {
+        private static readonly JsonSerializerOptions _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
         public static async Task<(HttpResponseMessage Response, ErrorProblemDetails Content)> SendGetAsync(this HttpClient client, string endpoint, object parameters = null)
         {
             if(parameters != null)
@@ -22,8 +27,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 
             return (
                 response,
-                await response.DeserializeResponseAsync()
-            );
+                await response.DeserializeResponseAsync());
         }
 
 
@@ -34,8 +38,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 
             return (
                 response,
-                await response.DeserializeResponseAsync()
-            );
+                await response.DeserializeResponseAsync());
         }
 
         public static async Task<(HttpResponseMessage Response, ErrorProblemDetails Content)> SendPostAsync(this HttpClient client, string endpoint, object body = null)
@@ -47,8 +50,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 
             return (
                 response,
-                await response.DeserializeResponseAsync()
-            );
+                await response.DeserializeResponseAsync());
         }
 
         public static HttpRequestMessage ToPostRequest(this object body, string endpoint)
@@ -57,7 +59,6 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             {
                 return new HttpRequestMessage(HttpMethod.Post, endpoint)
                 {
-
                     Content = JsonContent.Create(null, typeof(object), new MediaTypeHeaderValue(MediaTypeNames.Application.Json), null)
                 };
             }
@@ -82,11 +83,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
             {
                 return JsonSerializer.Deserialize<ErrorProblemDetails>(
                     content,
-                    new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    }
-                );
+                    _jsonSerializerOptions);
             }
             catch(Exception exception)
             {
