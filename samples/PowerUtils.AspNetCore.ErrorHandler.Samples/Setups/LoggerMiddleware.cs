@@ -4,7 +4,7 @@ using Serilog.Context;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
 {
-    internal class LoggerMiddleware
+    internal sealed class LoggerMiddleware
     {
         private readonly RequestDelegate _next;
 
