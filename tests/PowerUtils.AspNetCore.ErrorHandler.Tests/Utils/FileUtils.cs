@@ -3,7 +3,7 @@ using System.Net.Http;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Utils
 {
-    internal class FileUtils
+    internal sealed class FileUtils
     {
         public static StreamContent LoadFile(string filePath)
         {
