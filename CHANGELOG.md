@@ -1,3 +1,10 @@
+## [2.2.1](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.2.0...v2.2.1) (2023-06-17)
+
+
+### Bug Fixes
+
+* Removed unsecure log ([fc1b404](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/fc1b4044a169c87a3a3ecfb84ec80db8a4a9a393)), closes [#107](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/issues/107)
+
 # [2.2.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.1.0...v2.2.0) (2023-02-13)
 
 
