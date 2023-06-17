@@ -7,9 +7,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler
     internal static class LoggerExtensions
     {
         public static void Error(this ILogger logger, Exception exception, string message)
-           => logger.LogError(
-               exception,
-               $"[ERROR HANDLER] > {message}");
+            => logger.LogError(
+                exception,
+                $"[ERROR HANDLER] > {message}");
 
 
         public static void Error(this ILogger logger, Exception exception, string request, int? statusCode)
@@ -27,9 +27,5 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public static void Debug(this ILogger logger, string message)
             => logger.LogDebug(
                 $"[ERROR HANDLER] > {message}");
-
-        public static void Debug(this ILogger logger, HttpContext httpContext, string message)
-            => logger.LogDebug(
-                $"[ERROR HANDLER] > Request: '{httpContext.GetRequestEndpoint()}', StatusCode: '{httpContext.GetStatusCode()}' > {message}");
     }
 }
