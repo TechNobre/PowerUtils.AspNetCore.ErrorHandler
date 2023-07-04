@@ -46,7 +46,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JunitXml.TestLogger" Version="3.0.124" />
+    <PackageReference Include="JunitXml.TestLogger" Version="3.0.125" />
   </ItemGroup>
 
 
