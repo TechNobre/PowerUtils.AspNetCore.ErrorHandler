@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using PowerUtils.AspNetCore.Authentication.BasicAuth.Attributes;
-using PowerUtils.AspNetCore.Authentication.JwtBearer.Attributes;
+using PowerUtils.AspNetCore.ErrorHandler.Samples.Extensions;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Controllers
 {

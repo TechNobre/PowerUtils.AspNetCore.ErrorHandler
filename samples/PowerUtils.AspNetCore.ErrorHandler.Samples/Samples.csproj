@@ -11,8 +11,6 @@
 
 
   <ItemGroup>
-    <PackageReference Include="PowerUtils.AspNetCore.Authentication.BasicAuth" Version="1.1.0" />
-    <PackageReference Include="PowerUtils.AspNetCore.Authentication.JwtBearer" Version="1.2.0" />
     <PackageReference Include="PowerUtils.Security" Version="1.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <!-- LOGS -->
@@ -22,6 +20,19 @@
     <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
     <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.9" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.20" allowedVersions="[6.0.20]" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" allowedVersions="[5.0.17]" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp3.1' ">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.32" allowedVersions="[3.1.32]" />
   </ItemGroup>
 
 
