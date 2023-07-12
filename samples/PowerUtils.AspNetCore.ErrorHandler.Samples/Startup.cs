@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using PowerUtils.AspNetCore.Authentication.BasicAuth.Attributes;
 using PowerUtils.AspNetCore.ErrorHandler.Samples.Exceptions;
+using PowerUtils.AspNetCore.ErrorHandler.Samples.Extensions;
 using PowerUtils.AspNetCore.ErrorHandler.Samples.Setups;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Samples
