@@ -19,6 +19,7 @@ on:
 
 env:
   SDK_VERSION: '7.0.306'
+  FRAMEWORK_VERSION: 'net7.0'
 
   GIT_ORGANIZATION: 'TechNobre'
   PROJECT_NAME: 'PowerUtils.AspNetCore.ErrorHandler'
@@ -44,6 +45,11 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
+
+    # Hack because the last version of the `xunit.runner.visualstudio` doesn't generate the report for some OLD SDK versions like .net 5
+    - name: "Replace TargetFrameworks"
+      run: |
+        find . -type f -name "*.csproj" -exec sed -i 's/<TargetFrameworks>.*<\/TargetFrameworks>/<TargetFrameworks>${{ env.FRAMEWORK_VERSION }}<\/TargetFrameworks>/g' {} +
 
     - name: "Restore .NET Tools"
       run: dotnet tool restore
