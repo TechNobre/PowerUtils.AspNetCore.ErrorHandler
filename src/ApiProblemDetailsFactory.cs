@@ -34,15 +34,14 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             int? statusCode = null,
             string title = null,
             string type = null,
-            IDictionary<string, ErrorDetails> errors = null
-        ) => new ObjectResult(CreateProblem(
+            IDictionary<string, ErrorDetails> errors = null)
+        => new ObjectResult(CreateProblem(
             detail,
             instance,
             statusCode,
             title,
             type,
-            errors
-        ));
+            errors));
 
         public ErrorProblemDetails CreateProblem(
             string detail = null,
@@ -63,13 +62,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 Instance = instance,
                 Errors = errors.ToDictionary(
                     k => _errorHandlerOptions.Value.PropertyHandler(k.Key),
-                    v => v.Value
-                )
+                    v => v.Value)
             };
 
             if(string.IsNullOrWhiteSpace(problemDetails.Detail))
             {
-                problemDetails.Detail = errors?.FirstOrDefault().Value?.Description;
+                problemDetails.Detail = errors.FirstOrDefault().Value?.Description;
             }
 
             _applyDefaults(_httpContextAccessor.HttpContext, problemDetails);
@@ -93,13 +91,11 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             foreach(var error in errors)
             {
                 problemDetails.Errors
-                    .Add(
-                        _errorHandlerOptions.Value.PropertyHandler(error.Key),
-                        error.Value
-                    );
+                    .Add(_errorHandlerOptions.Value.PropertyHandler(error.Key),
+                        error.Value);
             }
 
-            problemDetails.Detail = errors?.FirstOrDefault().Value?.Description;
+            problemDetails.Detail = errors.FirstOrDefault().Value?.Description;
 
             _applyDefaults(httpContext, problemDetails);
 
