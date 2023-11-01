@@ -49,10 +49,10 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.13" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="[6.0.24]" allowedVersions="[6.0.24]" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="[7.0.13]" allowedVersions="[7.0.13]" />
   </ItemGroup>
   <ItemGroup Condition=" '$(TargetFramework)' == 'net5.0' ">
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="[5.0.17]" allowedVersions="[5.0.17]" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="[7.0.13]" allowedVersions="[7.0.13]" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'net5.0' ">
