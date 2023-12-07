@@ -67,7 +67,7 @@ jobs:
     - name: "Get branch name"
       if: github.event_name == 'pull_request'
       id: branch-name
-      uses: tj-actions/branch-names@v7
+      uses: tj-actions/branch-names@v8
 
     - name: "Display branch details"
       if: github.event_name == 'pull_request'
