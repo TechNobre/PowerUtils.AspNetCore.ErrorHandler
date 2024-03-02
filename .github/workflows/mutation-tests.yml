@@ -42,7 +42,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: "Setup .NET"
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
@@ -67,7 +67,7 @@ jobs:
     - name: "Get branch name"
       if: github.event_name == 'pull_request'
       id: branch-name
-      uses: tj-actions/branch-names@v7
+      uses: tj-actions/branch-names@v8
 
     - name: "Display branch details"
       if: github.event_name == 'pull_request'
