@@ -1,0 +1,42 @@
+name: 'NuGet vulnerabilites'
+
+
+on:
+  workflow_dispatch: # To can dispatch manually
+
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    branches:
+      - main
+
+
+env:
+  SDK_VERSION: '7.0.400'
+
+
+jobs:
+
+  sonar-scanner:
+    name: "NuGet vulnerabilites"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v4
+
+    - name: "Setup .NET"
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.SDK_VERSION }}
+
+    - name: "Restore dependencies"
+      run: dotnet restore
+
+    - name: "Build"
+      run: dotnet build --configuration Release --no-restore
+
+    - name: "Checking NuGet vulnerabilites"
+      run: |
+        dotnet list package --vulnerable --include-transitive 2>&1 | tee build.log
+        echo "Analyze dotnet list package command log output..."
+        grep -q -i "\bcritical\b\|\bhigh\b\|\bmoderate\b\|\blow\b" build.log && { echo "Security Vulnerabilities found on the log output"; exit 1; } || exit 0
