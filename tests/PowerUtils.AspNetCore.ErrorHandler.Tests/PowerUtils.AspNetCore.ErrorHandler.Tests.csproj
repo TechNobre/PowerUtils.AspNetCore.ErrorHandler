@@ -24,12 +24,13 @@
 
 
   <ItemGroup>
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.4.1" />
     <PackageReference Include="CleanMoq" Version="42.42.42" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
     <PackageReference Include="PowerUtils.Text" Version="3.0.0" />
     <PackageReference Include="PowerUtils.xUnit.Extensions" Version="3.0.1" />
-    <PackageReference Include="xunit" Version="2.5.1" />
+    <PackageReference Include="xunit" Version="2.7.0" />
     <PackageReference Include="xunit.runner.console" Version="2.7.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -42,7 +43,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JunitXml.TestLogger" Version="3.0.134" />
+    <PackageReference Include="JunitXml.TestLogger" Version="3.1.12" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
