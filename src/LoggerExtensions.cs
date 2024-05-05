@@ -29,7 +29,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
 
         // Function to sanitize user input before logging
-        private static string _sanitizeInput(string input) =>
-            input?.Replace(Environment.NewLine, "");
+        private static string _sanitizeInput(string input)
+            => input?.Replace(Environment.NewLine, "");
     }
 }
