@@ -4,7 +4,7 @@
   <PropertyGroup>
     <ProjectGuid>848b072c-e1a1-4fcf-b00a-f14750be758b</ProjectGuid>
 
-    <TargetFrameworks>net7.0;net6.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
 
 
     <AssemblyName>PowerUtils.AspNetCore.ErrorHandler</AssemblyName>

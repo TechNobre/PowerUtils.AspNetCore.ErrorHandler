@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net7.0;net6.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
 
     <RootNamespace>PowerUtils.AspNetCore.ErrorHandler.Tests</RootNamespace>
     <AssemblyName>PowerUtils.AspNetCore.ErrorHandler.Tests</AssemblyName>

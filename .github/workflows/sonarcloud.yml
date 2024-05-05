@@ -73,5 +73,5 @@ jobs:
       run: |
         ./.sonar/scanner/dotnet-sonarscanner begin /k:"${{ secrets.SONAR_PROJECT_KEY }}" /o:"${{ secrets.SONAR_ORGANIZATION }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.projectBaseDir="$(pwd)"
         dotnet build -c Release --no-incremental
-        ./.sonar/scanner/dotnet-coverage collect "dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -c Release --no-restore --no-build" -f xml -o "coverage.xml"
+        ./.sonar/scanner/dotnet-coverage collect "dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -c Release --no-restore --no-build"
         ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
