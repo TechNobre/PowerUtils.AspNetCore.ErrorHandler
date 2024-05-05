@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Moq;
+using NSubstitute;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Fakes;
 using PowerUtils.xUnit.Extensions;
 using Xunit;
@@ -11,13 +11,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
     public class ApiProblemDetailsFactoryTests
     {
-        private readonly Mock<IOptions<ApiBehaviorOptions>> _apiBehaviorOptions = new();
-        private readonly Mock<IOptions<ErrorHandlerOptions>> _errorHandlerOptions = new();
-        private readonly Mock<IHttpContextAccessor> _httpContextAccessor = new();
+        private readonly IOptions<ApiBehaviorOptions> _apiBehaviorOptions = Substitute.For<IOptions<ApiBehaviorOptions>>();
+        private readonly IOptions<ErrorHandlerOptions> _errorHandlerOptions = Substitute.For<IOptions<ErrorHandlerOptions>>();
+        private readonly IHttpContextAccessor _httpContextAccessor = Substitute.For<IHttpContextAccessor>();
 
         public ApiProblemDetailsFactoryTests()
-            => _apiBehaviorOptions
-                .SetupGet(s => s.Value)
+            => _apiBehaviorOptions.Value
                 .Returns(new ApiBehaviorOptions());
 
 
@@ -26,20 +25,19 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
         public void HttpContextWithoutValues_Create_ProblemDetailsResponse()
         {
             // Arrange
-            _errorHandlerOptions
-                .SetupGet(s => s.Value)
+            _errorHandlerOptions.Value
                 .Returns(new ErrorHandlerOptions
                 {
                     PropertyNamingPolicy = PropertyNamingPolicy.Original
                 });
 
             var factory = new ApiProblemDetailsFactory(
-                _httpContextAccessor.Object,
-                _apiBehaviorOptions.Object,
-                _errorHandlerOptions.Object
-            );
+                _httpContextAccessor,
+                _apiBehaviorOptions,
+                _errorHandlerOptions);
 
             var httpContext = new FakeHttpContext();
+
 
             // Act
             var act = factory.Create(httpContext);

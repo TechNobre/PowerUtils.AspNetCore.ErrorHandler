@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using FluentAssertions;
 using FluentAssertions.Execution;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
         [Fact]
-        public async void EndpointWithGenericException_Request_500()
+        public async Task EndpointWithGenericException_Request_500()
         {
             // Arrange
             var requestUri = "/exceptions/generic";
@@ -47,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void EndpointWithNotImplementedException_Request_501()
+        public async Task EndpointWithNotImplementedException_Request_501()
         {
             // Arrange
             var requestUri = "/exceptions/not-implemented-exception";
@@ -74,7 +75,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void EndpointWithUnauthorizedAccessException_Request_401()
+        public async Task EndpointWithUnauthorizedAccessException_Request_401()
         {
             // Arrange
             var requestUri = "/exceptions/unauthorized-access-exception";
@@ -100,7 +101,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void EndpointWithAggregateException_Request_501()
+        public async Task EndpointWithAggregateException_Request_501()
         {
             // Arrange
             var requestUri = "/exceptions/aggregate-inner-not-implemented-exception";
@@ -126,7 +127,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void EndpointWithTwoAggregateException_Request_500()
+        public async Task EndpointWithTwoAggregateException_Request_500()
         {
             // Arrange
             var requestUri = "/exceptions/aggregate-two-inner-exception";
@@ -155,7 +156,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         // Only don't work well in testing environment for dotnet 5.0 for custom error code 404. If you call for example with postman works well
         // https://github.com/dotnet/aspnetcore/issues/31024
         [Fact]
-        public async void EndpointWithNotFoundException_Request_404WithErrors()
+        public async Task EndpointWithNotFoundException_Request_404WithErrors()
         {
             // Arrange
             var requestUri = "/exceptions/not-found";
@@ -186,7 +187,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 #endif
 
         [Fact]
-        public async void EndpointWithNotFoundException_Request_409WithErrors()
+        public async Task EndpointWithNotFoundException_Request_409WithErrors()
         {
             // Arrange
             var requestUri = "/exceptions/duplicated";
@@ -216,7 +217,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void CustomExceptionMapper_Request_503()
+        public async Task CustomExceptionMapper_Request_503()
         {
             // Arrange
             var requestUri = "/exceptions/test";
@@ -242,7 +243,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void CustomExcetionWithSpecificTitleAndLink_Request_582()
+        public async Task CustomExcetionWithSpecificTitleAndLink_Request_582()
         {
             // Arrange
             var requestUri = "/exceptions/custom-exception";
@@ -271,7 +272,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void EndpointWithTimeoutException_Request_504StatusCode()
+        public async Task EndpointWithTimeoutException_Request_504StatusCode()
         {
             // Arrange
             var requestUri = "/exceptions/timeout-exception";
@@ -297,7 +298,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void PropertyException_Request_400WithErrors()
+        public async Task PropertyException_Request_400WithErrors()
         {
             // Arrange
             var requestUri = "/exceptions/property-exception";
