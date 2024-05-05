@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PowerUtils.AspNetCore.ErrorHandler.Tests.Config;
@@ -19,7 +20,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
         [Fact]
-        public async void InvalidPayload_Request_400()
+        public async Task InvalidPayload_Request_400()
         {
             // Arrange
             var requestUri = "/model-state";
@@ -47,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void PostWithoutBody_Request_400()
+        public async Task PostWithoutBody_Request_400()
         {
             // Arrange
             var requestUri = "/model-state";
@@ -75,7 +76,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void PostWithInvalidParameters_Request_400()
+        public async Task PostWithInvalidParameters_Request_400()
         {
             // Arrange
             var requestUri = "/model-state";
@@ -108,7 +109,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         }
 
         [Fact]
-        public async void PostInvalidDeserialization_Request_400()
+        public async Task PostInvalidDeserialization_Request_400()
         {
             // Arrange
             var requestUri = "/model-state";
