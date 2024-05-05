@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
@@ -9,23 +8,28 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         public static void Error(this ILogger logger, Exception exception, string message)
             => logger.LogError(
                 exception,
-                $"[ERROR HANDLER] > {message}");
+                "[ERROR HANDLER] > {Message}", message);
 
-
-        public static void Error(this ILogger logger, Exception exception, string request, int? statusCode)
+        public static void Error(this ILogger logger, Exception exception, ErrorProblemDetails problemDetails)
             => logger.LogError(
                 exception,
-                $"[ERROR HANDLER] > Request: '{request}', StatusCode: '{statusCode}'");
+                "[ERROR HANDLER] > Request: '{Request}', StatusCode: '{StatusCode}'", _sanitizeInput(problemDetails.Instance), problemDetails.Status);
 
-        public static void Error(this ILogger logger, Exception exception, string request, int? statusCode, string message)
+        public static void Error(this ILogger logger, Exception exception, ErrorProblemDetails problemDetails, string message)
             => logger.LogError(
                 exception,
-                $"[ERROR HANDLER] > Request: '{request}', StatusCode: '{statusCode}' > {message}");
+                "[ERROR HANDLER] > Request: '{Request}', StatusCode: '{StatusCode}' > {Message}", _sanitizeInput(problemDetails.Instance), problemDetails.Status, message);
 
 
 
         public static void Debug(this ILogger logger, string message)
             => logger.LogDebug(
-                $"[ERROR HANDLER] > {message}");
+                "[ERROR HANDLER] > {Message}", message);
+
+
+
+        // Function to sanitize user input before logging
+        private static string _sanitizeInput(string input) =>
+            input?.Replace(Environment.NewLine, "");
     }
 }
