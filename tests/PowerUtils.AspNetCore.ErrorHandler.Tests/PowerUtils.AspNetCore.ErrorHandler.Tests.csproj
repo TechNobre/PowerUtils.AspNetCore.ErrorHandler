@@ -11,6 +11,7 @@
 
 
   <PropertyGroup>
+    <VSTestLogger>trx%3bLogFileName=$(MSBuildProjectName)_$(TargetFramework).trx</VSTestLogger>
     <DefaultItemExcludes>$(DefaultItemExcludes);coverage.*opencover.xml</DefaultItemExcludes>
   </PropertyGroup>
 
@@ -43,7 +44,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="JunitXml.TestLogger" Version="3.1.12" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net7.0' ">
