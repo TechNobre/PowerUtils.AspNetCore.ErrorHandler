@@ -10,7 +10,7 @@
     <AssemblyName>PowerUtils.AspNetCore.ErrorHandler</AssemblyName>
     <RootNamespace>PowerUtils.AspNetCore.ErrorHandler</RootNamespace>
 
-    <Version>2.2.1</Version>
+    <Version>2.3.0</Version>
 
     <PackageOutputPath>bin\</PackageOutputPath>
   </PropertyGroup>
