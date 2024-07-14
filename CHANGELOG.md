@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.2.1...v2.3.0) (2024-07-14)
+
+
+### Features
+
+* Added support to .NET8 ([2c1c0d3](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/2c1c0d32cdd5c4c0cd7dc143760bce337a26869a))
+
 ## [2.2.1](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.2.0...v2.2.1) (2023-06-17)
 
 
