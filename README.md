@@ -17,39 +17,38 @@
 [![License: MIT](https://img.shields.io/github/license/TechNobre/PowerUtils.AspNetCore.ErrorHandler.svg)](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/blob/main/LICENSE)
 
 
-- [Support](#support-to)
+- [Support to](#support-to)
 - [Dependencies](#dependencies)
 - [How to use](#how-to-use)
-  - [Install NuGet package](#Installation)
-  - [Configure](#ErrorHandler.Configure)
-  - [PropertyNamingPolicy](#ErrorHandler.PropertyNamingPolicy)
-  - [ExceptionMappers](#ErrorHandler.ExceptionMappers)
-  - [IProblemFactory](#ErrorHandler.IProblemFactory)
-  - [Customize problem link and problem title](#ErrorHandler.CustomizeLinkAndTitle)
-    - [Add new custom status code](#ErrorHandler.CustomizeLinkAndTitle.AddNew)
-    - [Change link and title for a specific status code](#ErrorHandler.CustomizeLinkAndTitle.Change)
-- [Contribution](#contribution)
-- [License](./LICENSE)
-- [Changelog](./CHANGELOG.md)
+  - [Install NuGet package](#install-nuget-package)
+  - [Configure](#configure)
+    - [PropertyNamingPolicy](#propertynamingpolicy)
+    - [ExceptionMappers](#exceptionmappers)
+    - [IProblemFactory](#iproblemfactory)
+    - [Customize problem link and problem title](#customize-problem-link-and-problem-title)
+      - [Add new custom status code](#add-new-custom-status-code)
+      - [Change link and title for a specific status code](#change-link-and-title-for-a-specific-status-code)
+- [Contribution ](#contribution-)
 
 
 
-## Support to <a name="support-to"></a>
+## Support to<a name="support-to"></a>
+- .NET 8.0
 - .NET 7.0
 - .NET 6.0
 - .NET 5.0
 
 
 
-## Dependencies <a name="dependencies"></a>
+## Dependencies<a name="dependencies"></a>
 
 - Microsoft.AspNetCore.App [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.App/)
 
 
 
-## How to use <a name="how-to-use"></a>
+## How to use<a name="how-to-use"></a>
 
-### Install NuGet package <a name="Installation"></a>
+### Install NuGet package<a name="Installation"></a>
 This package is available through Nuget Packages: https://www.nuget.org/packages/PowerUtils.AspNetCore.ErrorHandler
 
 **Nuget**
@@ -62,7 +61,7 @@ Install-Package PowerUtils.AspNetCore.ErrorHandler
 dotnet add package PowerUtils.AspNetCore.ErrorHandler
 ```
 
-### Configure <a name="ErrorHandler.Configure"></a>
+### Configure<a name="ErrorHandler.Configure"></a>
 
 ErrorHandler configuration
 
@@ -82,7 +81,7 @@ public class Startup
 ```
 
 
-#### PropertyNamingPolicy <a name="ErrorHandler.PropertyNamingPolicy"></a>
+#### PropertyNamingPolicy<a name="ErrorHandler.PropertyNamingPolicy"></a>
 **Options:**
 - **Original**: _Do not format the property_;
 - **CamelCase**: E.g. from `ClientName` to `clientName` **Default value**;
@@ -102,7 +101,7 @@ public class Startup
 ```
 
 
-#### ExceptionMappers <a name="ErrorHandler.ExceptionMappers"></a>
+#### ExceptionMappers<a name="ErrorHandler.ExceptionMappers"></a>
 Exception mapping to status code and error codes
 
 ```csharp
@@ -128,7 +127,7 @@ public class Startup
 ```
 
 
-#### IProblemFactory <a name="ErrorHandler.IProblemFactory"></a>
+#### IProblemFactory<a name="ErrorHandler.IProblemFactory"></a>
 How to create a custom error problem details for example in a controller
 
 ```csharp
@@ -177,10 +176,10 @@ public class HomeController : ControllerBase
 ```
 
 
-#### Customize problem link and problem title <a name="ErrorHandler.CustomizeLinkAndTitle"></a>
+#### Customize problem link and problem title<a name="ErrorHandler.CustomizeLinkAndTitle"></a>
 Exception mapping to status code and error codes
 
-##### Add new custom status code <a name="ErrorHandler.CustomizeLinkAndTitle.AddNew"></a>
+##### Add new custom status code<a name="ErrorHandler.CustomizeLinkAndTitle.AddNew"></a>
 ```csharp
 public class Startup
 {
@@ -198,7 +197,7 @@ public class Startup
 }
 ```
 
-##### Change link and title for a specific status code <a name="ErrorHandler.CustomizeLinkAndTitle.Change"></a>
+##### Change link and title for a specific status code<a name="ErrorHandler.CustomizeLinkAndTitle.Change"></a>
 
 Add your customization after `services.AddErrorHandler();` because it will override the defaults status codes
 ```csharp
