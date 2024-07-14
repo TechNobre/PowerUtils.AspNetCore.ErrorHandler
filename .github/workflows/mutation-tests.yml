@@ -18,8 +18,8 @@ on:
 
 
 env:
-  SDK_VERSION: '7.0.400'
-  FRAMEWORK_VERSION: 'net7.0'
+  SDK_VERSION: '8.0.303'
+  FRAMEWORK_VERSION: 'net8.0'
 
   GIT_ORGANIZATION: 'TechNobre'
   PROJECT_NAME: 'PowerUtils.AspNetCore.ErrorHandler'
