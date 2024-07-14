@@ -4,13 +4,13 @@
   <PropertyGroup>
     <ProjectGuid>848b072c-e1a1-4fcf-b00a-f14750be758b</ProjectGuid>
 
-    <TargetFrameworks>net5.0;net6.0;net7.0</TargetFrameworks>
+    <TargetFrameworks>net5.0;net6.0;net7.0;net8.0</TargetFrameworks>
 
 
     <AssemblyName>PowerUtils.AspNetCore.ErrorHandler</AssemblyName>
     <RootNamespace>PowerUtils.AspNetCore.ErrorHandler</RootNamespace>
 
-    <Version>2.2.1</Version>
+    <Version>2.3.0</Version>
 
     <PackageOutputPath>bin\</PackageOutputPath>
   </PropertyGroup>
