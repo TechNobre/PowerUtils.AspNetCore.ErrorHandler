@@ -16,7 +16,7 @@
     <!-- LOGS -->
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.4" /> <!-- Update directly to fix vulnerability https://github.com/advisories/GHSA-hh2w-p6rv-4g7w -->
   </ItemGroup>
 
