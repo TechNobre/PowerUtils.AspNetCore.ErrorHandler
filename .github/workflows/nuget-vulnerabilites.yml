@@ -20,8 +20,8 @@ env:
 
 jobs:
 
-  sonar-scanner:
-    name: "NuGet vulnerabilites"
+  check-vulnerabilities:
+    name: "Check vulnerabilites"
     runs-on: ubuntu-latest
 
     steps:
