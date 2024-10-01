@@ -1,5 +1,7 @@
-﻿using System.Net.Http.Headers;
+﻿using System;
+using System.Net.Http.Headers;
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
@@ -7,12 +9,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using PowerUtils.Security;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
+        [Obsolete]
         public BasicAuthenticationHandler(
            IOptionsMonitor<AuthenticationSchemeOptions> options,
            ILoggerFactory logger,
@@ -40,7 +42,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
                 }
 
                 var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-                (var username, var password) = authHeader.Parameter.FromBasicAuth();
+                var credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter));
+                var credentialsArray = credentials.Split(':');
+                var username = credentialsArray[0];
+                var password = credentialsArray[1];
 
                 if("username" != username || "password" != password)
                 {
