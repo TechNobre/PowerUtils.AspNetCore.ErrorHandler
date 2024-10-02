@@ -1,0 +1,139 @@
+name: 'SonarCloud and Mutation tests'
+
+
+on:
+  workflow_dispatch: # To can dispatch manually
+
+  push: # First pipeline to run when deploy a new version
+    branches:
+      - main
+    paths:
+      - "src/**" # Only run when exists changes in source code
+      - "tests/**" # Only run when exists changes in tests code
+
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+    branches:
+      - main
+
+
+env:
+  SDK_VERSION: '8.0.402'
+  FRAMEWORK_VERSION: 'net8.0'
+
+  GIT_ORGANIZATION: 'TechNobre'
+  PROJECT_NAME: 'PowerUtils.AspNetCore.ErrorHandler'
+  TEST_PROJECT_PATH: 'tests/PowerUtils.AspNetCore.ErrorHandler.Tests/PowerUtils.AspNetCore.ErrorHandler.Tests.csproj'
+
+
+permissions:
+  pull-requests: write # To can create a comment with the results
+
+
+jobs:
+
+  sonar-scanner:
+    name: "Sonar scanner and Mutation tests"
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: "Setup .NET"
+      uses: actions/setup-dotnet@v4.0.1
+      with:
+        dotnet-version: ${{ env.SDK_VERSION }}
+
+    # Hack reasons:
+    #   - The last version of the `xunit.runner.visualstudio` doesn't generate the report for some OLD SDK versions like .net 5
+    #   - The Stryker versions after 4.0.0 is not compatible with net7.0
+    - name: "Replace TargetFrameworks"
+      run: |
+        find . -type f -name "*.csproj" -exec sed -i 's/<TargetFrameworks>.*<\/TargetFrameworks>/<TargetFrameworks>${{ env.FRAMEWORK_VERSION }}<\/TargetFrameworks>/g' {} +
+
+    - name: "Set up JDK"
+      uses: actions/setup-java@v4.4.0
+      with:
+        distribution: 'adopt'
+        java-version: '17'
+
+    - name: "Checkout"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+
+    - name: "Restore .NET Tools"
+      run: dotnet tool restore
+
+    - name: "Create cache directory"
+      run: mkdir -p ~/sonar/cache
+
+    - name: "Cache SonarCloud packages"
+      uses: actions/cache@v4
+      with:
+        path: ~/sonar/cache
+        key: ${{ runner.os }}-sonar-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-sonar-
+          ${{ runner.os }}-
+
+    - name: "Cache SonarCloud scanner"
+      id: cache-sonar-scanner
+      uses: actions/cache@v4
+      with:
+        path: ./.sonar/scanner
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+
+    - name: "Install SonarCloud scanner"
+      if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
+      run: |
+        mkdir -p ./.sonar/scanner
+        dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
+        dotnet tool update dotnet-coverage --tool-path ./.sonar/scanner
+
+    - name: "Test for main version"
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter json --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main -O ${{ github.workspace }}/mutations
+
+    - name: "Display branch details"
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "Branch name is '${{ github.head_ref }}'"
+
+    - name: "Test for PR"
+      if: github.event_name == 'pull_request'
+      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} --reporter json --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version ${{ github.head_ref }}-${{ github.run_number }} -O ${{ github.workspace }}/mutations
+
+    - name: "Convert report to Sonar"
+      run: jq -f tests/mutation-report-to-sonar.jq '${{ github.workspace }}/mutations/reports/mutation-report.json' > '${{ github.workspace }}/mutations/reports/mutation-sonar.json'
+
+    - name: "Comment PR"
+      uses: actions/github-script@v7.0.1
+      if: github.event_name == 'pull_request'
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { issue: { number: issue_number }, repo: { owner, repo } } = context;
+          const message = `🚀 **Stryker report generated** 🚀
+            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2F${{ env.GIT_ORGANIZATION }}%2F${{ env.PROJECT_NAME }}%2F${{ github.head_ref }}-${{ github.run_number }})](https://dashboard.stryker-mutator.io/reports/github.com/${{ env.GIT_ORGANIZATION }}/${{ env.PROJECT_NAME }}/${{ github.head_ref }}-${{ github.run_number }})
+            To more details: https://dashboard.stryker-mutator.io/reports/github.com/${{ env.GIT_ORGANIZATION }}/${{ env.PROJECT_NAME }}/${{ github.head_ref }}-${{ github.run_number }}`;
+            github.rest.issues.createComment({
+              issue_number,
+              owner,
+              repo,
+              body: message
+            });
+
+    - name: "Publish report"
+      run: |
+        cat $(find ${{ github.workspace }}/mutations/reports/* -name "*.md") > $GITHUB_STEP_SUMMARY
+
+    - name: "Build and analyze"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      shell: pwsh
+      run: |
+        ./.sonar/scanner/dotnet-sonarscanner begin /k:"${{ secrets.SONAR_PROJECT_KEY }}" /o:"${{ secrets.SONAR_ORGANIZATION }}" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.projectBaseDir="$(pwd)" /d:sonar.externalIssuesReportPaths="${{ github.workspace }}/mutations/reports/mutation-sonar.json"
+        dotnet build -c Release --no-incremental
+        ./.sonar/scanner/dotnet-coverage collect "dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -c Release --no-restore --no-build" -f xml -o "coverage.xml"
+        ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
