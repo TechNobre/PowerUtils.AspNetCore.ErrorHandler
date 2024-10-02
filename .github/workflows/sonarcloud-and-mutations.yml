@@ -21,7 +21,6 @@ env:
   SDK_VERSION: '8.0.402'
   FRAMEWORK_VERSION: 'net8.0'
 
-  PROJECT_NAME: 'PowerUtils.AspNetCore.ErrorHandler'
   PROJECT_FILE: 'PowerUtils.AspNetCore.ErrorHandler.csproj'
   TEST_PROJECT_PATH: 'tests/PowerUtils.AspNetCore.ErrorHandler.Tests/PowerUtils.AspNetCore.ErrorHandler.Tests.csproj'
 
@@ -124,8 +123,8 @@ jobs:
         script: |
           const { issue: { number: issue_number }, repo: { owner, repo } } = context;
           const message = `🚀 **Stryker report generated** 🚀
-            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2F${{ github.repository_owner }}%2F${{ env.PROJECT_NAME }}%2F${{ env.STRYKER_BRANCH }})](https://dashboard.stryker-mutator.io/reports/github.com/${{ github.repository_owner }}/${{ env.PROJECT_NAME }}/${{ env.STRYKER_BRANCH }})
-            To more details: https://dashboard.stryker-mutator.io/reports/github.com/${{ github.repository_owner }}/${{ env.PROJECT_NAME }}/${{ env.STRYKER_BRANCH }}`;
+            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2F${{ github.repository_owner }}%2F${{ github.event.repository.name }}%2F${{ env.STRYKER_BRANCH }})](https://dashboard.stryker-mutator.io/reports/github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/${{ env.STRYKER_BRANCH }})
+            To more details: https://dashboard.stryker-mutator.io/reports/github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/${{ env.STRYKER_BRANCH }}`;
             github.rest.issues.createComment({
               issue_number,
               owner,
