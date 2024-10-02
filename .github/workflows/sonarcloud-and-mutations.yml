@@ -1,4 +1,4 @@
-name: 'SonarCloud and Mutation tests'
+name: 'SonarCloud and Mutation Tests'
 
 
 on:
@@ -21,7 +21,6 @@ env:
   SDK_VERSION: '8.0.402'
   FRAMEWORK_VERSION: 'net8.0'
 
-  GIT_ORGANIZATION: 'TechNobre'
   PROJECT_NAME: 'PowerUtils.AspNetCore.ErrorHandler'
   PROJECT_FILE: 'PowerUtils.AspNetCore.ErrorHandler.csproj'
   TEST_PROJECT_PATH: 'tests/PowerUtils.AspNetCore.ErrorHandler.Tests/PowerUtils.AspNetCore.ErrorHandler.Tests.csproj'
@@ -34,10 +33,21 @@ permissions:
 jobs:
 
   sonar-scanner:
-    name: "Sonar scanner and Mutation tests"
+    name: "Sonar Scanner and Mutation Tests"
     runs-on: ubuntu-latest
 
     steps:
+    - name: "Define branch name for Stryker"
+      run: |
+        if [[ "${{ github.ref }}" == "refs/heads/main" ]]; then
+          echo "STRYKER_BRANCH=main" >> $GITHUB_ENV
+        else
+          echo "STRYKER_BRANCH=${{ github.head_ref }}-${{ github.run_number }}" >> $GITHUB_ENV
+        fi
+
+    - name: "Display branch name for Stryker"
+      run: echo "Stryker branch is '${{ env.STRYKER_BRANCH }}'"
+
     - name: "Setup .NET"
       uses: actions/setup-dotnet@v4.0.1
       with:
@@ -91,18 +101,17 @@ jobs:
         dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
         dotnet tool update dotnet-coverage --tool-path ./.sonar/scanner
 
-    - name: "Test for main version"
-      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
-      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} -p ${{ env.PROJECT_FILE }} --reporter json --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version main -O ${{ github.workspace }}/mutations
-
-    - name: "Display branch details"
-      if: github.event_name == 'pull_request'
+    - name: "Run Stryker"
       run: |
-        echo "Branch name is '${{ github.head_ref }}'"
-
-    - name: "Test for PR"
-      if: github.event_name == 'pull_request'
-      run: dotnet stryker -tp ${{ env.TEST_PROJECT_PATH }} -p ${{ env.PROJECT_FILE }} --reporter json --reporter markdown --reporter progress --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} --version ${{ github.head_ref }}-${{ github.run_number }} -O ${{ github.workspace }}/mutations
+        dotnet stryker \
+          -tp ${{ env.TEST_PROJECT_PATH }} \
+          -p ${{ env.PROJECT_FILE }} \
+          --reporter json \
+          --reporter markdown \
+          --reporter progress \
+          --reporter dashboard --dashboard-api-key ${{ secrets.STRYKER_API_KEY }} \
+          --version ${{ env.STRYKER_BRANCH }} \
+          -O ${{ github.workspace }}/mutations
 
     - name: "Convert report to Sonar"
       run: jq -f tests/mutation-report-to-sonar.jq '${{ github.workspace }}/mutations/reports/mutation-report.json' > '${{ github.workspace }}/mutations/reports/mutation-sonar.json'
@@ -115,8 +124,8 @@ jobs:
         script: |
           const { issue: { number: issue_number }, repo: { owner, repo } } = context;
           const message = `🚀 **Stryker report generated** 🚀
-            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2F${{ env.GIT_ORGANIZATION }}%2F${{ env.PROJECT_NAME }}%2F${{ github.head_ref }}-${{ github.run_number }})](https://dashboard.stryker-mutator.io/reports/github.com/${{ env.GIT_ORGANIZATION }}/${{ env.PROJECT_NAME }}/${{ github.head_ref }}-${{ github.run_number }})
-            To more details: https://dashboard.stryker-mutator.io/reports/github.com/${{ env.GIT_ORGANIZATION }}/${{ env.PROJECT_NAME }}/${{ github.head_ref }}-${{ github.run_number }}`;
+            [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2F${{ github.repository_owner }}%2F${{ env.PROJECT_NAME }}%2F${{ env.STRYKER_BRANCH }})](https://dashboard.stryker-mutator.io/reports/github.com/${{ github.repository_owner }}/${{ env.PROJECT_NAME }}/${{ env.STRYKER_BRANCH }})
+            To more details: https://dashboard.stryker-mutator.io/reports/github.com/${{ github.repository_owner }}/${{ env.PROJECT_NAME }}/${{ env.STRYKER_BRANCH }}`;
             github.rest.issues.createComment({
               issue_number,
               owner,
