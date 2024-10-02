@@ -34,7 +34,7 @@ jobs:
         persist-credentials: false
 
     - name: "Setup .NET"
-      uses: actions/setup-dotnet@v4.0.1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
@@ -42,7 +42,7 @@ jobs:
       id: 'semantic-release'
       uses: cycjimmy/semantic-release-action@v4.1.1
       with:
-        semantic_version: 21.1.1
+        semantic_version: 24.1.2
         extra_plugins: |
           semantic-release-plugin-csproj
           @semantic-release/changelog
@@ -87,7 +87,7 @@ jobs:
         persist-credentials: false
 
     - name: "Setup .NET"
-      uses: actions/setup-dotnet@v4.0.1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
