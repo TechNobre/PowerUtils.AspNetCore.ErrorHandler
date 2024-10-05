@@ -6,13 +6,12 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
-    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class LinksAndTitlesTests
+    public sealed class LinksAndTitlesTests : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly IntegrationTestsFixture _testsFixture;
+        private readonly IntegrationTestsFixture _factory;
 
-        public LinksAndTitlesTests(IntegrationTestsFixture testsFixture)
-            => _testsFixture = testsFixture;
+        public LinksAndTitlesTests(IntegrationTestsFixture factory)
+            => _factory = factory;
 
 
 
@@ -60,7 +59,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
         public void StatusCodes_TryGetValue_Link(int statusCode, string link)
         {
             // Arrange
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
@@ -117,7 +116,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
         public void StatusCodes_TryGetValue_Title(int statusCode, string title)
         {
             // Arrange
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
-    public class ErrorDetailsTestsTests
+    public sealed class ErrorDetailsTestsTests
     {
         [Fact]
         public void ErrorDetails_ToStringAndimplicit_Equals()

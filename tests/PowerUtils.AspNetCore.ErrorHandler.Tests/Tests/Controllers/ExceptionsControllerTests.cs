@@ -11,13 +11,12 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
-    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class ExceptionsControllerTests
+    public sealed class ExceptionsControllerTests : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly IntegrationTestsFixture _testsFixture;
+        private readonly IntegrationTestsFixture _factory;
 
-        public ExceptionsControllerTests(IntegrationTestsFixture testsFixture)
-            => _testsFixture = testsFixture;
+        public ExceptionsControllerTests(IntegrationTestsFixture factory)
+            => _factory = factory;
 
 
 
@@ -26,11 +25,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/generic";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -52,11 +53,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/not-implemented-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -79,11 +82,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/unauthorized-access-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -105,11 +110,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/aggregate-inner-not-implemented-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -131,11 +138,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/aggregate-two-inner-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -160,11 +169,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/not-found";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -191,11 +202,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/duplicated";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -221,11 +234,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/test";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -247,11 +262,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/custom-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -276,11 +293,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/timeout-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -302,11 +321,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/exceptions/property-exception";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
