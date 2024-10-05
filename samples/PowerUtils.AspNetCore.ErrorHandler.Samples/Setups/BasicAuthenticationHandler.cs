@@ -14,13 +14,21 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
-        [Obsolete]
+#if NET8_0_OR_GREATER
+        public BasicAuthenticationHandler(
+           IOptionsMonitor<AuthenticationSchemeOptions> options,
+           ILoggerFactory logger,
+           UrlEncoder encoder
+        ) : base(options, logger, encoder) { }
+#else
         public BasicAuthenticationHandler(
            IOptionsMonitor<AuthenticationSchemeOptions> options,
            ILoggerFactory logger,
            UrlEncoder encoder,
            ISystemClock clock
         ) : base(options, logger, encoder, clock) { }
+#endif
+
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
@@ -36,12 +44,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples.Setups
                     return Task.FromResult(AuthenticateResult.NoResult());
                 }
 
-                if(!Request.Headers.ContainsKey("Authorization"))
+                if(!Request.Headers.TryGetValue("Authorization", out var authorization))
                 {
                     return Task.FromResult(AuthenticateResult.Fail("Invalid internal authentication"));
                 }
 
-                var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
+                var authHeader = AuthenticationHeaderValue.Parse(authorization);
                 var credentials = Encoding.UTF8.GetString(Convert.FromBase64String(authHeader.Parameter));
                 var credentialsArray = credentials.Split(':');
                 var username = credentialsArray[0];
