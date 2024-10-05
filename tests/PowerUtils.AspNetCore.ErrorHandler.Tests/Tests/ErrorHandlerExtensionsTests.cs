@@ -98,5 +98,43 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             act.Title.Should().Be(title);
             act.Link.Should().Be(link);
         }
+
+        [Fact]
+        public void When_property_naming_policy_does_not_set_should_use_camel_case()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddErrorHandler();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<IOptions<ErrorHandlerOptions>>();
+
+
+            // Act
+            var act = options.Value.PropertyHandler("FakeTitle");
+
+
+            // Assert
+            act.Should().Be("fakeTitle");
+        }
+
+        [Fact]
+        public void When_property_naming_policy_set_should_use_setted_policy()
+        {
+            // Arrange
+            var services = new ServiceCollection();
+            services.AddErrorHandler(o => o.PropertyNamingPolicy = PropertyNamingPolicy.SnakeCase);
+
+            var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<IOptions<ErrorHandlerOptions>>();
+
+
+            // Act
+            var act = options.Value.PropertyHandler("FakeTitle");
+
+
+            // Assert
+            act.Should().Be("fake_title");
+        }
     }
 }
