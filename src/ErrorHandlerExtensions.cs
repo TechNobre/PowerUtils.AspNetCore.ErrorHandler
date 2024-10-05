@@ -71,12 +71,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         /// </summary>
         /// <param name="app">The application builder to add the middleware to.</param>
         public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder app)
-        {
-            ExceptionHandlerMiddleware.UseExceptionHandlerMiddleware(app);
-
-            app.UseMiddleware<ErrorHandlerMiddleware>();
-
-            return app;
-        }
+            => app
+                .UseExceptionHandler(config => config.Run(ExceptionHandlerMiddleware.Handler))
+                .UseMiddleware<ErrorHandlerMiddleware>();
     }
 }
