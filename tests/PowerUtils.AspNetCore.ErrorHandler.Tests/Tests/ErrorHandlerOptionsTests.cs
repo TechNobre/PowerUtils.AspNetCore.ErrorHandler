@@ -18,7 +18,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
 
             // Act
-            (var status, var errors) = options.ExceptionMappers[type].Handle(exception);
+            (var status, _) = options.ExceptionMappers[type].Handle(exception);
 
 
             // Assert
@@ -35,7 +35,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
 
             // Act
-            (var status, var errors) = options.ExceptionMappers[type].Handle(exception);
+            (var status, _) = options.ExceptionMappers[type].Handle(exception);
 
 
             // Assert
@@ -52,7 +52,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 
 
             // Act
-            (var status, var errors) = options.ExceptionMappers[type].Handle(exception);
+            (var status, _) = options.ExceptionMappers[type].Handle(exception);
 
 
             // Assert
