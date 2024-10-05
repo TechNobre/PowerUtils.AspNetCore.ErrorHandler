@@ -39,8 +39,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
                 .First()
                 .ToLower();
 
-            if(errorMessage.StartsWith("failed to read the request form. multipart body length limit ")
-               &&
+            if(errorMessage.StartsWith("failed to read the request form. multipart body length limit ") &&
                errorMessage.EndsWith(" exceeded."))
             {
                 var maxSize = errorMessage
@@ -49,7 +48,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
 
                 return new Dictionary<string, ErrorDetails>()
                 {
-                    { PAYLOAD_PROPERTY_NAME, new("MAX:" + maxSize, "The payload is too big.") }
+                    [PAYLOAD_PROPERTY_NAME] = new($"MAX:{maxSize}", "The payload is too big.")
                 };
             }
 
