@@ -1,0 +1,43 @@
+name: 'Release'
+
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+    paths:
+      - "src/**"
+
+
+jobs:
+
+  release-version:
+    name: "Release new version"
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - name: "Checkout"
+      uses: actions/checkout@v4.2.0
+      with:
+        fetch-depth: 0
+        persist-credentials: false
+
+    - name: "Semantic Release"
+      id: 'semantic-release'
+      uses: cycjimmy/semantic-release-action@v4.1.1
+      with:
+        semantic_version: 24.1.2
+        extra_plugins: |
+          semantic-release-plugin-csproj
+          @semantic-release/changelog
+          @semantic-release/git
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: "New version"
+      run: |
+        echo "Published new version: ${{ steps.semantic-release.outputs.new_release_published }}"
+        echo "New version: ${{ steps.semantic-release.outputs.new_release_version }}"

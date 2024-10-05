@@ -4,12 +4,11 @@ name: 'Publish'
 on:
   workflow_dispatch: # To can dispatch manually
 
-  push: # First pipeline to run when deploy a new version
+  release:
+    types: [created]
+    tags: ["v*.*.*"]
     branches:
-      - main
-    paths:
-      - "src/**" # Only run when exists changes in source code
-
+    - main
 
 
 env:
@@ -18,13 +17,11 @@ env:
   NUGET_SERVER: https://api.nuget.org/v3/index.json
 
 
-
 jobs:
 
   deploy-nuget:
     name: "Deploy nuget"
     runs-on: 'ubuntu-latest'
-    if: github.event_name == 'push'
 
     steps:
     - name: "Checkout"
@@ -38,58 +35,13 @@ jobs:
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
 
-    - name: Semantic Release
-      id: 'semantic-release'
-      uses: cycjimmy/semantic-release-action@v4.1.1
-      with:
-        semantic_version: 24.1.2
-        extra_plugins: |
-          semantic-release-plugin-csproj
-          @semantic-release/changelog
-          @semantic-release/git
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: "Get tag"
+      id: tag
+      uses: dawidd6/action-get-tag@v1
 
     - name: "New version"
       run: |
-        echo "Published new version: ${{ steps.semantic-release.outputs.new_release_published }}"
-        echo "New version: ${{ steps.semantic-release.outputs.new_release_version }}"
-
-    - name: "Restore dependencies"
-      if: ${{ steps.semantic-release.outputs.new_release_published == 'true' }}
-      run: dotnet restore
-
-    - name: "Build"
-      if: ${{ steps.semantic-release.outputs.new_release_published == 'true' }}
-      run: dotnet build -c Release --no-restore
-
-    - name: "Pack"
-      if: ${{ steps.semantic-release.outputs.new_release_published == 'true' }}
-      run: dotnet pack -c Release --no-build -p:PackageVersion=${{ steps.semantic-release.outputs.new_release_version }} -p:Version==${{ steps.semantic-release.outputs.new_release_version }}
-
-    - name: "Publish nuget"
-      if: ${{ steps.semantic-release.outputs.new_release_published == 'true' }}
-      run: dotnet nuget push ${{ env.PACKAGE_PATH }} --api-key ${{ secrets.NUGET_TOKEN }} --source ${{ env.NUGET_SERVER }} --skip-duplicate
-
-
-  # To can dispatch manually when the semantic-release-action is not working or failed
-  deploy-nuget-manually:
-    name: "Deploy nuget manually"
-    runs-on: 'ubuntu-latest'
-    if: github.event_name == 'workflow_dispatch'
-
-    steps:
-    - name: "Checkout"
-      uses: actions/checkout@v4.2.0
-      with:
-        fetch-depth: 0
-        persist-credentials: false
-
-    - name: "Setup .NET"
-      uses: actions/setup-dotnet@v4.0.1
-      with:
-        dotnet-version: ${{ env.SDK_VERSION }}
+        echo "New version: ${{ steps.tag.outputs.tag }}"
 
     - name: "Restore dependencies"
       run: dotnet restore
