@@ -61,5 +61,45 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
             act.Code.Should().Be($"MAX:{lengthLimit}");
             act.Description.Should().Be("The payload is too big.");
         }
+
+        [Theory]
+        [InlineData("$")]
+        [InlineData("$.key")]
+        public void When_invalid_payload_should_return_error_invalid_payload(string key)
+        {
+            // Arrange
+            var modelState = new ModelStateDictionary();
+            modelState.AddModelError(key, "error");
+
+
+            // Act
+            var act = modelState
+                .MappingModelState()
+                .First().Value;
+
+
+            // Assert
+            act.Code.Should().Be("INVALID");
+            act.Description.Should().Be("The payload is invalid.");
+        }
+
+        [Fact]
+        public void When_empty_model_state_should_return_invalid_code()
+        {
+            // Arrange
+            var modelState = new ModelStateDictionary();
+            modelState.AddModelError("", "error message");
+
+
+            // Act
+            var act = modelState
+                .MappingModelState()
+                .First().Value;
+
+
+            // Assert
+            act.Code.Should().Be("INVALID");
+            act.Description.Should().Be("error message");
+        }
     }
 }
