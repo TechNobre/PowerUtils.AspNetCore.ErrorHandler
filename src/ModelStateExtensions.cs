@@ -61,8 +61,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             {
                 return (
                     modelStateError.Key[2..],
-                    new("INVALID", "The payload is invalid.")
-                );
+                    new("INVALID", "The payload is invalid."));
             }
 
             var error = modelStateError
