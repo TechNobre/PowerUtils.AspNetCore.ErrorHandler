@@ -14,13 +14,12 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
-    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class LargeRequestsControllerTests
+    public sealed class LargeRequestsControllerTests : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly IntegrationTestsFixture _testsFixture;
+        private readonly IntegrationTestsFixture _factory;
 
-        public LargeRequestsControllerTests(IntegrationTestsFixture testsFixture)
-            => _testsFixture = testsFixture;
+        public LargeRequestsControllerTests(IntegrationTestsFixture factory)
+            => _factory = factory;
 
 
 
@@ -29,15 +28,18 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/large-requests/file";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
-            var file = FileUtils.LoadFile("../../../../../media/test_3_23mb.jpg");
+            var filePath = Path.GetFullPath("../../../../../media/test_3_23mb.jpg");
+            var file = new StreamContent(new MemoryStream(File.ReadAllBytes(filePath)));
             var body = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture));
             body.Add(file, "FileFake", "upload.jpg");
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendPostMultipartAsync(requestUri, body);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -63,7 +65,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/large-requests/file";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
             var file = new StreamContent(new MemoryStream(new byte[1_048_577]));
             var body = new MultipartFormDataContent("Upload----" + DateTime.Now.ToString(CultureInfo.InvariantCulture));
@@ -71,7 +73,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendPostMultipartAsync(requestUri, body);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -104,7 +108,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, _) = await _testsFixture.Client.SendPostMultipartAsync(requestUri, body);
+            (var response, _) = await _factory
+                .CreateClient()
+                .SendPostMultipartAsync(requestUri, body);
 
 
             // Assert

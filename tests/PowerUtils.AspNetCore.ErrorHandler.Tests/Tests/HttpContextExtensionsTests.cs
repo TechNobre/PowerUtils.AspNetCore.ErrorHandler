@@ -6,7 +6,7 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
-    public class HttpContextExtensionsTests
+    public sealed class HttpContextExtensionsTests
     {
         [Fact]
         public void WithTraceIdentifier_GetCorrelationId_TraceIdentifier()
@@ -136,8 +136,8 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
         {
             // Arrange
             var httpContext = new DefaultHttpContext();
-            httpContext.Response.Headers.Add(HeaderNames.AccessControlAllowOrigin, "*");
-            httpContext.Response.Headers.Add("Test", "*");
+            httpContext.Response.Headers.Append(HeaderNames.AccessControlAllowOrigin, "*");
+            httpContext.Response.Headers.Append("Test", "*");
 
 
             // Act

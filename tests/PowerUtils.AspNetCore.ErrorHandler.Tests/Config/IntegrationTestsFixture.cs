@@ -1,55 +1,26 @@
-﻿using System;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using PowerUtils.AspNetCore.ErrorHandler.Samples;
-using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Config
 {
-    [CollectionDefinition(nameof(IntegrationApiTestsFixtureCollection))]
-    public class IntegrationApiTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture> { }
-
-
-    public class IntegrationTestsFixture : IDisposable
+    public sealed class IntegrationTestsFixture : WebApplicationFactory<Startup>
     {
-        public HttpClient Client;
+        protected override void ConfigureWebHost(IWebHostBuilder builder)
+            => builder.UseEnvironment(Environments.Staging);
 
-        public readonly WebAPIFactory<Startup> Factory;
-
-        public IntegrationTestsFixture()
+        protected override void ConfigureClient(HttpClient client)
         {
-            Factory = new WebAPIFactory<Startup>();
-            Client = _createClient();
+            client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
         }
 
         public TService GetService<TService>()
-            => Factory.Services.GetService<TService>();
-
-        private HttpClient _createClient()
-        {
-            var client = Factory.CreateClient();
-            client.DefaultRequestHeaders.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
-
-            return client;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if(disposing)
-            {
-                Client.Dispose();
-                Factory.Dispose();
-            }
-        }
+            => Services.GetService<TService>();
     }
 }

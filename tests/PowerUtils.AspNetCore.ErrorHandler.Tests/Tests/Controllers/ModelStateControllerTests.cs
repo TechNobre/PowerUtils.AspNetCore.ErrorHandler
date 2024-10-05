@@ -9,13 +9,12 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
-    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class ModelStateControllerTests
+    public sealed class ModelStateControllerTests : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly IntegrationTestsFixture _testsFixture;
+        private readonly IntegrationTestsFixture _factory;
 
-        public ModelStateControllerTests(IntegrationTestsFixture testsFixture)
-            => _testsFixture = testsFixture;
+        public ModelStateControllerTests(IntegrationTestsFixture factory)
+            => _factory = factory;
 
 
 
@@ -24,11 +23,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/model-state";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, "dsfsdf");
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendPostAsync(requestUri, "dsfsdf");
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -52,11 +53,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/model-state";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, null);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendPostAsync(requestUri, null);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -80,7 +83,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/model-state";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
             var body = new
             {
                 Description = "fake"
@@ -88,7 +91,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, body);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendPostAsync(requestUri, body);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -113,7 +118,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/model-state";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
             var body = new
             {
                 Name = "fake",
@@ -125,7 +130,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendPostAsync(requestUri, body);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendPostAsync(requestUri, body);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Handlers
 {
-    public class PropertyHandlerTests
+    public sealed class PropertyHandlerTests
     {
         [Fact]
         public void NastedProperty_Original_SameFormat()

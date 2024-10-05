@@ -9,7 +9,7 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests
 {
-    public class ApiProblemDetailsFactoryTests
+    public sealed class ApiProblemDetailsFactoryTests
     {
         private readonly IOptions<ApiBehaviorOptions> _apiBehaviorOptions = Substitute.For<IOptions<ApiBehaviorOptions>>();
         private readonly IOptions<ErrorHandlerOptions> _errorHandlerOptions = Substitute.For<IOptions<ErrorHandlerOptions>>();

@@ -8,13 +8,12 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
-    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class AuthControllerTests
+    public sealed class AuthControllerTests : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly IntegrationTestsFixture _testsFixture;
+        private readonly IntegrationTestsFixture _factory;
 
-        public AuthControllerTests(IntegrationTestsFixture testsFixture)
-            => _testsFixture = testsFixture;
+        public AuthControllerTests(IntegrationTestsFixture factory)
+            => _factory = factory;
 
 
 
@@ -23,11 +22,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/auth/basic";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 
@@ -47,11 +48,13 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
         {
             // Arrange
             var requestUri = "/auth/jwt";
-            var options = _testsFixture.GetService<IOptions<ApiBehaviorOptions>>();
+            var options = _factory.GetService<IOptions<ApiBehaviorOptions>>();
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
             options.Value.ClientErrorMapping.TryGetValue((int)response.StatusCode, out var clientErrorData);
 
 

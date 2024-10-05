@@ -10,7 +10,7 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Serializers
 {
-    public class ErrorProblemDetailsJsonConverterTests
+    public sealed class ErrorProblemDetailsJsonConverterTests
     {
         private static JsonSerializerOptions _jsonSerializerOptions => new JsonOptions().SerializerOptions;
 

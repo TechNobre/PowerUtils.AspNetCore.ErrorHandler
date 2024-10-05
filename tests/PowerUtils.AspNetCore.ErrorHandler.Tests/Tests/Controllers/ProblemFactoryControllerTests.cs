@@ -8,13 +8,12 @@ using Xunit;
 
 namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 {
-    [Collection(nameof(IntegrationApiTestsFixtureCollection))]
-    public class ProblemFactoryControllerTests
+    public sealed class ProblemFactoryControllerTests : IClassFixture<IntegrationTestsFixture>
     {
-        private readonly IntegrationTestsFixture _testsFixture;
+        private readonly IntegrationTestsFixture _factory;
 
-        public ProblemFactoryControllerTests(IntegrationTestsFixture testsFixture)
-            => _testsFixture = testsFixture;
+        public ProblemFactoryControllerTests(IntegrationTestsFixture factory)
+            => _factory = factory;
 
 
 
@@ -26,7 +25,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
 
 
             // Assert
@@ -65,7 +66,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
 
 
             // Assert
@@ -106,7 +109,9 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Tests.Tests.Controllers
 
 
             // Act
-            (var response, var content) = await _testsFixture.Client.SendGetAsync(requestUri);
+            (var response, var content) = await _factory
+                .CreateClient()
+                .SendGetAsync(requestUri);
 
 
             // Assert
