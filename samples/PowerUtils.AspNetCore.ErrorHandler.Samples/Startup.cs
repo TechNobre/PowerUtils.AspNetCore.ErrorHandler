@@ -49,9 +49,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler.Samples
                     exception.Status,
                     exception.Errors.ToDictionary(
                         k => k.Key,
-                        v => new ErrorDetails(v.Value, exception.Message)
-                    )
-                ));
+                        v => new ErrorDetails(v.Value, exception.Message))));
 
                 options.ExceptionMapper<CustomException>(exception => 582);
 
