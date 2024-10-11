@@ -6,9 +6,6 @@ on:
 
   release:
     types: [created]
-    tags: ["v*.*.*"]
-    branches:
-    - main
 
 
 env:
@@ -34,14 +31,6 @@ jobs:
       uses: actions/setup-dotnet@v4.0.1
       with:
         dotnet-version: ${{ env.SDK_VERSION }}
-
-    - name: "Get tag"
-      id: tag
-      uses: dawidd6/action-get-tag@v1
-
-    - name: "New version"
-      run: |
-        echo "New version: ${{ steps.tag.outputs.tag }}"
 
     - name: "Restore dependencies"
       run: dotnet restore
