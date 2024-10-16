@@ -11,7 +11,7 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.8.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />
     <!-- LOGS -->
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
