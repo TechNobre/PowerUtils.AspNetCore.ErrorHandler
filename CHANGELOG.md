@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.3.0...v2.4.0) (2024-11-13)
+
+
+### Features
+
+* Added support to .NET9 ([c0061d9](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/c0061d91f5dfa310217e4835856ed6e0cd2076eb))
+
 # [2.3.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.2.1...v2.3.0) (2024-07-14)
 
 
