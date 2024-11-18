@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Serilog.Exceptions" Version="8.4.0+build.694" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.1" />
     <PackageReference Include="System.Text.Json" Version="9.0.0" /> <!-- Update directly to fix vulnerability https://github.com/advisories/GHSA-hh2w-p6rv-4g7w -->
   </ItemGroup>
 
