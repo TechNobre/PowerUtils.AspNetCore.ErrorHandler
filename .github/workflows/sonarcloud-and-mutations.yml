@@ -18,7 +18,6 @@ on:
 
 
 env:
-  SDK_VERSION: '9.0.100'
   FRAMEWORK_VERSION: 'net9.0'
 
   PROJECT_FILE: 'PowerUtils.AspNetCore.ErrorHandler.csproj'
@@ -55,7 +54,7 @@ jobs:
     - name: "Setup .NET"
       uses: actions/setup-dotnet@v4.1.0
       with:
-        dotnet-version: ${{ env.SDK_VERSION }}
+        global-json-file: 'global.json'
 
     # Hack reasons:
     #   - The last version of the `xunit.runner.visualstudio` doesn't generate the report for some OLD SDK versions like .net 5
