@@ -105,7 +105,7 @@ jobs:
         path: ${{ env.TEST_RESULTS_DIRECTORY }}/**/*
         if-no-files-found: error
 
-    - name: "Publish Test Tesults"
+    - name: "Publish Test Results"
       uses: dorny/test-reporter@v1
       if: always()
       with:
