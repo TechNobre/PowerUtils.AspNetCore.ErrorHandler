@@ -76,6 +76,7 @@ jobs:
       with:
         name: 'Coverage'
         path: ${{ github.workspace }}/Cobertura.xml
+        if-no-files-found: error
 
     - name: "Publish code coverage report"
       uses: irongut/CodeCoverageSummary@v1.3.0
@@ -102,6 +103,7 @@ jobs:
       with:
         name: 'TestResults'
         path: ${{ env.TEST_RESULTS_DIRECTORY }}/**/*
+        if-no-files-found: error
 
     - name: "Publish Test Tesults"
       uses: dorny/test-reporter@v1
