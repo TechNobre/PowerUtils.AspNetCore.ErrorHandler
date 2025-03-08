@@ -23,7 +23,7 @@ env:
   PROJECT_FILE: 'PowerUtils.AspNetCore.ErrorHandler.csproj'
   TEST_PROJECT_PATH: 'tests/PowerUtils.AspNetCore.ErrorHandler.Tests/PowerUtils.AspNetCore.ErrorHandler.Tests.csproj'
 
-  # Setup the .NET environment to improved test performance and reliability
+  # Setup the .NET environment to improve test performance and reliability
   DOTNET_CLI_TELEMETRY_OPTOUT: true # Disable .NET CLI telemetry
   DOTNET_NOLOGO: true # Disable .NET CLI logo
   DOTNET_SYSTEM_CONSOLE_ALLOW_ANSI_COLOR_REDIRECTION: true # Enable ANSI color redirection
