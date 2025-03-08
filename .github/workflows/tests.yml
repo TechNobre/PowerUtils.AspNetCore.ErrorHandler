@@ -72,7 +72,7 @@ jobs:
         toolpath: "reportgeneratortool" # Default directory for installing the dotnet tool.
 
     - name: "Upload Combined Coverage"
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.6.1
       with:
         name: 'Coverage'
         path: ${{ github.workspace }}/Cobertura.xml
@@ -98,7 +98,7 @@ jobs:
         path: code-coverage-results.md
 
     - name: "Upload Test Results"
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v4.6.1
       with:
         name: 'TestResults'
         path: ${{ env.TEST_RESULTS_DIRECTORY }}/**/*
