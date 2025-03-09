@@ -2,7 +2,7 @@ name: 'NuGet vulnerabilites'
 
 
 on:
-  workflow_dispatch: # To can dispatch manually
+  workflow_dispatch:
 
   # Schedule to run every week on Sunday at 00:00 UTC
   schedule:

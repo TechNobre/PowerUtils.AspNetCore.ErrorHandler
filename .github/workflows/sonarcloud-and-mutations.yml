@@ -2,7 +2,7 @@ name: 'SonarCloud and Mutation Tests'
 
 
 on:
-  workflow_dispatch: # To can dispatch manually
+  workflow_dispatch:
 
   push: # First pipeline to run when deploy a new version
     branches:

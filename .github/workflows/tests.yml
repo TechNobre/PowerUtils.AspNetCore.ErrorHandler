@@ -2,7 +2,7 @@ name: 'Tests'
 
 
 on:
-  workflow_dispatch: # To can dispatch manually
+  workflow_dispatch:
 
   pull_request:
     types: [opened, reopened, edited, synchronize]
@@ -15,7 +15,7 @@ env:
   SDK_VERSION_7: '7.0.410'
   SDK_VERSION_6: '6.0.428'
   SDK_VERSION_5: '5.0.408'
-  TEST_RESULTS_DIRECTORY: './TestResults'
+  COVERAGE_REPORT_DIRECTORY: 'CodeCoverageReports'
 
   # Set up the .NET environment to improve test performance and reliability
   DOTNET_CLI_TELEMETRY_OPTOUT: true # Disable .NET CLI telemetry
@@ -57,7 +57,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
 
     - name: "Run tests"
-      run: dotnet test --configuration Release --no-build --verbosity normal --results-directory ${{ env.TEST_RESULTS_DIRECTORY }} --collect:"XPlat Code Coverage"
+      run: dotnet test --configuration Release --no-build --verbosity normal --results-directory ${{ github.workspace }}/${{ env.COVERAGE_REPORT_DIRECTORY }} --collect:"XPlat Code Coverage"
 
     - name: "Combine Coverage Reports" # This is because one report is produced per project, and we want one result for all of them.
       uses: danielpalme/ReportGenerator-GitHub-Action@5.4.4
@@ -91,18 +91,20 @@ jobs:
         output: both
         thresholds: "10 30"
 
-    - name: "Add Coverage PR Comment"
+    - name: "Add Coverage in PR Comment"
       uses: marocchino/sticky-pull-request-comment@v2
       if: github.event_name == 'pull_request'
       with:
-        recreate: true
+        header: coverage-report
+        hide_and_recreate: true
+        hide_classify: "OUTDATED"
         path: code-coverage-results.md
 
     - name: "Upload Test Results"
       uses: actions/upload-artifact@v4.6.1
       with:
         name: 'TestResults'
-        path: ${{ env.TEST_RESULTS_DIRECTORY }}/**/*
+        path: ${{ github.workspace }}/${{ env.COVERAGE_REPORT_DIRECTORY }}/**/*
         if-no-files-found: error
 
     - name: "Publish Test Results"
@@ -110,7 +112,7 @@ jobs:
       if: always()
       with:
         name: "Test Results"
-        path: "${{ env.TEST_RESULTS_DIRECTORY }}/**/*.trx"
+        path: "${{ github.workspace }}/${{ env.COVERAGE_REPORT_DIRECTORY }}/**/*.trx"
         reporter: dotnet-trx
 
     - name: "Publish Test Summary"
@@ -119,4 +121,4 @@ jobs:
       with:
         check_name: "Test Summary"
         # NOTE: using trx_files instead of files due to https://github.com/EnricoMi/publish-unit-test-result-action/issues/424
-        trx_files: "${{ env.TEST_RESULTS_DIRECTORY }}/**/*.trx"
+        trx_files: "${{ github.workspace }}/${{ env.COVERAGE_REPORT_DIRECTORY }}/**/*.trx"
