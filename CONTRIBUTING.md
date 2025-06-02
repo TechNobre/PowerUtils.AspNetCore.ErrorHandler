@@ -3,13 +3,13 @@
 We would love for you to contribute to this project and help make it even better than it is today!
 As a contributor, here are the guidelines we would like you to follow. It does help everyone to accept your Pull Requests with maximum awesomeness:
 
-- [Code of Conduct](#code-of-conduct)
-- [General Seps](#general-seps)
-- [Commits and Pull Requests](#commits-pr)
-  - [Conventional Commits](#conventional-commits)
-    - [Common types you can use](#commits-types)
-- [Coding Standards](#coding-standards)
-- [Tests](#tests)
+- [ Code of Conduct](#-code-of-conduct)
+- [ General Seps](#-general-seps)
+- [ Commits and Pull Requests](#-commits-and-pull-requests)
+  - [ Conventional Commits](#-conventional-commits)
+    - [ Common types you can use (based on the Angular convention):](#-common-types-you-can-use-based-on-the-angular-convention)
+- [ Coding Standards](#-coding-standards)
+- [ Tests](#-tests)
 
 
 
@@ -82,7 +82,7 @@ feat(blog): add comment section
 
 ## <a name="coding-standards"></a> Coding Standards
 * :heavy_check_mark: **DO** add XML comment documentation to new classes, methods or parameters.
-* :heavy_check_mark: **DO** add a test class for each feature and a test method for each 
+* :heavy_check_mark: **DO** add a test class for each feature and a test method for each
 * :heavy_check_mark: **DO** use language conventions to make code easy to understand quickly. See some tips here: [dofactory](https://www.dofactory.com/csharp-coding-standards);
 * :heavy_check_mark: **CONSIDER** using SOLID patterns;
 
@@ -94,8 +94,3 @@ feat(blog): add comment section
 * :heavy_check_mark: **DO** add a test class for each feature and a test method for each assertion;
 * :heavy_check_mark: **DO** make sure unit tests pass.
 * :x: **AVOID** adding tests just to get coverage on sonarcloud.
-
-***Disclaimer***
-- 1️⃣ Unit in Unit Test is not a method/function.
-- 2️⃣ One assertion per test doesn't mean invoking the Assert method only once.
-> by @gsferreira
