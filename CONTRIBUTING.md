@@ -94,3 +94,7 @@ feat(blog): add comment section
 * :heavy_check_mark: **DO** add a test class for each feature and a test method for each assertion;
 * :heavy_check_mark: **DO** make sure unit tests pass.
 * :x: **AVOID** adding tests just to get coverage on sonarcloud.
+
+***Disclaimer***
+- 1️⃣ Unit in Unit Test is not a method/function.
+- 2️⃣ One assertion per test doesn't mean invoking the Assert method only once.
