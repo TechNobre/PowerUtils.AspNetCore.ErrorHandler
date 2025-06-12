@@ -3,23 +3,23 @@
 We would love for you to contribute to this project and help make it even better than it is today!
 As a contributor, here are the guidelines we would like you to follow. It does help everyone to accept your Pull Requests with maximum awesomeness:
 
-- [ Code of Conduct](#-code-of-conduct)
-- [ General Steps](#-general-steps)
-- [ Commits and Pull Requests](#-commits-and-pull-requests)
-  - [ Conventional Commits](#-conventional-commits)
-    - [ Common types you can use (based on the Angular convention):](#-common-types-you-can-use-based-on-the-angular-convention)
-- [ Coding Standards](#-coding-standards)
-- [ Tests](#-tests)
+- [Code of Conduct](#code-of-conduct)
+- [General Steps](#general-steps)
+- [Commits and Pull Requests](#commits-and-pull-requests)
+  - [Conventional Commits](#conventional-commits)
+    - [Common types you can use (based on the Angular convention)](#common-types-you-can-use-based-on-the-angular-convention)
+- [Coding Standards](#coding-standards)
+- [Tests](#tests)
 
 
 
-## <a name="code-of-conduct"></a> Code of Conduct
+## <a name="code-of-conduct"></a>Code of Conduct
 
 Please read and follow our [Code of Conduct][coc].
 
 
 
-## <a name="general-steps"></a> General Steps
+## <a name="general-steps"></a>General Steps
 
 1. Check if there is already an open issue for the subject;
 2. Open an issue to discuss the new feature;
@@ -31,14 +31,14 @@ Please read and follow our [Code of Conduct][coc].
 8. Submit a pull request;
 
 
-## <a name="commits-pr"></a> Commits and Pull Requests
+## <a name="commits-pr"></a>Commits and Pull Requests
 
 * :x: **AVOID** breaking the continuous integration build.
 * :heavy_check_mark: **DO** atomic commits to make it easier to analyze changes.
 * :heavy_check_mark: **DO** keep pull requests small so they can be easily reviewed.
 * :heavy_check_mark: **DO** only commit with conventional commit patterns
 
-### <a name="conventional-commits"></a> Conventional Commits
+### <a name="conventional-commits"></a>Conventional Commits
 To know more about conventional commits, visit [Conventional Commits](https://conventionalcommits.org/).
 
 In general the pattern mostly looks like this:
@@ -63,7 +63,7 @@ fix(server): send cors headers
 feat(blog): add comment section
 ```
 
-#### <a name="commits-types"></a> Common types you can use (based on the Angular convention):
+#### <a name="commits-types"></a>Common types you can use (based on the Angular convention)
 
 - `feat:` A new feature
 - `fix:` A bug fix
@@ -80,7 +80,7 @@ feat(blog): add comment section
 
 
 
-## <a name="coding-standards"></a> Coding Standards
+## <a name="coding-standards"></a>Coding Standards
 * :heavy_check_mark: **DO** add XML comment documentation to new classes, methods or parameters.
 * :heavy_check_mark: **DO** add a test class for each feature and a test method for each
 * :heavy_check_mark: **DO** use language conventions to make code easy to understand quickly. See some tips here: [dofactory](https://www.dofactory.com/csharp-coding-standards);
@@ -88,7 +88,7 @@ feat(blog): add comment section
 
 
 
-## <a name="tests"></a> Tests
+## <a name="tests"></a>Tests
 * :heavy_check_mark: **DO** add a unit test if your Pull Requests resolves an issue or adds features.
 * :heavy_check_mark: **CONSIDER** using test patterns like "AAA" and "Given When Then";
 * :heavy_check_mark: **DO** add a test class for each feature and a test method for each assertion;
