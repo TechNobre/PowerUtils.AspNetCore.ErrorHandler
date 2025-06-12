@@ -16,6 +16,7 @@ on:
 
 jobs:
   markdown-link-check:
+    name: "Markdown link check"
     runs-on: ubuntu-latest
 
     steps:
