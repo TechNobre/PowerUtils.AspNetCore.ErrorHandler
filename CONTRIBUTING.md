@@ -4,7 +4,7 @@ We would love for you to contribute to this project and help make it even better
 As a contributor, here are the guidelines we would like you to follow. It does help everyone to accept your Pull Requests with maximum awesomeness:
 
 - [ Code of Conduct](#-code-of-conduct)
-- [ General Seps](#-general-seps)
+- [ General Steps](#-general-steps)
 - [ Commits and Pull Requests](#-commits-and-pull-requests)
   - [ Conventional Commits](#-conventional-commits)
     - [ Common types you can use (based on the Angular convention):](#-common-types-you-can-use-based-on-the-angular-convention)
@@ -19,7 +19,7 @@ Please read and follow our [Code of Conduct][coc].
 
 
 
-## <a name="general-seps"></a> General Seps
+## <a name="general-steps"></a> General Steps
 
 1. Check if there is already an open issue for the subject;
 2. Open an issue to discuss the new feature;
