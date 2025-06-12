@@ -28,7 +28,7 @@ env:
 jobs:
 
   test-project:
-    name: "Test nuget"
+    name: "Test project"
     runs-on: ubuntu-22.04
     permissions:
       contents: read
