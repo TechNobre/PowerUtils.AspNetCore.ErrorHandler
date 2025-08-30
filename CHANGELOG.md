@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.4.0...v3.0.0) (2025-08-30)
+
+
+### Bug Fixes
+
+* Marked all implementations as `Obsolete` ([9606668](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/commit/9606668e57b72a089d858a87ae0a4d92e1b386c0))
+
+
+### BREAKING CHANGES
+
+* Deprecated package
+
 # [2.4.0](https://github.com/TechNobre/PowerUtils.AspNetCore.ErrorHandler/compare/v2.3.0...v2.4.0) (2024-11-13)
 
 
