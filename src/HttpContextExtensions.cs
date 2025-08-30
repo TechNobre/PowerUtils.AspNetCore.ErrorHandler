@@ -9,6 +9,7 @@ using Microsoft.Net.Http.Headers;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public static class HttpContextExtensions
     {
         private static readonly HashSet<string> _allowedHeaderNames = new(StringComparer.OrdinalIgnoreCase)
@@ -26,6 +27,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         };
 
 
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public static string GetCorrelationId(this HttpContext httpContext)
         {
             var result = Activity.Current?.Id;

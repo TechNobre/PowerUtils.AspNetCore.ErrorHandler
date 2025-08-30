@@ -5,29 +5,35 @@ using Microsoft.AspNetCore.Http;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public interface IExceptionMapper
     {
         (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors) Handle(Exception exception);
     }
 
 
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public class ExceptionMapper<TException> : IExceptionMapper
         where TException : Exception
     {
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public Func<TException, (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>>)> Handler { get; set; }
 
 
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors) Handle(Exception exception)
             => Handler(exception as TException);
     }
 
 
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public class ErrorHandlerOptions
     {
         private PropertyNamingPolicy _propertyNamingPolicy = PropertyNamingPolicy.CamelCase;
         /// <summary>
         /// Default value: CamelCase
         /// </summary>
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public PropertyNamingPolicy PropertyNamingPolicy
         {
             get => _propertyNamingPolicy;
@@ -38,10 +44,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             }
         }
 
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public IDictionary<Type, IExceptionMapper> ExceptionMappers { get; set; } = new Dictionary<Type, IExceptionMapper>();
 
         internal Func<string, string> PropertyHandler { get; set; }
 
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public ErrorHandlerOptions()
         {
             ExceptionMappers.Add(
@@ -69,8 +77,10 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         }
     }
 
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public static class ErrorHandlerOptionsExtensions
     {
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, IEnumerable<KeyValuePair<string, ErrorDetails>> Errors)> configureMapper)
             where TException : Exception
         {
@@ -92,10 +102,12 @@ namespace PowerUtils.AspNetCore.ErrorHandler
             }
         }
 
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, int> configureMapper)
             where TException : Exception
             => options.ExceptionMapper<TException>(e => (configureMapper(e), ImmutableDictionary<string, ErrorDetails>.Empty));
 
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public static void ExceptionMapper<TException>(this ErrorHandlerOptions options, Func<TException, (int Status, string Property, string Code, string Description)> configureMapper)
             where TException : Exception => options.ExceptionMapper<TException>(e => (configureMapper(e).Status, new Dictionary<string, ErrorDetails>()
             {

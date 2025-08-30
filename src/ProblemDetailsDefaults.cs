@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public static class ProblemDetailsDefaults
     {
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public const string PROBLEM_MEDIA_TYPE_JSON = "application/problem+json";
 
         internal const int FALLBACK_STATUS_CODE = 500;
