@@ -9,6 +9,7 @@ using PowerUtils.AspNetCore.ErrorHandler.Handlers;
 
 namespace PowerUtils.AspNetCore.ErrorHandler
 {
+    [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
     public static class ErrorHandlerExtensions
     {
         /// <summary>
@@ -17,6 +18,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         /// </summary>
         /// <param name="services">The service collection to add the services to.</param>
         /// <param name="options">Options for handling exceptions and errors</param>
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public static IServiceCollection AddErrorHandler(this IServiceCollection services, Action<ErrorHandlerOptions> options = null)
         {
             services.Configure<ApiBehaviorOptions>(options =>
@@ -70,6 +72,7 @@ namespace PowerUtils.AspNetCore.ErrorHandler
         /// Adds the <see cref="ErrorHandlerMiddleware"/> and <see cref="ExceptionHandlerMiddleware"/> to the application pipeline.
         /// </summary>
         /// <param name="app">The application builder to add the middleware to.</param>
+        [Obsolete("This package has been discontinued because it never evolved, and the code present in this package does not justify its continuation. It is preferable to implement this code directly in the project if necessary.")]
         public static IApplicationBuilder UseErrorHandler(this IApplicationBuilder app)
             => app
                 .UseExceptionHandler(config => config.Run(ExceptionHandlerMiddleware.Handler))

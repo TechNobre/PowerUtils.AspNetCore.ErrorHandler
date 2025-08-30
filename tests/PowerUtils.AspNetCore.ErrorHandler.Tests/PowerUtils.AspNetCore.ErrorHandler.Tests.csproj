@@ -16,14 +16,6 @@
   </PropertyGroup>
 
 
-  <Target Name="CopyHook" AfterTargets="AfterBuild" Condition="'$(GITHUB_ACTIONS)' != 'true' ">
-    <ItemGroup>
-      <CommitHookFile Include="../../.github/hooks/commit-msg" />
-    </ItemGroup>
-    <Copy SourceFiles="@(CommitHookFile)" DestinationFolder="../../.git/hooks" />
-  </Target>
-
-
   <ItemGroup>
     <PackageReference Include="NSubstitute" Version="5.3.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
